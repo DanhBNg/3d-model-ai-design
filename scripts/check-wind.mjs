@@ -1,0 +1,35 @@
+import {chromium} from '@playwright/test';
+import assert from 'node:assert/strict';
+import {mkdirSync,writeFileSync} from 'node:fs';
+const out='output/wind-turbine/browser';mkdirSync(out,{recursive:true});
+const browser=await chromium.launch({channel:'chrome',headless:true}),errors=[],checks=[];
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:960}});
+ page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+ await page.goto('http://127.0.0.1:4173/models/wind-turbine');await page.waitForFunction(()=>!!window.__wind);
+ await page.waitForTimeout(1000);await page.screenshot({path:out+'/exterior.png'});
+ assert.equal(await page.evaluate(()=>window.__wind.runtime.meshes.nacelle_shell.every(m=>m.visible)),true);checks.push('closed exterior and direct clean route');
+ await page.locator('#wind-cutaway').click();await page.waitForFunction(()=>window.__wind.controller.state.cover===1);await page.waitForTimeout(1000);await page.screenshot({path:out+'/cutaway.png'});
+ assert.equal(await page.evaluate(()=>window.__wind.runtime.meshes.nacelle_shell.some(m=>m.visible)),false);checks.push('cutaway opens actual interior');
+ await page.locator('[data-wpart=generator_stator]').click();await page.locator('#wind-isolate').click();
+ assert.equal(await page.evaluate(()=>window.__wind.runtime.meshes.hub.some(m=>m.visible)),false);checks.push('part selection and isolation');
+ await page.locator('#wind-isolate').click();
+ await page.locator('[data-wmode=explode]').click();await page.locator('#wind-explode').fill('100');await page.waitForFunction(()=>window.__wind.controller.state.explode===1);await page.waitForTimeout(500);await page.screenshot({path:out+'/exploded.png'});
+ checks.push('exploded slider reaches 100%');
+ await page.locator('[data-wmode=principle]').click();await page.waitForFunction(()=>window.__wind.controller.state.rpm>5);
+ assert.equal(await page.evaluate(()=>window.__wind.controller.state.explode),0);checks.push('reassembles before operation');
+ await page.waitForTimeout(1000);await page.screenshot({path:out+'/principle.png'});
+ await page.locator('#wind-play').click();const phase=await page.evaluate(()=>{const s=window.__wind.controller.state;return [s.angle,s.time,s.windTime,s.pitch,s.yaw];});await page.waitForTimeout(400);
+ assert.deepEqual(await page.evaluate(()=>{const s=window.__wind.controller.state;return [s.angle,s.time,s.windTime,s.pitch,s.yaw];}),phase);checks.push('pause freezes all motion');
+ await page.locator('#wind-play').click();await page.locator('#wind-direction').fill('45');await page.waitForFunction(()=>window.__wind.controller.state.yaw>.3);checks.push('wind direction drives yaw');
+ await page.locator('[data-speed="27"]').click();await page.waitForFunction(()=>window.__wind.controller.state.pitch>80);checks.push('storm feathers blades');
+ await page.locator('#wind-reset').click();await page.waitForTimeout(1800);
+ assert.equal(await page.evaluate(()=>window.__wind.controller.state.mode),'explore');checks.push('reset restores exterior');
+ await page.setViewportSize({width:390,height:844});await page.waitForTimeout(1200);await page.screenshot({path:out+'/mobile-exterior.png',fullPage:true});
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.locator('[data-wmode=principle]').click();await page.waitForFunction(()=>window.__wind.controller.state.rpm>5);await page.screenshot({path:out+'/mobile-principle.png',fullPage:true});checks.push('mobile view fits and operates');
+ const stats=await page.evaluate(()=>{const r=window.__wind.studio.renderer;return {triangles:r.info.render.triangles,drawCalls:r.info.render.calls,geometries:r.info.memory.geometries};});
+ await page.locator('#wind-back').click();assert.equal(await page.locator('[data-open-model]').count(),3);assert.equal(await page.evaluate(()=>!!window.__wind),false);checks.push('return disposes viewer and shows three models');
+ assert.deepEqual(errors,[]);checks.push('no JavaScript or shader errors');
+ writeFileSync(out+'/report.json',JSON.stringify({passed:true,checks,errors,stats},null,2));console.log({checks,stats});
+}finally{await browser.close();}

@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "scope": "fresh node_modules in isolated workspace directory; copied source and assets only",
+  "logs": [
+    {
+      "command": "npm ci --no-audit --no-fund",
+      "status": 0,
+      "stdout": "\nadded 18 packages in 14s\n",
+      "stderr": ""
+    },
+    {
+      "command": "npm run build",
+      "status": 0,
+      "stdout": "\n> aero-q4-explorer@1.0.0 build\n> vite build\n\nvite v7.3.6 building client environment for production...\ntransforming...\n✓ 19 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                   0.50 kB │ gzip:   0.34 kB\ndist/assets/index-CTqhN51m.css   17.21 kB │ gzip:   4.35 kB\ndist/assets/index-Bcm12mTt.js    37.94 kB │ gzip:  14.60 kB\ndist/assets/three-BoFyiJls.js   604.39 kB │ gzip: 154.11 kB\n✓ built in 3.70s\n",
+      "stderr": ""
+    }
+  ]
+}

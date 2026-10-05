@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { Group, Box3, Vector3 } from 'three';
+test('GLB factory has stable independent runtime, correct metre axes and disposal', async()=>{
+  const mod = await import('../src/models/drone/loadModel.js').catch(()=>({}));
+  assert.equal(typeof mod.loadDroneModel,'function','factory must exist');
+  const data=await readFile(new URL('../public/models/drone-blockout.glb',import.meta.url));
+  const a=await mod.loadDroneModel({buffer:data.buffer.slice(data.byteOffset,data.byteOffset+data.byteLength)});
+  const b=await mod.loadDroneModel({buffer:data.buffer.slice(data.byteOffset,data.byteOffset+data.byteLength)});
+  assert.ok(a instanceof Group);
+  const r=a.userData.sculptRuntime,s=b.userData.sculptRuntime;
+  assert.equal(r.schemaVersion,1);assert.equal(Object.keys(r.assemblies).length,15);
+  assert.equal(r.coordinates.forward,'-Z');
+  assert.notEqual(r.nodes.battery,s.nodes.battery);
+  assert.ok(r.nodes.motor_fl.position.x<0 && r.nodes.motor_fl.position.z<0);
+  const size=new Box3().setFromObject(a).getSize(new Vector3());
+  assert.ok(size.x>.4 && size.x<.6 && size.y>.08 && size.y<.2);
+  assert.equal(r.pivots.gimbalPitch.parent,r.pivots.gimbalRoll);
+  let disposed=0;r.meshes.shell_upper[0].geometry.addEventListener('dispose',()=>disposed++);
+  r.dispose();r.dispose();assert.equal(disposed,1);
+  assert.ok(s.nodes.battery.children.length>0);s.dispose();
+});

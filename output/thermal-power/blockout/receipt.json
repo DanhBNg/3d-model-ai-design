@@ -1,0 +1,8 @@
+{
+  "sha256": "ac697197d498318f94854a8bca746e1fa34657a7a1602ac0c0a3053e538aef96",
+  "shots": [
+    "front"
+  ],
+  "engine": "Cycles",
+  "samples": 12
+}

@@ -1,0 +1,32 @@
+{
+  "assetSha256": "106e1ba567b29a506fd287287081b4acaed9b4b645ea263414e49fd1752c8dda",
+  "views": [
+    {
+      "view": "front",
+      "path": "output\\blender-final\\front.png",
+      "bytes": 679677
+    },
+    {
+      "view": "rear",
+      "path": "output\\blender-final\\rear.png",
+      "bytes": 676045
+    },
+    {
+      "view": "top",
+      "path": "output\\blender-final\\top.png",
+      "bytes": 679759
+    },
+    {
+      "view": "internals",
+      "path": "output\\blender-final\\internals.png",
+      "bytes": 727430
+    }
+  ],
+  "resolution": [
+    900,
+    700
+  ],
+  "samples": 24,
+  "engine": "Cycles CPU",
+  "purpose": "verification"
+}

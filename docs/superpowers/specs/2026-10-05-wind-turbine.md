@@ -1,0 +1,11 @@
+# Tua-bin gió — phạm vi đã được duyệt
+
+User approved implementation on 2026-10-05. Purpose: interactive educational web model, not manufacture. Native Blender pipeline using the pinned Design OS revision and existing Blender 5.2 toolchain. References: Downloads/tuabin gió.jfif (geared drivetrain layout), tuabin gió 2.jfif (opened shell/materials). Hidden geometry and dimensions are inferred, not a reconstruction of a named manufacturer.
+
+Exterior first: three tapered twisted blades, tapered tower, enclosed nacelle. Whole turbine and close machinery camera. Explore/select/isolate, continuous exploded assembly, principle animation with wind strength/direction, yaw and blade pitch. Stop/slow/reset. Always reassemble before rotating machinery. Remember explode setting when leaving principle.
+
+Mechanical layout uses two illustrative spur stages with total ratio 6:1, not an industrial gearbox specification. Nominal educational wind curve: cut-in 3 m/s, rated 12 m/s, cut-out 25 m/s, nominal 2 MW; visual shaft speed reduced uniformly. Mechanical power, pitch, yaw and energy visualization are educational, not CFD/control engineering. Electrical conversion/converter is abstracted.
+
+Critical visuals: thin tapering twisted blades; hub with three pitch bearings; bearing/main shaft; visible meshing gears; brake disc; generator copper/stator/rotor; yaw ring; sensors; clean shell. Primary close view from negative Z; reverse and whole-tower support views. User corrected blockout proportions with offshore reference: tower now about 35 scene metres, blade radius about 23, nacelle length 5.3. Default camera may crop tower bottom; never shrink blades to fit the machinery close-up. Dimensions remain inferred, not a surveyed turbine.
+
+Source: Blender geometry/materials/assemblies, editable blend + GLB; separate Three.js factory/materials/metadata/controller/simulation; viewer owns UI, effects, input and render loop. Registry route /models/wind-turbine, offline exporter embeds third asset. Budgets <150k triangles, <6 MB GLB. Verify GLB reimport, browser desktop/mobile viewport, transitions, pivot motions, reset and resource disposal. Report actual figures and limits in PROJECT_HANDOFF.md.

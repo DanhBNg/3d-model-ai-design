@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "GLB reimport, named assemblies, mesh finiteness/materials, metre bounds, motor/gimbal pivots",
+  "sha256": "106e1ba567b29a506fd287287081b4acaed9b4b645ea263414e49fd1752c8dda",
+  "triangles": 94068,
+  "meshCount": 76,
+  "blenderBounds": [
+    [
+      -0.22640088200569153,
+      -0.1825578361749649,
+      0.0
+    ],
+    [
+      0.22640088200569153,
+      0.1825578361749649,
+      0.12389999628067017
+    ]
+  ],
+  "sizeMetres": [
+    0.45280176401138306,
+    0.3651156723499298,
+    0.12389999628067017
+  ],
+  "assetBytes": 3342068,
+  "blender": "5.2.2 LTS"
+}

@@ -1,0 +1,9 @@
+{
+  "blender": "5.2.2 LTS",
+  "triangles": 17628,
+  "meshes": 72,
+  "bytes": 680560,
+  "sha256": "2ec0fd63a1c01400116ee01702edc457e42936c3be6fcd99b6727c229b1d7ff4",
+  "purpose": "educational web diorama",
+  "blockout": true
+}

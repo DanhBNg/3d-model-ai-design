@@ -1,0 +1,26 @@
+{
+  "blender": "5.2.2 LTS",
+  "assemblies": [
+    "shell_upper",
+    "shell_lower",
+    "frame",
+    "battery",
+    "flight_controller",
+    "esc",
+    "gimbal",
+    "motor_fl",
+    "prop_fl",
+    "motor_fr",
+    "prop_fr",
+    "motor_rl",
+    "prop_rl",
+    "motor_rr",
+    "prop_rr"
+  ],
+  "meshCount": 76,
+  "triangles": 94068,
+  "assetBytes": 3342068,
+  "sha256": "106e1ba567b29a506fd287287081b4acaed9b4b645ea263414e49fd1752c8dda",
+  "blendSha256": "21acf5bbf6fe6217ec590a45298e1d0d5faa3066a07f38b1aab81968823b57c7",
+  "stage": "drone"
+}

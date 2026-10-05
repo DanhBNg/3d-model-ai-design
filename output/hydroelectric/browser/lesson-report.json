@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "five chapters selectable",
+    "Vietnamese labels intact",
+    "automatic chapter wraps",
+    "pause freezes chapter and physical clocks",
+    "chapter focus camera",
+    "mobile lesson without horizontal overflow"
+  ],
+  "errors": []
+}

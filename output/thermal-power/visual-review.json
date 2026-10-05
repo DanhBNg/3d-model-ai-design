@@ -1,0 +1,19 @@
+{
+  "assetSha256": "57ed01a74dbedbd7c8c845faffc4a122bbf2c749a548a96fdfa7e74937590c33",
+  "reviewed": ["renders/front.png", "renders/rear.png", "renders/cooling.png", "renders/cutaway.png", "renders/machine.png"],
+  "blockoutReviewed": "blockout/front.png",
+  "findings": [
+    "Closed industrial hall and boiler elevations; roof gap discovered and closed before final export.",
+    "Separate chimney and open hyperbolic cooling tower; disconnected shading bands discovered and corrected with continuous shared-vertex shell.",
+    "Cutaway exposes waterwall/superheater tubes, two separate staged turbine rotors, fixed lower casings, copper generator stator and condenser bundle.",
+    "Shaft axes remain coaxial on X; educational pipe routes connect boiler reheat and physically separate feed/cooling circuits."
+  ],
+  "limits": [
+    "Architecture and proportions inferred; no plant-specific engineering survey or manufacturing qualification.",
+    "Blade and stator shapes are low-poly educational representations, not aerodynamic sections.",
+    "Structural hall columns may occlude small portions in machine view; rotate camera for inspection.",
+    "Browser interaction, exploded motion clearance and runtime draw calls are validated by the application workstream."
+  ],
+  "remainingTriangleBudget": 134184,
+  "remainingByteBudget": 6677332
+}

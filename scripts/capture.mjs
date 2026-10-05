@@ -1,0 +1,13 @@
+import { chromium } from '@playwright/test';
+import { mkdirSync } from 'node:fs';
+mkdirSync('output',{recursive:true});
+const browser=await chromium.launch({channel:'chrome',headless:true,args:['--disable-dev-shm-usage']});
+const page=await browser.newPage({viewport:{width:1440,height:960},deviceScaleFactor:1});
+page.on('pageerror',e=>console.error(e));
+await page.goto('http://127.0.0.1:5173');
+await page.waitForFunction(()=>window.__demo);
+await page.screenshot({path:'output/blockout-hero.png'});
+await page.getByRole('button',{name:'Từ trên',exact:true}).click();await page.screenshot({path:'output/blockout-top.png'});
+await page.getByRole('button',{name:'Phía sau',exact:true}).click();await page.screenshot({path:'output/blockout-rear.png'});
+await page.getByRole('button',{name:'Ẩn vỏ',exact:true}).click();await page.screenshot({path:'output/blockout-open.png'});
+console.log(await page.evaluate(()=>window.__demo.runtime.stats));await browser.close();

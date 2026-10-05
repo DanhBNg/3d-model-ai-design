@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "checks": [
+    "closed exterior and direct clean route",
+    "cutaway opens actual interior",
+    "part selection and isolation",
+    "exploded slider reaches 100%",
+    "reassembles before operation",
+    "pause freezes all motion",
+    "wind direction drives yaw",
+    "storm feathers blades",
+    "reset restores exterior",
+    "mobile view fits and operates",
+    "return disposes viewer and shows three models",
+    "no JavaScript or shader errors"
+  ],
+  "errors": [],
+  "stats": {
+    "triangles": 26180,
+    "drawCalls": 110,
+    "geometries": 88
+  }
+}

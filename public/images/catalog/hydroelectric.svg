@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Sơ đồ nhà máy thủy điện</title><desc id="desc">Đập nước, đường ống áp lực, turbine và đường truyền tải điện</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#24333b"/><stop offset="1" stop-color="#171d22"/></linearGradient><linearGradient id="water" y2="1"><stop stop-color="#6ca6a7" stop-opacity=".85"/><stop offset="1" stop-color="#315d69" stop-opacity=".65"/></linearGradient></defs>
+  <rect width="1200" height="700" fill="url(#bg)"/><path d="M0 160h450v330H0z" fill="url(#water)"/><path d="M0 160c110 22 195-24 300 3s150-8 190 5" fill="none" stroke="#a6d2ca" stroke-width="4" opacity=".55"/>
+  <path d="M440 114h170l85 426H356z" fill="#afb2a6" opacity=".86"/><path d="M462 184h70l-6 66h-66z" fill="#1a252b"/><path d="M500 240c45 80 76 153 190 243" fill="none" stroke="#d5d5c6" stroke-width="24"/><path d="M500 240c45 80 76 153 190 243" fill="none" stroke="#69aeb3" stroke-width="10"/>
+  <rect x="666" y="440" width="240" height="125" rx="8" fill="#c2c2b4"/><circle cx="722" cy="504" r="36" fill="none" stroke="#476b69" stroke-width="12"/><path d="m722 468 17 36-17 36-17-36z" fill="#d07c43"/><rect x="778" y="475" width="90" height="58" rx="29" fill="#3b4b4d"/><path d="M906 472h78v93h-78m39-93v-74m-40 19h80m-64 0-42-74m90 74 42-74m-132 0h132" fill="none" stroke="#89958c" stroke-width="7"/>
+  <g fill="#d8dbd0" font-family="Arial" font-size="18" letter-spacing="3"><text x="58" y="215">HỒ CHỨA</text><text x="423" y="88">ĐẬP</text><text x="614" y="390">ĐƯỜNG ỐNG</text><text x="670" y="610">TURBINE · MÁY PHÁT</text><text x="985" y="317">LƯỚI ĐIỆN</text></g>
+  <path d="M570 306h30l-15 22zM632 410h30l-15 22z" fill="#d77d42"/>
+</svg>

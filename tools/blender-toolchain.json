@@ -1,0 +1,5 @@
+{
+  "designOs":{"repository":"https://github.com/jangtrinh/design-os-3d-blender.git","revision":"0fa32f46f261009f14cf318c8c4b3137f210a667"},
+  "blender":{"version":"5.2.2","windowsArchive":"https://download.blender.org/release/Blender5.2/blender-5.2.2-windows-x64.zip","sha256":"3849d17a682cba006075aaa3f3597ecb5c9c30ec31035b2e092c53e40679b535"},
+  "usage":"Set BLENDER_BIN or tools/local.json blenderBin; no runtime dependency on external projects."
+}

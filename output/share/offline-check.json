@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "offline": true,
+  "openedVia": "file://",
+  "checks": [
+    "catalog with four entries",
+    "load embedded GLB",
+    "explode 100%",
+    "assemble then fly",
+    "pause",
+    "hydro exterior",
+    "hydro cutaway",
+    "hydro power generation",
+    "wind generation",
+    "thermal generation",
+    "return to catalog",
+    "no remote requests",
+    "no page exceptions"
+  ],
+  "errors": [],
+  "network": []
+}

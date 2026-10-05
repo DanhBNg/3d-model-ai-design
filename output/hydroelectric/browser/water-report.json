@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checks": [
+    "water contained by closed exterior",
+    "3D water and discharge foam active",
+    "pause freezes water and flow phase",
+    "zero flow stops foam",
+    "exploded mode hides internal water",
+    "mobile water view fits",
+    "no shader or JavaScript errors"
+  ],
+  "errors": [],
+  "stats": {
+    "triangles": 38690,
+    "drawCalls": 103,
+    "geometries": 114
+  }
+}

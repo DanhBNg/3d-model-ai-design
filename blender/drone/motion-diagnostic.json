@@ -1,0 +1,313 @@
+{
+  "assetSha256": "106e1ba567b29a506fd287287081b4acaed9b4b645ea263414e49fd1752c8dda",
+  "samples": 21,
+  "scope": "BVH surface overlap diagnostic, not continuous clearance or solid containment proof",
+  "overlaps": [
+    {
+      "t": 0.0,
+      "a": "shell_upper",
+      "b": "frame",
+      "trianglePairs": 280
+    },
+    {
+      "t": 0.0,
+      "a": "shell_lower",
+      "b": "frame",
+      "trianglePairs": 148
+    },
+    {
+      "t": 0.0,
+      "a": "frame",
+      "b": "battery",
+      "trianglePairs": 58
+    },
+    {
+      "t": 0.0,
+      "a": "frame",
+      "b": "gimbal",
+      "trianglePairs": 30
+    },
+    {
+      "t": 0.0,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.0,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 224
+    },
+    {
+      "t": 0.0,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 223
+    },
+    {
+      "t": 0.0,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.0,
+      "a": "flight_controller",
+      "b": "esc",
+      "trianglePairs": 308
+    },
+    {
+      "t": 0.05,
+      "a": "frame",
+      "b": "battery",
+      "trianglePairs": 58
+    },
+    {
+      "t": 0.05,
+      "a": "frame",
+      "b": "gimbal",
+      "trianglePairs": 30
+    },
+    {
+      "t": 0.05,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.05,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 224
+    },
+    {
+      "t": 0.05,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 223
+    },
+    {
+      "t": 0.05,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.05,
+      "a": "flight_controller",
+      "b": "esc",
+      "trianglePairs": 308
+    },
+    {
+      "t": 0.1,
+      "a": "frame",
+      "b": "battery",
+      "trianglePairs": 58
+    },
+    {
+      "t": 0.1,
+      "a": "frame",
+      "b": "gimbal",
+      "trianglePairs": 30
+    },
+    {
+      "t": 0.1,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.1,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 224
+    },
+    {
+      "t": 0.1,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 223
+    },
+    {
+      "t": 0.1,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.1,
+      "a": "flight_controller",
+      "b": "esc",
+      "trianglePairs": 308
+    },
+    {
+      "t": 0.15,
+      "a": "frame",
+      "b": "battery",
+      "trianglePairs": 58
+    },
+    {
+      "t": 0.15,
+      "a": "frame",
+      "b": "gimbal",
+      "trianglePairs": 30
+    },
+    {
+      "t": 0.15,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.15,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 224
+    },
+    {
+      "t": 0.15,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 223
+    },
+    {
+      "t": 0.15,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 228
+    },
+    {
+      "t": 0.15,
+      "a": "flight_controller",
+      "b": "esc",
+      "trianglePairs": 308
+    },
+    {
+      "t": 0.2,
+      "a": "frame",
+      "b": "battery",
+      "trianglePairs": 58
+    },
+    {
+      "t": 0.2,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 223
+    },
+    {
+      "t": 0.2,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 217
+    },
+    {
+      "t": 0.2,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 215
+    },
+    {
+      "t": 0.2,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 223
+    },
+    {
+      "t": 0.2,
+      "a": "flight_controller",
+      "b": "esc",
+      "trianglePairs": 308
+    },
+    {
+      "t": 0.25,
+      "a": "frame",
+      "b": "battery",
+      "trianglePairs": 58
+    },
+    {
+      "t": 0.25,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 158
+    },
+    {
+      "t": 0.25,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 154
+    },
+    {
+      "t": 0.25,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 154
+    },
+    {
+      "t": 0.25,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 158
+    },
+    {
+      "t": 0.25,
+      "a": "flight_controller",
+      "b": "esc",
+      "trianglePairs": 308
+    },
+    {
+      "t": 0.3,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 127
+    },
+    {
+      "t": 0.3,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 132
+    },
+    {
+      "t": 0.3,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 132
+    },
+    {
+      "t": 0.3,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 127
+    },
+    {
+      "t": 0.3,
+      "a": "flight_controller",
+      "b": "esc",
+      "trianglePairs": 178
+    },
+    {
+      "t": 0.35,
+      "a": "frame",
+      "b": "motor_fl",
+      "trianglePairs": 100
+    },
+    {
+      "t": 0.35,
+      "a": "frame",
+      "b": "motor_fr",
+      "trianglePairs": 97
+    },
+    {
+      "t": 0.35,
+      "a": "frame",
+      "b": "motor_rl",
+      "trianglePairs": 97
+    },
+    {
+      "t": 0.35,
+      "a": "frame",
+      "b": "motor_rr",
+      "trianglePairs": 100
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "rear angle during actual rotation",
+    "second rotation phase",
+    "front paused angle",
+    "no page exceptions"
+  ],
+  "errors": []
+}

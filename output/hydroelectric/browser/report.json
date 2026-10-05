@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-05T07:32:29.015Z",
+  "assetSha256": "e1b706f38cd9cbc6e409680728d2910c8ea04dbd801b3180be032a00e83d646f",
+  "checks": [
+    "clean hydro route",
+    "exterior closed by default",
+    "direct mesh picking selects roof",
+    "cutaway removes facade and conduit envelope",
+    "part label and Vietnamese description",
+    "isolation leaves only selected assembly",
+    "full exploded pose",
+    "exploded autoplay moves",
+    "assembled before generation",
+    "flow and head controls change power",
+    "pause freezes instructional time",
+    "slow clock",
+    "load rejection removes electrical power",
+    "reset returns to closed exterior",
+    "unmount disposes canvas and debug handle",
+    "browser back remounts hydro",
+    "reload on clean deep link",
+    "no overflow 390",
+    "no overflow 320",
+    "no overflow 844",
+    "touch selects rotor",
+    "load failure offers return to catalog",
+    "no page exceptions"
+  ],
+  "errors": [],
+  "passed": true
+}

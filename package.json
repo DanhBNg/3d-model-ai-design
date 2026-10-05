@@ -1,0 +1,36 @@
+{
+  "name": "aero-q4-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "thermal:build": "node scripts/build-thermal.mjs",
+    "thermal:verify": "node scripts/build-thermal.mjs --verify",
+    "thermal:render": "node scripts/build-thermal.mjs --render",
+    "test:thermal": "node scripts/check-thermal.mjs",
+    "wind:build": "node scripts/build-wind.mjs",
+    "wind:verify": "node scripts/build-wind.mjs --verify",
+    "wind:render": "node scripts/build-wind.mjs --render",
+    "test:wind": "node scripts/check-wind.mjs",
+    "export:html": "node scripts/export-html.mjs",
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test tests/*.test.mjs",
+    "model:build": "node scripts/build-model.mjs",
+    "model:verify": "node scripts/build-model.mjs --verify",
+    "model:render": "node scripts/build-model.mjs --render",
+    "hydro:build": "node scripts/build-hydro.mjs",
+    "hydro:verify": "node scripts/build-hydro.mjs --verify",
+    "hydro:render": "node scripts/build-hydro.mjs --render",
+    "test:hydro": "node scripts/check-hydro.mjs",
+    "test:browser": "node scripts/browser-check.mjs"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1",
+    "vite": "7.3.6"
+  }
+}

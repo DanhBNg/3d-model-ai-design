@@ -1,0 +1,33 @@
+import {chromium} from '@playwright/test';
+import assert from 'node:assert/strict';
+import {mkdirSync,writeFileSync} from 'node:fs';
+const out='output/thermal-power/browser';mkdirSync(out,{recursive:true});
+const browser=await chromium.launch({channel:'chrome',headless:true}),checks=[],errors=[];
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:960}});page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+ await page.goto('http://127.0.0.1:4173/models/thermal-power');await page.waitForFunction(()=>!!window.__thermal);
+ await page.waitForTimeout(900);await page.screenshot({path:out+'/exterior.png'});
+ assert.equal(await page.evaluate(()=>window.__thermal.runtime.meshes.hall_shell.every(m=>m.visible)),true);checks.push('closed exterior at clean route');
+ await page.locator('#thermal-cutaway').click();await page.waitForFunction(()=>window.__thermal.controller.state.cover===1);await page.screenshot({path:out+'/cutaway.png'});
+ assert.equal(await page.evaluate(()=>window.__thermal.runtime.meshes.hall_shell.some(m=>m.visible)),false);checks.push('opens actual interior');
+ await page.locator('[data-tview=machine]').click();await page.waitForTimeout(1500);await page.screenshot({path:out+'/machine.png'});
+ await page.locator('[data-tpart=turbine_lp_rotor]').click();await page.locator('#thermal-isolate').click();assert.equal(await page.evaluate(()=>window.__thermal.runtime.meshes.site.some(m=>m.visible)),false);checks.push('select and isolate');await page.locator('#thermal-isolate').click();
+ await page.locator('[data-tmode=explode]').click();await page.locator('#thermal-explode').fill('100');await page.waitForFunction(()=>window.__thermal.controller.state.explode===1);await page.screenshot({path:out+'/exploded.png'});checks.push('explosion reaches full separation');
+ await page.locator('#thermal-assemble').click();await page.waitForFunction(()=>window.__thermal.controller.state.explode===0&&window.__thermal.controller.state.cover===0);assert.equal(await page.evaluate(()=>Object.values(window.__thermal.runtime.assemblies).every(a=>a.node.position.distanceTo(a.restPosition)<1e-6)),true);checks.push('zero restores all covers');
+ await page.locator('#thermal-explode').fill('100');await page.waitForFunction(()=>window.__thermal.controller.state.explode===1);
+ await page.locator('[data-tmode=principle]').click();await page.waitForFunction(()=>window.__thermal.controller.state.powerMW>60);assert.equal(await page.evaluate(()=>window.__thermal.controller.state.explode),0);checks.push('assemble before operation');
+ await page.locator('#thermal-flow').selectOption('steam');await page.screenshot({path:out+'/principle.png'});
+ await page.locator('#thermal-play').click();const time=await page.evaluate(()=>window.__thermal.controller.state.time);await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>window.__thermal.controller.state.time),time);checks.push('pause freezes operation');
+ await page.locator('#thermal-play').click();await page.locator('#thermal-load').fill('50');await page.waitForFunction(()=>Math.abs(window.__thermal.controller.state.powerMW-50)<.1);checks.push('load controls power');
+ await page.locator('#thermal-cooling').click();await page.waitForFunction(()=>window.__thermal.controller.state.powerMW===0);checks.push('cooling loss stops generation');await page.locator('#thermal-cooling').click();
+ await page.locator('[data-tlesson="5"]').click();await page.locator('#thermal-flow').selectOption('lesson');await page.waitForFunction(()=>window.__thermal.controller.state.powerMW>20);
+ await page.waitForFunction(()=>{const tracks=window.__thermal.effects.tracks.filter(t=>t.flow.group.visible);return tracks.length===2&&tracks.every(t=>t.kind==='cooling');});checks.push('lesson filters independent cooling circuit');
+ await page.locator('#thermal-lesson-auto').click();await page.waitForFunction(()=>window.__thermal.controller.state.lesson===0,{},{timeout:15000});await page.locator('#thermal-lesson-auto').click();checks.push('automatic lesson advances');
+ await page.locator('#thermal-slow').click();assert.equal(await page.evaluate(()=>window.__thermal.controller.state.slow),true);checks.push('slow motion enabled');
+ await page.locator('#thermal-reset').click();assert.equal(await page.evaluate(()=>window.__thermal.controller.state.mode),'explore');checks.push('reset returns exterior');
+ await page.setViewportSize({width:390,height:844});await page.waitForTimeout(1200);await page.screenshot({path:out+'/mobile-exterior.png',fullPage:true});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.locator('[data-tmode=principle]').click();await page.waitForFunction(()=>window.__thermal.controller.state.powerMW>40);await page.locator('#thermal-flow').selectOption('steam');await page.screenshot({path:out+'/mobile-principle.png',fullPage:true});checks.push('mobile fits and operates');
+ const stats=await page.evaluate(()=>{const r=window.__thermal.studio.renderer;return {triangles:r.info.render.triangles,drawCalls:r.info.render.calls,geometries:r.info.memory.geometries};});
+ await page.locator('#thermal-back').click();assert.equal(await page.locator('[data-open-model]').count(),4);assert.equal(await page.evaluate(()=>!!window.__thermal),false);checks.push('disposal and four model catalog');
+ assert.deepEqual(errors,[]);checks.push('no JS or shader errors');writeFileSync(out+'/report.json',JSON.stringify({passed:true,checks,stats,errors},null,2));console.log({checks,stats});
+}finally{await browser.close();}

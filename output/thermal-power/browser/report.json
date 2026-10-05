@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "checks": [
+    "closed exterior at clean route",
+    "opens actual interior",
+    "select and isolate",
+    "explosion reaches full separation",
+    "zero restores all covers",
+    "assemble before operation",
+    "pause freezes operation",
+    "load controls power",
+    "cooling loss stops generation",
+    "lesson filters independent cooling circuit",
+    "automatic lesson advances",
+    "slow motion enabled",
+    "reset returns exterior",
+    "mobile fits and operates",
+    "disposal and four model catalog",
+    "no JS or shader errors"
+  ],
+  "stats": {
+    "triangles": 35942,
+    "drawCalls": 90,
+    "geometries": 99
+  },
+  "errors": []
+}

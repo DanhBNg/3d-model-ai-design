@@ -1,0 +1,119 @@
+{
+  "url": "http://127.0.0.1:4173",
+  "browser": "154.0.8037.97",
+  "date": "2026-10-05",
+  "assetSha256": "106e1ba567b29a506fd287287081b4acaed9b4b645ea263414e49fd1752c8dda",
+  "checks": [
+    "catalog lists drone and hydroelectric plant",
+    "hydroelectric model is available",
+    "catalog route has no hash",
+    "drone uses clean pathname",
+    "GLB rendered and no load error",
+    "direct mesh picking selects correct assembly",
+    "orbit changes camera",
+    "covers hidden",
+    "isolate battery",
+    "gimbal pitch control moves correct pivot",
+    "continuous explode reaches 50% and 100%",
+    "autoplay separates and reassembles",
+    "flight waits for assembly",
+    "pause freezes simulation clock",
+    "slow motion uses 0.25× clock",
+    "scenario takeoff",
+    "scenario hover",
+    "scenario forward",
+    "scenario backward",
+    "scenario left",
+    "scenario right",
+    "scenario yaw_left",
+    "scenario yaw_right",
+    "control flow explanation visible",
+    "reset restores ground pose and stops",
+    "no horizontal overflow 390×844",
+    "model fits portrait/landscape 390",
+    "touch selects ESC 390",
+    "no horizontal overflow 320×740",
+    "model fits portrait/landscape 320",
+    "touch selects ESC 320",
+    "no horizontal overflow 844×390",
+    "model fits portrait/landscape 844",
+    "touch selects ESC 844",
+    "direct clean drone route loads production assets",
+    "hydro deep link loads model",
+    "missing GLB produces retry UI",
+    "no page exceptions",
+    "runtime uses local resources only",
+    "return control restores catalog and disposes canvas"
+  ],
+  "errors": [],
+  "requests": [
+    "http://127.0.0.1:4173/",
+    "http://127.0.0.1:4173/assets/index-C3cDz27Q.js",
+    "http://127.0.0.1:4173/assets/three-4hbHRcJ0.js",
+    "http://127.0.0.1:4173/assets/index-B2uVJJvt.css",
+    "http://127.0.0.1:4173/images/catalog/drone.png",
+    "http://127.0.0.1:4173/images/catalog/hydroelectric.png",
+    "http://127.0.0.1:4173/models/drone.glb",
+    "http://127.0.0.1:4173/images/catalog/drone.png",
+    "http://127.0.0.1:4173/images/catalog/hydroelectric.png"
+  ],
+  "viewports": [
+    {
+      "model": {
+        "triangles": 94068,
+        "drawCalls": 76,
+        "assetBytes": 3342068,
+        "textures": 0
+      },
+      "drawCalls": 122,
+      "loadMs": 271,
+      "frameMedianMs": 16.69999999999709,
+      "frameP95Ms": 16.799999999999272,
+      "viewport": [
+        1440,
+        960
+      ],
+      "gpu": "WebKit WebGL"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "framing": {
+        "minX": -0.902224508088206,
+        "maxX": 0.8961178651971419,
+        "minY": -0.39592146362938785,
+        "maxY": 0.24415819080328835
+      },
+      "emulated": true
+    },
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "framing": {
+        "minX": -0.9013971333930628,
+        "maxX": 0.8958601906077844,
+        "minY": -0.3555004403444548,
+        "maxY": 0.22483137050420895
+      },
+      "emulated": true
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "framing": {
+        "minX": -0.9035593032429741,
+        "maxX": 0.896532885628114,
+        "minY": -0.4628807347415472,
+        "maxY": 0.2741394205401754
+      },
+      "emulated": true
+    }
+  ],
+  "passed": true
+}

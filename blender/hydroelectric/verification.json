@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "parts": 22,
+  "triangles": 30062,
+  "bytes": 1204400,
+  "boundsBlender": [
+    [
+      -6.0,
+      -3.5,
+      -1.399999976158142
+    ],
+    [
+      6.0,
+      3.5,
+      4.643750190734863
+    ]
+  ],
+  "sha256": "bfb8ef5e448f0a7aeee40f21c183443b61b7e0780f1232df280f7e660109bd79",
+  "checks": [
+    "reimport",
+    "finite vertices",
+    "22 named assemblies",
+    "16 guide pivots",
+    "coaxial rotor/shaft/runner",
+    "budget"
+  ],
+  "limits": [
+    "No manufacturing/collision qualification; cutaway solids are illustrative"
+  ]
+}

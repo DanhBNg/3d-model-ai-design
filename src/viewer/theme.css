@@ -1,0 +1,44 @@
+/* Charcoal studio theme. Lighting/materials stay calibrated for readable detail. */
+:root{color-scheme:dark;color:#edf0f3;background:#252930;--ink:#edf0f3;--muted:#aab4be;--line:#454d57;--orange:#f1a164;--green:#49624f}
+body{background:#252930}
+button:hover{background:#3a424d}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline-color:#f1a164}
+.topbar{background:#1b1f25}
+.brand>svg{stroke:#b5c9ac}
+.brand strong span,.edition,.intro p,.eyebrow,.orbit-hint,.scale-mark{color:#aeb9c4}
+.edition b,.count{border-color:#47515c;color:#b5c1cc}
+.mode-tabs,.flow-tabs{background:#292f37;border-color:#414a55}
+.mode-tabs button.active,button.active,.dark-button{background:#49624f;color:#fff;border-color:#718974}
+.dark-button:hover{background:#5b7662}
+.tiny-line{background:#a5b49f}
+.stage-badge,.view-tools,.part-tag,.motor-tag,.floating-controls,.transition,.flight-legend{background:#20262eef;border-color:#505b68;color:#e1e7ec;box-shadow:0 8px 28px #0002}
+.motor-tag b{color:#eef3f7}
+.part-tag:after{background:#9fb293}
+.inspector{background:#20252c;border-color:#424b56;scrollbar-color:#55616d transparent}
+.inspector-title>span{color:#65717f}
+.inspector p,.panel-tip p,.inspector .flow-copy{color:#b8c2cc}
+.material-row,.panel-tip,.telemetry-title,.education-note{border-color:#414c58}
+.material-row span,.list-title,.list-title small,.part-row-name small,.part-num,.part-arrow,.control-top small,.range-ends,.control-top output span,.quiet-button,.telemetry-title,.telemetry-title small,.motor-location small,.flight-time{color:#aebbc8}
+.material-row b,.panel-tip b,.scenario-info>span,.rpm,.education-note,.education-note a{color:#bfd6b4}
+.part-list{scrollbar-color:#54606b transparent}
+.part-list button{border-bottom-color:#38424d}
+.part-list button:hover{background:#303a44}
+.part-list button.active{background:#34473b;color:#f0f5ed}
+.part-list button.active .part-num,.part-list button.active .part-arrow{color:#f4b075}
+.list-title,.inspector-footer{border-color:#414b56}
+.inspector-footer,.bottom-bar{color:#a3b1bf}
+.bottom-bar{background:#1b1f25;border-color:#424b56}
+.bottom-bar b{color:#acb9c6}
+#gimbal-control{background:#2b3530}
+#gimbal-control label{color:#c1d0ba}
+input[type=range]{accent-color:#aac79c}
+.flow-diagram{background:#353024;border-color:#63543a;color:#f2cc8e}
+.flow-diagram i{color:#d4b784}
+.scenario-info{border-left-color:#9eb88e}
+.motor-id{border-color:#4b5e4e;color:#c1d5b8}
+.motor-track{background:#3c4740}
+.motor-track i{background:#a9c694}
+.flight-legend{color:#d0dbd0}
+.energy-dot{background:#e9aa54}.control-dot{background:#5ad1bd}
+#loading{background:#252930f5}#loading>span{color:#b7c3cd}
+.spinner{border-color:#566252;border-top-color:#bfd7ad}
