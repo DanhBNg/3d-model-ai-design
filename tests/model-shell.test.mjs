@@ -18,6 +18,7 @@ test('modelHeader renders the shared navigation and mode controls', () => {
 
   assert.match(markup, /class="model-header/);
   assert.equal(markup.match(/<button\b/g)?.length, 3);
+  assert.equal(markup.match(/<button type="button"/g)?.length, 3);
   assert.match(markup, /data-hmode="explore"/);
   assert.match(markup, /data-hmode="explode"/);
   assert.match(markup, /data-hmode="principle"/);
@@ -46,7 +47,9 @@ test('modelHeader supplies the default principle label and edition version', () 
 test('flowDiagram renders escaped stages in order with arrow separators', () => {
   const markup = flowDiagram(['Pin & cell', '<ESC>', 'Motor']);
 
-  assert.match(markup, /class="model-flow-diagram"/);
+  assert.match(markup, /^<ol class="model-flow-diagram" aria-label="Chuỗi chuyển đổi năng lượng">/);
+  assert.match(markup, /<\/ol>$/);
+  assert.equal(markup.match(/<li\b/g)?.length, 3);
   assert.equal(markup.match(/<i\b/g)?.length, 2);
   assert.match(markup, /Pin &amp; cell/);
   assert.match(markup, /&lt;ESC&gt;/);
@@ -57,7 +60,9 @@ test('flowDiagram renders escaped stages in order with arrow separators', () => 
 test('flowLegend renders escaped labels and semantic kind classes', () => {
   const markup = flowLegend([{ label: 'Năng lượng & điện', kind: 'energy' }]);
 
-  assert.match(markup, /class="model-flow-legend"/);
+  assert.match(markup, /^<ul class="model-flow-legend" aria-label="Chú giải luồng">/);
+  assert.match(markup, /<\/ul>$/);
+  assert.equal(markup.match(/<li\b/g)?.length, 1);
   assert.match(markup, /model-flow-dot--energy/);
   assert.match(markup, /Năng lượng &amp; điện/);
   assert.throws(
@@ -83,6 +88,11 @@ test('model shell markup escapes text and rejects unsafe attribute names', () =>
 test('icons exports all shared SVG controls', () => {
   for (const icon of [play, pause, reset, expand]) {
     assert.match(icon, /^<svg\b/);
+    assert.match(icon, /viewBox="0 0 24 24"/);
+    assert.match(icon, /aria-hidden="true"/);
+    assert.match(icon, /focusable="false"/);
+    assert.match(icon, /<path\b[^>]*\bd="[^"]+"\/>/);
     assert.match(icon, /<\/svg>$/);
   }
+  assert.equal(new Set([play, pause, reset, expand]).size, 4);
 });

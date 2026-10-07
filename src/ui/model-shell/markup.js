@@ -27,7 +27,7 @@ export function modelHeader({
     ['principle', principleLabel],
   ];
   const buttons = modes.map(([mode, label], index) => `
-      <button data-${attribute}="${mode}" aria-pressed="${mode === 'explore'}">
+      <button type="button" data-${attribute}="${mode}" aria-pressed="${mode === 'explore'}">
         <small>0${index + 1}</small><span>${escapeHtml(label)}</span>
       </button>`).join('');
 
@@ -41,16 +41,16 @@ export function modelHeader({
 }
 
 export function flowDiagram(stages) {
-  return `<div class="model-flow-diagram">${stages
-    .map((stage, index) => `${index ? '<i aria-hidden="true">→</i>' : ''}<span>${escapeHtml(stage)}</span>`)
-    .join('')}</div>`;
+  return `<ol class="model-flow-diagram" aria-label="Chuỗi chuyển đổi năng lượng">${stages
+    .map((stage, index) => `<li>${index ? '<i aria-hidden="true">→</i>' : ''}<span>${escapeHtml(stage)}</span></li>`)
+    .join('')}</ol>`;
 }
 
 export function flowLegend(items) {
-  return `<div class="model-flow-legend">${items
+  return `<ul class="model-flow-legend" aria-label="Chú giải luồng">${items
     .map(({ label, kind }) => {
       const token = safeToken(kind, 'kind');
-      return `<span><i class="model-flow-dot model-flow-dot--${token}" aria-hidden="true"></i>${escapeHtml(label)}</span>`;
+      return `<li><i class="model-flow-dot model-flow-dot--${token}" aria-hidden="true"></i>${escapeHtml(label)}</li>`;
     })
-    .join('')}</div>`;
+    .join('')}</ul>`;
 }
