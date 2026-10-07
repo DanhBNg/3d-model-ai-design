@@ -14,7 +14,7 @@ function partId(node){while(node){if(node.userData.partId)return node.userData.p
 export function mountWirelessExperience({modelUrl,onExit}){
  const host=document.querySelector('#app');mountWirelessUI(host);document.body.dataset.screen='wireless';delete document.body.dataset.mode;delete document.body.dataset.ready;
  const abort=new AbortController();let dead=false,cleaned=false,root,studio,controller,effects,display,ui,raf=0;
- host.querySelector('#wireless-back').addEventListener('click',()=>{if(!ui)onExit();},{signal:abort.signal});
+ host.querySelector('#wireless-back').addEventListener('click',event=>{event.preventDefault();if(!ui)onExit();},{signal:abort.signal});
  function cleanup(){if(cleaned)return;cleaned=true;cancelAnimationFrame(raf);ui?.dispose();ui=null;display?.dispose();effects?.dispose();controller?.dispose();root?.userData.sculptRuntime?.dispose();studio?.dispose();}
  function dispose(){if(dead)return;dead=true;abort.abort();cleanup();if(window.__wireless?.dispose===dispose)delete window.__wireless;}
  async function start(){try{
@@ -36,5 +36,3 @@ export function mountWirelessExperience({modelUrl,onExit}){
  }catch(error){if(dead||error.name==='AbortError')return;cleanup();const loading=host.querySelector('#wireless-loading')||document.createElement('div');loading.id='wireless-loading';loading.textContent='Không mở được mô hình: '+error.message;if(!loading.parentNode)host.querySelector('.wireless-stage').append(loading);console.error(error);}}
  start();return dispose;
 }
-
-

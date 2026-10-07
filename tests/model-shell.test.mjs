@@ -11,6 +11,9 @@ import { expand, pause, play, reset } from '../src/ui/model-shell/icons.js';
 import { mountUI } from '../src/viewer/ui.js';
 import { mountHydroUI } from '../src/experiences/hydroelectric/ui.js';
 import { mountWindUI } from '../src/experiences/wind-turbine/ui.js';
+import { mountThermalUI } from '../src/experiences/thermal-power/ui.js';
+import { mountWirelessUI } from '../src/experiences/wireless-charging/ui.js';
+import { mountEngineUI } from '../src/experiences/inline-four-engine/ui.js';
 
 function captureDroneMarkup() {
   const host = { innerHTML: '' };
@@ -277,6 +280,9 @@ function captureExperienceMarkup(mount) {
 for (const experience of [
   { name:'hydroelectric', mount:mountHydroUI, file:'hydroelectric', indexFile:'hydroelectric', mode:'hmode', part:'hpart', brand:'HYDRO', code:'01', ids:['hydro-back','hydro-home','hydro-viewport','hydro-fit','hydro-loading','hydro-cutaway','hydro-explode-panel','hydro-assemble','hydro-principle-panel','hydro-tour','hydro-lesson-focus','hydro-play','hydro-reset'] },
   { name:'wind turbine', mount:mountWindUI, file:'wind-turbine', indexFile:'wind-turbine', mode:'wmode', part:'wpart', brand:'VENTO', code:'03', ids:['wind-back','wind-viewport','wind-loading','wind-cutaway','wind-isolate','wind-explode-panel','wind-assemble','wind-principle-panel','wind-speed','wind-direction','wind-play','wind-reset'] },
+  { name:'thermal power', mount:mountThermalUI, file:'thermal-power', indexFile:'thermal-power', mode:'tmode', part:'tpart', brand:'THERMO', code:'04', ids:['thermal-back','thermal-viewport','thermal-loading','thermal-cutaway','thermal-isolate','thermal-explode-panel','thermal-assemble','thermal-principle-panel','thermal-load','thermal-cooling','thermal-flow','thermal-play','thermal-reset'] },
+  { name:'wireless charging', mount:mountWirelessUI, file:'wireless-charging', indexFile:'wireless-charging', mode:'wmode', part:'wpart', brand:'FLUX', code:'05', ids:['wireless-back','wireless-viewport','wireless-loading','wireless-cutaway','wireless-dock','wireless-explode-panel','wireless-assemble','wireless-principle-panel','wireless-alignment','wireless-gap','wireless-flow','wireless-play','wireless-reset'] },
+  { name:'inline four engine', mount:mountEngineUI, file:'inline-four-engine', indexFile:'inline-four-engine', mode:'emode', part:'epart', brand:'IGNIS', code:'06', ids:['engine-back','engine-viewport','engine-loading','engine-cutaway','engine-isolate','engine-explode-panel','engine-assemble','engine-principle-panel','engine-angle','engine-rpm','engine-guide','engine-play','engine-reset'] },
 ]) {
   test(`${experience.name} adopts the shared shell and preserves hooks`, async () => {
     const markup=captureExperienceMarkup(experience.mount);

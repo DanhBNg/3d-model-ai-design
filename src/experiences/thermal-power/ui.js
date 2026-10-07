@@ -1,32 +1,36 @@
 import {PARTS,PART_BY_ID} from '../../models/thermal-power/metadata.js';
 import {LESSONS} from '../../models/thermal-power/lesson.js';
+import {flowDiagram,flowLegend,modelHeader} from '../../ui/model-shell/markup.js';
 
 export function mountThermalUI(host){
- host.innerHTML=`<main class="thermal-app">
- <header class="thermal-header"><button id="thermal-back" title="Về bộ sưu tập">← <span>Bộ sưu tập</span></button><strong>THERMO <em>/ 04</em></strong><nav aria-label="Chế độ nhà máy">${[['explore','Khám phá'],['explode','Tách cấu tạo'],['principle','Nguyên lý']].map(([id,t],i)=>`<button data-tmode="${id}" aria-pressed="${i===0}"><small>0${i+1}</small>${t}</button>`).join('')}</nav><span class="thermal-live">● ENERGY LAB</span></header>
- <section class="thermal-stage"><div id="thermal-viewport"></div>
+ const header=modelHeader({modeAttribute:'tmode',brand:'THERMO',code:'04',principleLabel:'Nguyên lý',version:'V.02',homeId:'thermal-back'});
+ host.innerHTML=`<div class="thermal-app model-shell">
+ ${header}
+ <main class="thermal-workspace model-workspace">
+ <section class="thermal-stage model-stage"><div id="thermal-viewport"></div>
  <div class="thermal-heading"><p>NHIỆT → CƠ NĂNG → ĐIỆN</p><h1>Từ ngọn lửa<br>đến dòng điện<span>.</span></h1><span id="thermal-subtitle">Một tổ máy than · chu trình hơi có tái nhiệt</span></div>
- <div class="thermal-views" aria-label="Góc nhìn">${[['hero','Toàn cảnh'],['machine','Tổ máy'],['boiler','Lò hơi'],['cooling','Giải nhiệt'],['rear','Mặt sau']].map(([id,t])=>`<button data-tview="${id}">${t}</button>`).join('')}</div>
- <div id="thermal-loading" role="status">Đang tải nhà máy…</div><div id="thermal-label" hidden></div>
+ <div class="thermal-views model-view-tools" aria-label="Góc nhìn">${[['hero','Toàn cảnh'],['machine','Tổ máy'],['boiler','Lò hơi'],['cooling','Giải nhiệt'],['rear','Mặt sau']].map(([id,t])=>`<button data-tview="${id}">${t}</button>`).join('')}</div>
+ <div id="thermal-loading" class="model-loading" role="status">Đang tải nhà máy…</div><div id="thermal-label" hidden></div>
  <div class="thermal-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="thermal-stats"></span></div>
- <div id="thermal-explode-panel" class="thermal-floating" hidden><div><strong>Tách cấu tạo</strong><output id="thermal-explode-value">0%</output></div><p>Mở bao che, nâng nắp máy, rồi tách cụm bên trong.</p><input id="thermal-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="0"><div><button id="thermal-auto">▷ Tự tách / lắp</button><button id="thermal-assemble">Lắp lại</button></div></div>
+ <div id="thermal-explode-panel" class="thermal-floating model-explode-card" hidden><div><strong>Tách cấu tạo</strong><output id="thermal-explode-value">0%</output></div><p>Mở bao che, nâng nắp máy, rồi tách cụm bên trong.</p><input id="thermal-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="0"><div><button id="thermal-auto">▷ Tự tách / lắp</button><button id="thermal-assemble">Lắp lại</button><button id="thermal-explode-reset">Đặt lại</button></div></div>
  </section>
- <aside class="thermal-panel"><div class="thermal-panel-top"><p>KHÁM PHÁ HỆ THỐNG <span>${PARTS.length} CỤM</span></p><h2 id="thermal-part-name">Một vòng tuần hoàn.</h2><p id="thermal-part-description">Mở bao che để nhìn tổ máy. Chọn trên mô hình hoặc trong danh mục để khám phá từng bộ phận.</p><div class="thermal-actions"><button id="thermal-cutaway">Mở vỏ</button><button id="thermal-isolate" disabled>Xem riêng</button><button id="thermal-focus" disabled>Xem gần</button></div></div>
+ <aside class="thermal-panel model-inspector"><div class="thermal-panel-top"><p>KHÁM PHÁ HỆ THỐNG <span>${PARTS.length} CỤM</span></p><h2 id="thermal-part-name">Một vòng tuần hoàn.</h2><p id="thermal-part-description">Mở bao che để nhìn tổ máy. Chọn trên mô hình hoặc trong danh mục để khám phá từng bộ phận.</p><div class="thermal-actions"><button id="thermal-cutaway">Mở vỏ</button><button id="thermal-isolate" disabled>Xem riêng</button><button id="thermal-focus" disabled>Xem gần</button></div></div>
  <section id="thermal-principle-panel" hidden>
+ <div class="thermal-flow">${flowDiagram(['Than','Hơi nước','Turbine','Máy phát','Lưới điện'],'Chuỗi chuyển đổi năng lượng của nhà máy nhiệt điện')}</div>
  <div class="thermal-metrics"><div><output id="thermal-power">0</output><small>MW ĐIỆN</small></div><div><output id="thermal-rpm">0</output><small>RPM MÁY PHÁT</small></div><div><output id="thermal-heat">0</output><small>MW NHIỆT VÀO</small></div></div>
  <p id="thermal-status" role="status"></p>
  <label class="thermal-slider">Mức tải yêu cầu <output id="thermal-load-value">70%</output><input id="thermal-load" type="range" min="0" max="100" step="5" value="70"></label>
  <div class="thermal-presets"><button data-tload="0">0%</button><button data-tload=".5">50%</button><button data-tload=".7">70%</button><button data-tload="1">100%</button></div>
- <div class="thermal-playback"><button id="thermal-play">Ⅱ Tạm dừng</button><button id="thermal-slow" aria-pressed="false">0,25×</button><button id="thermal-cooling" aria-pressed="true">Làm mát: bật</button></div>
+ <div class="thermal-playback model-playback"><button id="thermal-play">Ⅱ Tạm dừng</button><button id="thermal-slow" aria-pressed="false">0,25×</button><button id="thermal-cooling" aria-pressed="true">Làm mát: bật</button></div>
  <label class="thermal-filter">Hiện tuyến năng lượng<select id="thermal-flow"><option value="lesson">Theo bước đang học</option><option value="all">Toàn hệ thống</option><option value="steam">Hơi / tái nhiệt</option><option value="feed">Nước cấp</option><option value="cooling">Nước làm mát</option><option value="electric">Điện</option><option value="flue">Khí thải</option></select></label>
- <div class="thermal-legend"><span style="--flow:#ff9d49">Hơi</span><span style="--flow:#55dce8">Nước cấp</span><span style="--flow:#549eff">Làm mát</span><span style="--flow:#86dc99">Cơ năng</span><span style="--flow:#ffe484">Điện</span><span style="--flow:#b6b8bb">Khí thải</span></div>
+ <div class="thermal-legend">${flowLegend([{label:'Hơi và tái nhiệt',kind:'energy'},{label:'Nước cấp và làm mát',kind:'control'},{label:'Cơ năng và điện',kind:'energy'},{label:'Khí thải',kind:'control'}])}</div>
  <div class="thermal-lesson"><p>THEO DÒNG NĂNG LƯỢNG</p><div class="thermal-steps">${LESSONS.map((l,i)=>`<button data-tlesson="${i}" title="${l.title}" aria-label="Bước ${i+1}: ${l.title}">0${i+1}</button>`).join('')}</div><h3 id="thermal-lesson-title"></h3><p id="thermal-lesson-text"></p><div><button id="thermal-lesson-focus">Xem vị trí ↗</button><button id="thermal-lesson-auto">Tự chuyển bước</button></div></div>
  <p class="thermal-note">Mô hình giáo dục 100 MW, hiệu suất cố định 36%. Máy phát nối lưới giữ 3.000 RPM khi mang tải; hình quay đã giảm tốc để quan sát. Nước cấp và nước làm mát không trộn nhau. Tháp giải nhiệt không phải ống khói.</p>
  <details class="thermal-limits"><summary>Phạm vi minh họa</summary><p>Không mô phỏng đầy đủ gia nhiệt hồi nhiệt, khử khí, xử lý nước hay khử SOx/NOx. Cụm lọc bụi không đại diện toàn bộ hệ thống xử lý khí thải. Các giá trị chỉ minh họa, không dùng để vận hành nhà máy.</p></details>
  </section>
  <details class="thermal-parts" open><summary>Danh mục bộ phận</summary><div>${PARTS.map((p,i)=>`<button data-tpart="${p.id}"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><b>↗</b></button>`).join('')}</div></details>
  <button id="thermal-reset" class="thermal-reset">↺ Đặt lại mô hình</button>
- </aside></main>`;
+ </aside></main><footer class="thermal-footer model-bottom-bar"><span>NHIỆT → CƠ NĂNG → ĐIỆN NĂNG</span><span>Mô hình giáo dục · THERMO 04</span></footer></div>`;
 }
 
 export function connectThermalUI(host,c,studio,onExit,r){
@@ -42,7 +46,7 @@ export function connectThermalUI(host,c,studio,onExit,r){
  listen($('#thermal-cutaway'),'click',()=>{c.setCutaway(!c.state.cutaway);});
  listen($('#thermal-isolate'),'click',()=>{c.setIsolated(!c.state.isolated);if(c.state.isolated)studio.focus(r.nodes[c.state.selected]);else studio.view('hero');});
  listen($('#thermal-focus'),'click',()=>studio.focus(r.nodes[c.state.selected]));
- listen($('#thermal-explode'),'input',e=>c.setExplode(+e.target.value/100));listen($('#thermal-auto'),'click',()=>c.toggleAuto());listen($('#thermal-assemble'),'click',()=>c.setExplode(0));
+ listen($('#thermal-explode'),'input',e=>c.setExplode(+e.target.value/100));listen($('#thermal-auto'),'click',()=>c.toggleAuto());listen($('#thermal-assemble'),'click',()=>c.setExplode(0));listen($('#thermal-explode-reset'),'click',()=>{c.reset();syncSelection();studio.view('hero');});
  listen($('#thermal-load'),'input',e=>c.setLoad(+e.target.value/100));for(const b of host.querySelectorAll('[data-tload]'))listen(b,'click',()=>c.setLoad(+b.dataset.tload));
  listen($('#thermal-cooling'),'click',()=>c.setCooling(!c.state.cooling));listen($('#thermal-play'),'click',()=>c.setPlaying(!c.state.playing));listen($('#thermal-slow'),'click',()=>c.setSlow(!c.state.slow));listen($('#thermal-flow'),'change',e=>c.setFlowFilter(e.target.value));
  for(const b of buttons.lessons)listen(b,'click',()=>c.setLesson(+b.dataset.tlesson));

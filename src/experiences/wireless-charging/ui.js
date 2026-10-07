@@ -1,35 +1,40 @@
 ﻿import {PARTS,PART_BY_ID} from '../../models/wireless-charging/metadata.js';
 import {LESSONS} from '../../models/wireless-charging/lesson.js';
+import {flowDiagram,flowLegend,modelHeader} from '../../ui/model-shell/markup.js';
 
 export function mountWirelessUI(host){
- host.innerHTML=`<main class="wireless-app">
- <header class="wireless-header"><button id="wireless-back">← <span>Bộ sưu tập</span></button><strong>FLUX <em>/ 05</em></strong><nav aria-label="Chế độ mô hình">${[['explore','Khám phá'],['explode','Tách cấu tạo'],['principle','Nguyên lý']].map(([id,t],i)=>`<button data-wmode="${id}" aria-pressed="${i===0}"><small>0${i+1}</small>${t}</button>`).join('')}</nav><span class="wireless-live">● ENERGY LAB</span></header>
- <section class="wireless-stage"><div id="wireless-viewport"></div>
+ const header=modelHeader({modeAttribute:'wmode',brand:'FLUX',code:'05',principleLabel:'Nguyên lý',version:'V.02',homeId:'wireless-back'});
+ host.innerHTML=`<div class="wireless-app model-shell">
+ ${header}
+ <main class="wireless-workspace model-workspace">
+ <section class="wireless-stage model-stage"><div id="wireless-viewport"></div>
  <div class="wireless-heading"><p>NĂNG LƯỢNG QUA KHOẢNG KHÔNG</p><h1>Không dây.<br>Vẫn kết nối<span>.</span></h1><span id="wireless-subtitle">Hai cuộn dây. Một trường từ biến thiên.</span></div>
- <div class="wireless-views" aria-label="Góc nhìn">${[['hero','Tổng thể'],['coils','Cuộn dây'],['phone','Điện thoại'],['pad','Đế sạc']].map(([id,t])=>`<button data-wview="${id}">${t}</button>`).join('')}</div>
- <div id="wireless-loading" role="status">Đang tải điện thoại và đế sạc…</div><div id="wireless-label" hidden></div>
+ <div class="wireless-views model-view-tools" aria-label="Góc nhìn">${[['hero','Tổng thể'],['coils','Cuộn dây'],['phone','Điện thoại'],['pad','Đế sạc']].map(([id,t])=>`<button data-wview="${id}">${t}</button>`).join('')}</div>
+ <div id="wireless-loading" class="model-loading" role="status">Đang tải điện thoại và đế sạc…</div><div id="wireless-label" hidden></div>
  <div id="wireless-field-note" hidden><span>↕ TRƯỜNG TỪ ĐỔI CHIỀU</span><p>Vòng từ trường khép kín · không có electron vượt khe hở</p><small id="wireless-gap-note"></small></div>
  <div class="wireless-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="wireless-stats"></span></div>
- <div id="wireless-explode-panel" class="wireless-floating" hidden><div><strong>Tách từng lớp</strong><output id="wireless-explode-value">0%</output></div><p>Khám phá hai cuộn dây và các lớp bảo vệ bên trong.</p><input id="wireless-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="0"><div><button id="wireless-auto">▷ Tự tách / lắp</button><button id="wireless-assemble">Lắp lại</button></div></div>
+ <div id="wireless-explode-panel" class="wireless-floating model-explode-card" hidden><div><strong>Tách từng lớp</strong><output id="wireless-explode-value">0%</output></div><p>Khám phá hai cuộn dây và các lớp bảo vệ bên trong.</p><input id="wireless-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="0"><div><button id="wireless-auto">▷ Tự tách / lắp</button><button id="wireless-assemble">Lắp lại</button><button id="wireless-explode-reset">Đặt lại</button></div></div>
  </section>
- <aside class="wireless-panel"><div class="wireless-panel-top"><p>KHÁM PHÁ CẤU TẠO <span>${PARTS.length} CỤM</span></p><h2 id="wireless-part-name">Năng lượng vô hình.</h2><p id="wireless-part-description">Mở vỏ, chọn từng lớp và khám phá cách chiếc điện thoại nhận năng lượng từ đế sạc.</p><div class="wireless-actions"><button id="wireless-cutaway">Mở vỏ</button><button id="wireless-isolate" disabled>Xem riêng</button><button id="wireless-focus" disabled>Xem gần</button></div></div>
- <div id="wireless-docking" class="wireless-playback"><button id="wireless-dock">↑ Nhấc điện thoại</button><span id="wireless-dock-status" role="status">Đặt trên đế để xem báo sạc.</span></div>
+ <aside class="wireless-panel model-inspector"><div class="wireless-panel-top"><p>KHÁM PHÁ CẤU TẠO <span>${PARTS.length} CỤM</span></p><h2 id="wireless-part-name">Năng lượng vô hình.</h2><p id="wireless-part-description">Mở vỏ, chọn từng lớp và khám phá cách chiếc điện thoại nhận năng lượng từ đế sạc.</p><div class="wireless-actions"><button id="wireless-cutaway">Mở vỏ</button><button id="wireless-isolate" disabled>Xem riêng</button><button id="wireless-focus" disabled>Xem gần</button></div></div>
+ <div id="wireless-docking" class="wireless-playback model-playback"><button id="wireless-dock">↑ Nhấc điện thoại</button><span id="wireless-dock-status" role="status">Đặt trên đế để xem báo sạc.</span></div>
  <section id="wireless-principle-panel" hidden>
+ <div class="wireless-flow-diagram">${flowDiagram(['Nguồn điện','Cuộn phát TX','Trường từ','Cuộn nhận RX','Pin'],'Chuỗi truyền năng lượng sạc không dây')}</div>
+ ${flowLegend([{label:'Dòng điện trong mạch phát và nhận',kind:'energy'},{label:'Trường từ liên kết hai cuộn dây',kind:'control'}])}
  <div class="wireless-metrics"><div><output id="wireless-input">0</output><small>W ĐẦU VÀO*</small></div><div><output id="wireless-power">0</output><small>W NHẬN ĐƯỢC*</small></div><div><output id="wireless-soc">0%</output><small>PIN MINH HỌA</small></div></div>
  <p id="wireless-status" role="status"></p>
  <label class="wireless-slider">Độ lệch tâm <output id="wireless-alignment-value">0 mm</output><input id="wireless-alignment" type="range" min="-35" max="35" step="1" value="0"></label>
  <label class="wireless-slider">Khoảng cách vật lý <output id="wireless-gap-value">6 mm</output><input id="wireless-gap" type="range" min="6" max="18" step="1" value="6"></label>
  <p class="wireless-coupling">Liên kết từ minh họa <output id="wireless-coupling">0%</output></p>
- <div class="wireless-playback"><button id="wireless-play">Ⅱ Tạm dừng</button><button id="wireless-slow" aria-pressed="false">0,25×</button><button id="wireless-align">Căn giữa</button></div>
+ <div class="wireless-playback model-playback"><button id="wireless-play">Ⅱ Tạm dừng</button><button id="wireless-slow" aria-pressed="false">0,25×</button><button id="wireless-align">Căn giữa</button></div>
  <label class="wireless-filter">Hiện tuyến năng lượng<select id="wireless-flow"><option value="lesson">Theo bước đang học</option><option value="all">Toàn hệ thống</option><option value="power">Dòng điện</option><option value="field">Trường từ</option></select></label>
- <div class="wireless-legend"><span style="--flow:#ffc579">Điện vào / TX</span><span style="--flow:#56cbe5">Trường từ</span><span style="--flow:#7bf3da">RX / pin</span></div>
+
  <div class="wireless-lesson"><p>THEO DÒNG NĂNG LƯỢNG</p><div class="wireless-steps">${LESSONS.map((l,i)=>`<button data-wlesson="${i}" title="${l.title}" aria-label="Bước ${i+1}: ${l.title}">0${i+1}</button>`).join('')}</div><h3 id="wireless-lesson-title"></h3><p id="wireless-lesson-text"></p><div><button id="wireless-lesson-focus">Xem vị trí ↗</button><button id="wireless-lesson-auto">Tự chuyển bước</button></div></div>
  <p class="wireless-note">* Công suất, liên kết từ và phần trăm pin chỉ minh họa. Khe nhìn giữa hai cuộn dây được mở thêm 14 mm để dễ quan sát; tính toán dùng khoảng cách vật lý trên thanh trượt. Từ trường đã làm chậm, không biểu diễn tần số thực. Các đường nối đến linh kiện dời ra ngoài là sơ đồ kết nối.</p>
  <details class="wireless-limits"><summary>Phạm vi minh họa</summary><p>Không phải mô phỏng điện từ, nhiệt, hiệu suất đo được hay thời gian sạc thực. Không thể hiện chứng nhận Qi. Bộ nguồn minh họa được ngắt khỏi điện lưới; mô hình chỉ giải thích chuỗi chuyển đổi năng lượng.</p></details>
  </section>
  <details class="wireless-parts" open><summary>Danh mục bộ phận</summary><div>${PARTS.map((p,i)=>`<button data-wpart="${p.id}"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><b>↗</b></button>`).join('')}</div></details>
  <button id="wireless-reset" class="wireless-reset">↺ Đặt lại mô hình</button>
- </aside></main>`;
+ </aside></main><footer class="wireless-footer model-bottom-bar"><span>ĐIỆN → TRƯỜNG TỪ → ĐIỆN</span><span>Mô hình giáo dục · FLUX 05</span></footer></div>`;
 }
 
 export function connectWirelessUI(host,c,studio,onExit,r){
@@ -46,7 +51,7 @@ export function connectWirelessUI(host,c,studio,onExit,r){
  listen($('#wireless-dock'),'click',()=>{c.setDocked(!c.state.docked);studio.view('hero');});
  listen($('#wireless-isolate'),'click',()=>{c.setIsolated(!c.state.isolated);if(c.state.isolated)studio.focus(r.nodes[c.state.selected]);else studio.view(c.state.mode==='principle'?'coils':'hero');});
  listen($('#wireless-focus'),'click',()=>studio.focus(r.nodes[c.state.selected]));
- listen($('#wireless-explode'),'input',e=>c.setExplode(+e.target.value/100));listen($('#wireless-auto'),'click',()=>c.toggleAuto());listen($('#wireless-assemble'),'click',()=>c.setExplode(0));
+ listen($('#wireless-explode'),'input',e=>c.setExplode(+e.target.value/100));listen($('#wireless-auto'),'click',()=>c.toggleAuto());listen($('#wireless-assemble'),'click',()=>c.setExplode(0));listen($('#wireless-explode-reset'),'click',()=>{c.reset();syncSelection();studio.view('hero');});
  listen($('#wireless-alignment'),'input',e=>c.setAlignment(+e.target.value));listen($('#wireless-gap'),'input',e=>c.setGap(+e.target.value));listen($('#wireless-align'),'click',()=>c.setAlignment(0));
  listen($('#wireless-play'),'click',()=>c.setPlaying(!c.state.playing));listen($('#wireless-slow'),'click',()=>c.setSlow(!c.state.slow));listen($('#wireless-flow'),'change',e=>c.setFlowFilter(e.target.value));
  for(const b of buttons.lessons)listen(b,'click',()=>c.setLesson(+b.dataset.wlesson));
@@ -66,5 +71,3 @@ export function connectWirelessUI(host,c,studio,onExit,r){
   const lesson=LESSONS[s.lesson];$('#wireless-lesson-title').textContent=lesson.title;$('#wireless-lesson-text').textContent=lesson.text;$('#wireless-lesson-auto').setAttribute('aria-pressed',String(s.lessonAuto));for(const b of buttons.lessons)b.setAttribute('aria-pressed',String(+b.dataset.wlesson===s.lesson));
  },dispose(){abort.abort();}};
 }
-
-

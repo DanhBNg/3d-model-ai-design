@@ -11,7 +11,7 @@ function partId(node){while(node){if(node.userData.partId)return node.userData.p
 export function mountEngineExperience({modelUrl,onExit}){
  const host=document.querySelector('#app');mountEngineUI(host);document.body.dataset.screen='engine';delete document.body.dataset.mode;delete document.body.dataset.ready;
  const abort=new AbortController();let dead=false,cleaned=false,root,studio,controller,effects,ui,raf=0;
- host.querySelector('#engine-back').addEventListener('click',()=>{if(!ui)onExit();},{signal:abort.signal});
+ host.querySelector('#engine-back').addEventListener('click',event=>{event.preventDefault();if(!ui)onExit();},{signal:abort.signal});
  function cleanup(){if(cleaned)return;cleaned=true;cancelAnimationFrame(raf);ui?.dispose();ui=null;effects?.dispose();controller?.dispose();root?.userData.sculptRuntime?.dispose();studio?.dispose();}
  function dispose(){if(dead)return;dead=true;abort.abort();cleanup();if(window.__engine?.dispose===dispose)delete window.__engine;}
  async function start(){try{
