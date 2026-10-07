@@ -7,7 +7,7 @@ const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrom
 const report={date:new Date().toISOString(),assetSha256:createHash('sha256').update(readFileSync('public/models/hydroelectric.glb')).digest('hex'),checks:[],errors:[]};
 const check=(name,value=true)=>{assert.ok(value,name);report.checks.push(name);console.log('PASS',name);};
 try{
- const page=await browser.newPage({viewport:{width:1440,height:960}});page.on('pageerror',e=>report.errors.push(e.message));
+ const page=await browser.newPage({viewport:{width:1440,height:960}});page.on('pageerror',e=>report.errors.push(e.message));page.on('console',message=>{if(message.type()==='error')report.errors.push(message.text());});
  await page.goto(base);await page.locator('[data-open-model=hydroelectric]').click();await page.waitForFunction(()=>!!window.__hydro);await page.waitForTimeout(500);
  check('clean hydro route',new URL(page.url()).pathname==='/models/hydroelectric');
  check('shared hydro shell structure',await page.locator('.model-shell .model-header, .model-shell .model-stage, .model-shell .model-inspector, .model-shell .model-bottom-bar').count()===4);
@@ -21,7 +21,7 @@ try{
  await page.locator('[data-hpart=runner]').click();check('part label and Vietnamese description',await page.locator('#hydro-title').textContent()==='Bánh công tác Francis');
  await page.locator('#hydro-isolate').click();check('isolation leaves only selected assembly',await page.evaluate(()=>window.__hydro.runtime.nodes.runner.visible&&!window.__hydro.runtime.nodes.dam.visible));await page.locator('#hydro-isolate').click();
  await page.locator('[data-hmode=explode]').click();await page.locator('#hydro-explode').fill('100');await page.waitForFunction(()=>window.__hydro.controller.state.explode===1);await page.waitForTimeout(500);await page.screenshot({path:out+'/exploded-desktop.png'});
- check('full exploded pose');await page.locator('#hydro-auto').click();await page.waitForFunction(()=>window.__hydro.controller.state.explode<.9);await page.locator('#hydro-auto').click();check('exploded autoplay moves');
+ check('full exploded pose');await page.locator('#hydro-assemble').click();await page.waitForFunction(()=>window.__hydro.controller.state.explode===0&&window.__hydro.controller.state.explodeTarget===0);check('assemble action returns explode range to zero',await page.locator('#hydro-explode').inputValue()==='0');await page.locator('#hydro-explode').fill('100');await page.waitForFunction(()=>window.__hydro.controller.state.explode===1);await page.locator('#hydro-auto').click();await page.waitForFunction(()=>window.__hydro.controller.state.explode<.9);await page.locator('#hydro-auto').click();check('exploded autoplay moves');
  await page.locator('[data-hmode=principle]').click();await page.waitForFunction(()=>window.__hydro.controller.state.powerMW>1);check('assembled before generation',await page.evaluate(()=>window.__hydro.controller.state.explode===0));
  await page.locator('#hydro-opening').fill('90');await page.locator('#hydro-head').fill('70');await page.waitForFunction(()=>window.__hydro.controller.state.powerMW>6);await page.screenshot({path:out+'/principle-desktop.png'});check('flow and head controls change power');
  await page.locator('#hydro-play').click();const t=await page.evaluate(()=>window.__hydro.controller.state.time);await page.waitForTimeout(350);check('pause freezes instructional time',await page.evaluate(t=>window.__hydro.controller.state.time===t,t));

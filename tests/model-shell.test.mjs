@@ -267,7 +267,7 @@ function captureExperienceMarkup(mount) {
 }
 
 for (const experience of [
-  { name:'hydroelectric', mount:mountHydroUI, file:'hydroelectric', mode:'hmode', part:'hpart', brand:'HYDRO', code:'01', ids:['hydro-viewport','hydro-fit','hydro-loading','hydro-explode-panel','hydro-principle-panel','hydro-play','hydro-reset'] },
+  { name:'hydroelectric', mount:mountHydroUI, file:'hydroelectric', mode:'hmode', part:'hpart', brand:'HYDRO', code:'01', ids:['hydro-viewport','hydro-fit','hydro-loading','hydro-explode-panel','hydro-assemble','hydro-principle-panel','hydro-play','hydro-reset'] },
   { name:'wind turbine', mount:mountWindUI, file:'wind-turbine', mode:'wmode', part:'wpart', brand:'VENTO', code:'03', ids:['wind-viewport','wind-loading','wind-explode-panel','wind-principle-panel','wind-play','wind-reset'] },
 ]) {
   test(`${experience.name} adopts the shared shell and preserves hooks`, async () => {

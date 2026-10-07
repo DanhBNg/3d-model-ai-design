@@ -24,7 +24,7 @@ try{
  await page.locator('#wind-play').click();await page.locator('#wind-direction').fill('45');await page.waitForFunction(()=>window.__wind.controller.state.yaw>.3);checks.push('wind direction drives yaw');
  await page.locator('[data-speed="27"]').click();await page.waitForFunction(()=>window.__wind.controller.state.pitch>80);checks.push('storm feathers blades');
  await page.locator('#wind-reset').click();await page.waitForTimeout(1800);
- assert.equal(await page.evaluate(()=>window.__wind.controller.state.mode),'explore');checks.push('reset restores exterior');
+ assert.equal(await page.evaluate(()=>{const d=window.__wind,s=d.controller.state;return s.mode==='explore'&&s.explode===0&&s.explodeTarget===0&&s.cutaway===false&&s.cover===0&&d.runtime.meshes.nacelle_shell.every(mesh=>mesh.visible);}),true);checks.push('reset restores complete closed exterior');
  await page.setViewportSize({width:390,height:844});await page.waitForTimeout(1200);await page.screenshot({path:out+'/mobile-exterior.png',fullPage:true});
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.locator('[data-wmode=principle]').click();await page.waitForFunction(()=>window.__wind.controller.state.rpm>5);await page.screenshot({path:out+'/mobile-principle.png',fullPage:true});checks.push('mobile view fits and operates');
