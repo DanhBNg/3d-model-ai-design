@@ -13,6 +13,12 @@ function safeToken(value, name) {
   return value;
 }
 
+function optionalHexColor(value, name) {
+  if (value === undefined) return '';
+  if (!/^#[0-9a-fA-F]{6}$/.test(value)) throw new TypeError(name + ' must be a six-digit hex color');
+  return ' style="--flow-color:' + value + '"';
+}
+
 function optionalId(value, name) {
   if (value === undefined) return '';
   if (!/^[A-Za-z][A-Za-z0-9_.:-]*$/.test(value)) throw new TypeError(`${name} must be a valid HTML id`);
@@ -68,9 +74,9 @@ export function flowDiagram(stages, accessibleLabel = 'Chu\u1ed7i chuy\u1ec3n \u
 
 export function flowLegend(items) {
   return `<ul class="model-flow-legend" aria-label="Chú giải luồng">${items
-    .map(({ label, kind }) => {
+    .map(({ label, kind, color }) => {
       const token = safeToken(kind, 'kind');
-      return `<li><i class="model-flow-dot model-flow-dot--${token}" aria-hidden="true"></i>${escapeHtml(label)}</li>`;
+      return `<li><i class="model-flow-dot model-flow-dot--${token}"${optionalHexColor(color, 'color')} aria-hidden="true"></i>${escapeHtml(label)}</li>`;
     })
     .join('')}</ul>`;
 }

@@ -212,7 +212,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: currentColor;
+  background: var(--flow-color, currentColor);
 }
 
 .model-shell .model-flow-dot--energy {
@@ -270,6 +270,12 @@
   background: color-mix(in srgb, var(--model-surface) 80%, var(--model-control));
 }
 
+.model-shell button[aria-pressed="true"] {
+  color: var(--model-ink);
+  border-color: var(--model-active);
+  background: var(--model-active);
+}
+
 .model-shell button:disabled,
 .model-shell input:disabled {
   cursor: not-allowed;
@@ -319,7 +325,7 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .model-shell {
     height: auto;
     min-height: 100dvh;

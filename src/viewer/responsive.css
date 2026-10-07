@@ -13,7 +13,7 @@
   .model-shell .scale-mark { display: none; }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .model-shell .model-stage { min-height: 520px; }
   .model-shell .intro { top: 24px; left: 21px; }
   .model-shell .eyebrow { font-size: 8px; letter-spacing: 1.2px; }

@@ -9,7 +9,7 @@ export function mountWirelessUI(host){
  <main class="wireless-workspace model-workspace">
  <section class="wireless-stage model-stage"><div id="wireless-viewport"></div>
  <div class="wireless-heading"><p>NĂNG LƯỢNG QUA KHOẢNG KHÔNG</p><h1>Không dây.<br>Vẫn kết nối<span>.</span></h1><span id="wireless-subtitle">Hai cuộn dây. Một trường từ biến thiên.</span></div>
- <div class="wireless-views model-view-tools" aria-label="Góc nhìn">${[['hero','Tổng thể'],['coils','Cuộn dây'],['phone','Điện thoại'],['pad','Đế sạc']].map(([id,t])=>`<button data-wview="${id}">${t}</button>`).join('')}</div>
+ <div class="wireless-views model-view-tools" role="group" aria-label="Góc nhìn">${[['hero','Tổng thể'],['coils','Cuộn dây'],['phone','Điện thoại'],['pad','Đế sạc']].map(([id,t])=>`<button data-wview="${id}">${t}</button>`).join('')}</div>
  <div id="wireless-loading" class="model-loading" role="status">Đang tải điện thoại và đế sạc…</div><div id="wireless-label" hidden></div>
  <div id="wireless-field-note" hidden><span>↕ TRƯỜNG TỪ ĐỔI CHIỀU</span><p>Vòng từ trường khép kín · không có electron vượt khe hở</p><small id="wireless-gap-note"></small></div>
  <div class="wireless-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="wireless-stats"></span></div>
@@ -19,7 +19,7 @@ export function mountWirelessUI(host){
  <div id="wireless-docking" class="wireless-playback model-playback"><button id="wireless-dock">↑ Nhấc điện thoại</button><span id="wireless-dock-status" role="status">Đặt trên đế để xem báo sạc.</span></div>
  <section id="wireless-principle-panel" hidden>
  <div class="wireless-flow-diagram">${flowDiagram(['Nguồn điện','Cuộn phát TX','Trường từ','Cuộn nhận RX','Pin'],'Chuỗi truyền năng lượng sạc không dây')}</div>
- ${flowLegend([{label:'Dòng điện trong mạch phát và nhận',kind:'energy'},{label:'Trường từ liên kết hai cuộn dây',kind:'control'}])}
+ ${flowLegend([{label:'Dòng điện phía phát',kind:'energy',color:'#ffc579'},{label:'Trường từ',kind:'control',color:'#56cbe5'},{label:'Dòng điện nhận / sạc pin',kind:'energy',color:'#7bf3da'}])}
  <div class="wireless-metrics"><div><output id="wireless-input">0</output><small>W ĐẦU VÀO*</small></div><div><output id="wireless-power">0</output><small>W NHẬN ĐƯỢC*</small></div><div><output id="wireless-soc">0%</output><small>PIN MINH HỌA</small></div></div>
  <p id="wireless-status" role="status"></p>
  <label class="wireless-slider">Độ lệch tâm <output id="wireless-alignment-value">0 mm</output><input id="wireless-alignment" type="range" min="-35" max="35" step="1" value="0"></label>

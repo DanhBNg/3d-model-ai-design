@@ -34,10 +34,16 @@ function captureDroneMarkup() {
 }
 
 test('model shell styles define the shared theme and responsive behavior', async () => {
-  const [tokens, shell, style] = await Promise.all([
+  const [tokens, shell, style, viewerResponsive, hydroStyle, windStyle, thermalStyle, wirelessStyle, engineStyle] = await Promise.all([
     readFile(new URL('../src/ui/model-shell/tokens.css', import.meta.url), 'utf8'),
     readFile(new URL('../src/ui/model-shell/shell.css', import.meta.url), 'utf8'),
     readFile(new URL('../src/style.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/viewer/responsive.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/experiences/hydroelectric/style.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/experiences/wind-turbine/style.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/experiences/thermal-power/style.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/experiences/wireless-charging/style.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/experiences/inline-four-engine/style.css', import.meta.url), 'utf8'),
   ]);
 
   const expectedTokens = {
@@ -60,15 +66,19 @@ test('model shell styles define the shared theme and responsive behavior', async
     assert.match(tokens, new RegExp(`${name}\\s*:\\s*${value.replace('#', '\\#')}\\s*;`));
   }
 
-  assert.match(shell, /@media\s*\(max-width:\s*720px\)/);
+  assert.match(shell, /@media\s*\(max-width:\s*760px\)/);
   assert.match(shell, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  for (const modelStyle of [viewerResponsive, hydroStyle, windStyle, thermalStyle, wirelessStyle, engineStyle]) {
+    assert.doesNotMatch(modelStyle, /max-width:\s*720px/);
+    assert.match(modelStyle, /max-width:\s*760px/);
+  }
 
   for (const path of ['./ui/model-shell/tokens.css', './ui/model-shell/shell.css']) {
     const imports = style.match(new RegExp(`@import\\s+url\\(['"]${path.replaceAll('/', '\\/')}['"]\\);`, 'g'));
     assert.equal(imports?.length, 1, `${path} should be imported exactly once`);
   }
 
-  const compactStart = shell.indexOf('@media (max-width: 720px)');
+  const compactStart = shell.indexOf('@media (max-width: 760px)');
   const reducedMotionStart = shell.indexOf('@media (prefers-reduced-motion: reduce)');
   const desktop = shell.slice(0, compactStart);
   const compact = shell.slice(compactStart, reducedMotionStart);
@@ -77,6 +87,8 @@ test('model shell styles define the shared theme and responsive behavior', async
   assert.match(compact, /\.model-shell\s*\{[^}]*\bheight:\s*auto;[^}]*\bmin-height:\s*100dvh;/s);
   assert.match(shell, /\.model-shell\s+\.model-workspace\s*\{[^}]*display:\s*contents;/s);
   assert.match(desktop, /\.model-shell button\s*\{[^}]*min-height:\s*4\dpx;/s);
+  assert.match(desktop, /\.model-shell button\[aria-pressed="true"\]\s*\{[^}]*color:\s*var\(--model-ink\);[^}]*border-color:\s*var\(--model-active\);[^}]*background:\s*var\(--model-active\);/s);
+  assert.match(engineStyle, /\.engine-strokes button\[aria-pressed=true\]\s*\{[^}]*color:\s*var\(--stroke\);[^}]*border-color:\s*var\(--stroke\);/s);
   assert.match(
     desktop,
     /\.model-shell \.model-brand,\s*\.model-shell \.model-header__home\s*\{[^}]*min-height:\s*4\dpx;[^}]*display:\s*inline-flex;/s,
@@ -184,6 +196,45 @@ test('flowLegend renders escaped labels and semantic kind classes', () => {
   );
 });
 
+test('flowLegend renders a validated custom flow color', () => {
+  const markup = flowLegend([{ label: 'Custom', kind: 'energy', color: '#12AbEF' }]);
+  assert.match(markup, /style="--flow-color:#12AbEF"/);
+  assert.throws(
+    () => flowLegend([{ label: 'Unsafe', kind: 'energy', color: 'red;position:fixed' }]),
+    /color/,
+  );
+});
+
+test('thermal and wireless flow legends match their rendered effect colors', () => {
+  const thermal = captureExperienceMarkup(mountThermalUI);
+  const wireless = captureExperienceMarkup(mountWirelessUI);
+  const thermalLegend = thermal.match(/<ul class="model-flow-legend"[^>]*>(.*?)<\/ul>/s)?.[1] ?? '';
+  const wirelessLegend = wireless.match(/<ul class="model-flow-legend"[^>]*>(.*?)<\/ul>/s)?.[1] ?? '';
+
+  for (const [label, color] of [
+    ['H\u01a1i v\u00e0 t\u00e1i nhi\u1ec7t', '#ff963d'],
+    ['N\u01b0\u1edbc c\u1ea5p', '#2ee3e5'],
+    ['N\u01b0\u1edbc l\u00e0m m\u00e1t', '#49a9ff'],
+    ['C\u01a1 n\u0103ng', '#a4e98d'],
+    ['\u0110i\u1ec7n', '#ffca37'],
+    ['Kh\u00ed th\u1ea3i', '#c4cbd4'],
+  ]) {
+    assert.ok(thermalLegend.includes(label));
+    assert.ok(thermalLegend.includes(`--flow-color:${color}`));
+  }
+  assert.equal(thermalLegend.match(/<li\b/g)?.length, 6);
+
+  for (const [label, color] of [
+    ['D\u00f2ng \u0111i\u1ec7n ph\u00eda ph\u00e1t', '#ffc579'],
+    ['Tr\u01b0\u1eddng t\u1eeb', '#56cbe5'],
+    ['D\u00f2ng \u0111i\u1ec7n nh\u1eadn / s\u1ea1c pin', '#7bf3da'],
+  ]) {
+    assert.ok(wirelessLegend.includes(label));
+    assert.ok(wirelessLegend.includes(`--flow-color:${color}`));
+  }
+  assert.equal(wirelessLegend.match(/<li\b/g)?.length, 3);
+});
+
 test('model shell markup escapes text and rejects unsafe attribute names', () => {
   const markup = modelHeader({
     modeAttribute: 'safe-mode',
@@ -280,9 +331,9 @@ function captureExperienceMarkup(mount) {
 for (const experience of [
   { name:'hydroelectric', mount:mountHydroUI, file:'hydroelectric', indexFile:'hydroelectric', mode:'hmode', part:'hpart', brand:'HYDRO', code:'01', ids:['hydro-back','hydro-home','hydro-viewport','hydro-fit','hydro-loading','hydro-cutaway','hydro-explode-panel','hydro-assemble','hydro-principle-panel','hydro-tour','hydro-lesson-focus','hydro-play','hydro-reset'] },
   { name:'wind turbine', mount:mountWindUI, file:'wind-turbine', indexFile:'wind-turbine', mode:'wmode', part:'wpart', brand:'VENTO', code:'03', ids:['wind-back','wind-viewport','wind-loading','wind-cutaway','wind-isolate','wind-explode-panel','wind-assemble','wind-principle-panel','wind-speed','wind-direction','wind-play','wind-reset'] },
-  { name:'thermal power', mount:mountThermalUI, file:'thermal-power', indexFile:'thermal-power', mode:'tmode', part:'tpart', brand:'THERMO', code:'04', ids:['thermal-back','thermal-viewport','thermal-loading','thermal-cutaway','thermal-isolate','thermal-explode-panel','thermal-assemble','thermal-principle-panel','thermal-load','thermal-cooling','thermal-flow','thermal-play','thermal-reset'] },
-  { name:'wireless charging', mount:mountWirelessUI, file:'wireless-charging', indexFile:'wireless-charging', mode:'wmode', part:'wpart', brand:'FLUX', code:'05', ids:['wireless-back','wireless-viewport','wireless-loading','wireless-cutaway','wireless-dock','wireless-explode-panel','wireless-assemble','wireless-principle-panel','wireless-alignment','wireless-gap','wireless-flow','wireless-play','wireless-reset'] },
-  { name:'inline four engine', mount:mountEngineUI, file:'inline-four-engine', indexFile:'inline-four-engine', mode:'emode', part:'epart', brand:'IGNIS', code:'06', ids:['engine-back','engine-viewport','engine-loading','engine-cutaway','engine-isolate','engine-explode-panel','engine-assemble','engine-principle-panel','engine-angle','engine-rpm','engine-guide','engine-play','engine-reset'] },
+  { name:'thermal power', mount:mountThermalUI, file:'thermal-power', indexFile:'thermal-power', mode:'tmode', part:'tpart', brand:'THERMO', code:'04', viewGroup:true, ids:['thermal-back','thermal-viewport','thermal-loading','thermal-cutaway','thermal-isolate','thermal-explode-panel','thermal-assemble','thermal-principle-panel','thermal-load','thermal-cooling','thermal-flow','thermal-play','thermal-reset'] },
+  { name:'wireless charging', mount:mountWirelessUI, file:'wireless-charging', indexFile:'wireless-charging', mode:'wmode', part:'wpart', brand:'FLUX', code:'05', viewGroup:true, ids:['wireless-back','wireless-viewport','wireless-loading','wireless-cutaway','wireless-dock','wireless-explode-panel','wireless-assemble','wireless-principle-panel','wireless-alignment','wireless-gap','wireless-flow','wireless-play','wireless-reset'] },
+  { name:'inline four engine', mount:mountEngineUI, file:'inline-four-engine', indexFile:'inline-four-engine', mode:'emode', part:'epart', brand:'IGNIS', code:'06', viewGroup:true, ids:['engine-back','engine-viewport','engine-loading','engine-cutaway','engine-isolate','engine-explode-panel','engine-assemble','engine-principle-panel','engine-angle','engine-rpm','engine-guide','engine-play','engine-reset'] },
 ]) {
   test(`${experience.name} adopts the shared shell and preserves hooks`, async () => {
     const markup=captureExperienceMarkup(experience.mount);
@@ -291,6 +342,7 @@ for (const experience of [
     for(const name of ['model-shell','model-header','model-workspace','model-stage','model-inspector','model-view-tools','model-explode-card','model-flow-diagram','model-flow-legend','model-playback','model-loading','model-bottom-bar']) assert.match(markup,new RegExp(`class="[^"]*\\b${name}\\b`));
     assert.match(source,/import\s*\{[^}]*flowDiagram[^}]*flowLegend[^}]*modelHeader[^}]*\}\s*from\s*['"]\.\.\/\.\.\/ui\/model-shell\/markup\.js['"]/s);
     assert.doesNotMatch(source,/modelHeader\([^;]+\)\.replace/s);
+    if(experience.viewGroup) assert.match(markup,/class="[^"]*\bmodel-view-tools\b[^"]*" role="group"/);
     assert.match(indexSource,/addEventListener\('click',event=>\{event\.preventDefault\(\);if\(!ui\)/);
     assert.match(source,new RegExp(`modelHeader\\(\\{modeAttribute:['"]${experience.mode}['"],brand:['"]${experience.brand}['"],code:['"]${experience.code}['"],principleLabel:['"]Nguy\\u00ean l\\u00fd['"],version:['"]V\\.02['"][^}]*\\}\\)`));
     for(const label of ['Khám phá','Tách cấu tạo','Nguyên lý']) assert.ok(markup.includes(label));
