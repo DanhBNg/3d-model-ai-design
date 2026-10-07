@@ -393,10 +393,10 @@ import { FLOW_STYLE } from '../src/viewer/flowLines.js';
 test('principle arrows use the unified slightly enlarged drone style', () => {
   assert.deepEqual(FLOW_STYLE, {
     trackWidth: 2.2,
-    arrowWidth: 3.1,
+    trackWidth: 2.2,
     outlineExtra: 2.2,
-    headScale: 2.7,
-    headSpread: 0.48
+    headLengthRatio: 0.32,
+    headWidthRatio: 0.14
   });
 });
 ```
@@ -416,9 +416,9 @@ In `flowLines.js`:
 ```js
 export const FLOW_STYLE = Object.freeze({
   trackWidth: 2.2,
-  arrowWidth: 3.1,
+  trackWidth: 2.2,
   outlineExtra: 2.2,
-  headScale: 2.7,
+  headLengthRatio: 0.32,
   headSpread: .48
 });
 ```
@@ -550,3 +550,7 @@ git commit -m "docs: hand off unified model collection"
 ```
 
 Do not push or deploy.
+
+## Execution status — 2026-10-07
+
+Tasks 1–8 are implemented and verified. Task 9 documentation and final web checks are complete except the standalone HTML export/offline verification, which the user explicitly deferred. Do not treat the current `output/share/Model-Collection.html` as containing this interface standardization; regenerate and recheck it in a later HTML-specific task.

@@ -1,7 +1,7 @@
 {
   "base": "http://127.0.0.1:4173",
   "browser": "154.0.8037.98",
-  "generatedAt": "2026-10-07T09:22:34.027Z",
+  "generatedAt": "2026-10-07T09:56:20.650Z",
   "models": [
     {
       "id": "drone",

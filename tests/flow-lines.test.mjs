@@ -1,15 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { FLOW_STYLE } from '../src/viewer/flowLines.js';
+import * as THREE from 'three';
+import { FLOW_STYLE, createFlowLines } from '../src/viewer/flowLines.js';
 
 test('principle arrows use the unified slightly enlarged drone style', () => {
   assert.deepEqual(FLOW_STYLE, {
     trackWidth: 2.2,
-    arrowWidth: 3.1,
-    outlineExtra: 2.2,
-    headScale: 2.7,
-    headSpread: 0.48,
+    outlineExtra: 1,
+    headLengthRatio: 0.32,
+    headWidthRatio: 0.14,
+    shaftLengthRatio: 1,
   });
 });
 
@@ -29,3 +30,22 @@ test('directed-flow effects use the shared line renderer instead of point partic
   }
 });
 
+
+test('moving flow arrows use the same line-and-cone construction as drone ArrowHelper', () => {
+  const curve = new THREE.LineCurve3(new THREE.Vector3(), new THREE.Vector3(1, 0, 0));
+  const flow = createFlowLines(curve, { count: 2, size: 0.1 });
+  const arrowHelpers = flow.group.children.filter(child => child.type === 'ArrowHelper');
+  assert.equal(arrowHelpers.length, 2);
+  for (const arrow of arrowHelpers) {
+    assert.equal(arrow.line.isLine, true);
+    assert.equal(arrow.cone.isMesh, true);
+    assert.ok(arrow.cone.scale.x <= 0.015);
+    assert.ok(arrow.cone.scale.y <= 0.032);
+  }
+  flow.dispose();
+});
+test('wind trails reuse the shared drone-style arrow helper instead of drawing oversized V heads', async () => {
+  const source = await readFile('src/experiences/wind-turbine/effects.js', 'utf8');
+  assert.match(source, /createFlowArrow/);
+  assert.doesNotMatch(source, /x\s*-\s*\.45[\s\S]*z\s*[+-]\s*\.22/);
+});

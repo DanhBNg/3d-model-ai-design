@@ -26,3 +26,145 @@ body[data-mode=explode] #viewport{top:85px;bottom:230px}body[data-mode=explode] 
 .floating-controls{position:absolute;bottom:65px;left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 90px));backdrop-filter:blur(10px)}.control-top{display:flex;align-items:center;justify-content:space-between}.control-top>span{display:grid;gap:5px}.control-top b{font-size:12px;font-weight:500}.control-top small{font-size:9px;color:#8a977c}.control-top output{font-size:30px;letter-spacing:-1.5px;font-variant-numeric:tabular-nums}.control-top output span{font-size:13px;margin-left:3px;color:#7f8d71}.range-ends{display:flex;justify-content:space-between;font-size:9px;color:#9aa58c;margin:0 0 16px}.control-actions{display:flex;gap:10px;justify-content:space-between}.control-actions button{padding:9px 12px;font-size:10px;display:flex;align-items:center;justify-content:center;gap:6px}.dark-button{color:#fff;background:var(--green);border-color:var(--green)}.dark-button:hover{background:#49604a}.quiet-button{border-color:transparent;color:#859475}.control-actions .quiet-button{padding-right:0}.control-actions svg{width:14px;height:14px}input[type=range]{width:100%;accent-color:#526b45;height:5px;margin:20px 0 13px;cursor:pointer}#gimbal-control{background:#edf1e5;padding:12px;border-radius:7px}#gimbal-control label{font-size:10px;color:#6b7a5b;display:flex;justify-content:space-between}#gimbal-control input{margin:16px 0 5px}.transition{position:absolute;left:50%;top:62%;transform:translateX(-50%);background:#f9f9efe8;border:1px solid #d5ddc8;padding:11px 18px;border-radius:6px;font-size:11px;color:#697c53;white-space:nowrap}
 .flow-tabs{display:flex;background:#e9eedf;padding:3px;border-radius:6px;margin:22px 0 13px;gap:3px}.flow-tabs button{font-size:9px;padding:8px 6px;border:0;flex:1}.inspector .flow-copy{font-size:10px;margin-top:10px;margin-bottom:20px}.scenarios{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:13px}.scenarios button{font-size:10px;padding:9px}.scenario-info{border-left:2px solid #abb98d;padding-left:12px;margin:20px 0}.scenario-info>span{font-size:11px;color:#556f43}.inspector .scenario-info p{font-size:10px;line-height:1.75;margin:7px 0 0}.telemetry-title{display:flex;justify-content:space-between;font-size:8px;letter-spacing:1px;color:#7e8f6a;border-top:1px solid #dde4d3;padding-top:17px;margin:20px 0 8px}.telemetry-title small{font-size:8px;letter-spacing:0;color:#9ca78d}.motor-readout{display:grid;grid-template-columns:24px 1fr auto;gap:4px 9px;align-items:center;padding:7px 0}.motor-id{font-size:9px;width:25px;height:25px;border:1px solid #d8e0cb;border-radius:5px;display:grid;place-items:center;color:#7b8b68}.motor-location{font-size:10px;display:flex;justify-content:space-between;align-items:center;gap:3px}.motor-location small{font-size:8px;color:#94a084;margin-right:10px}.rpm{font-size:13px;color:#526742;font-variant-numeric:tabular-nums}.motor-track{grid-column:2/4;background:#e5eadc;height:3px;border-radius:3px;overflow:hidden}.motor-track i{display:block;height:100%;width:0;background:#a6b78b;border-radius:3px}.flight-controls{display:flex;gap:7px;margin-top:20px}.flight-controls button{display:flex;gap:7px;align-items:center;justify-content:center;padding:10px;font-size:10px}.flight-controls .dark-button{flex:1}.flight-controls button svg{width:15px;height:15px}.flight-time{display:flex;justify-content:space-between;margin:9px 0 20px;font-size:8px;color:#9aa78a}.education-note{border-top:1px solid #dfe6d5;padding-top:14px;color:#859773}.education-note summary{font-size:10px;cursor:pointer;line-height:1.6}.education-note p{padding-top:10px;font-size:10px}.education-note a{color:#657f50}.flight-legend{position:absolute;bottom:70px;left:38px;display:flex;flex-wrap:wrap;align-items:center;gap:14px;font-size:10px;color:#7c8c6d;background:#f5f7edde;padding:11px 14px;border:1px solid #dbe2ce;border-radius:6px}.flight-legend>span{display:flex;gap:6px;align-items:center}.flight-legend small{width:100%;font-size:8px;opacity:.8}body[data-mode=flight] .intro h1,body[data-mode=explode] .intro h1{font-size:36px}body[data-mode=flight] .intro p,body[data-mode=explode] .intro p{font-size:11px}
 #loading b{font-size:16px;font-weight:500}#loading>span{font-size:12px;color:#8d9a80}#loading button{padding:10px 20px}
+
+/* Canonical AERO-derived presentation primitives shared by every model. */
+.model-shell .model-stage .model-intro {
+  position: absolute;
+  z-index: 1;
+  top: 35px;
+  left: 38px;
+  pointer-events: none;
+}
+.model-shell .model-stage .model-intro > p:first-child {
+  margin: 0;
+  color: var(--model-muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+}
+.model-shell .model-stage .model-intro h1 {
+  margin: 22px 0 15px;
+  font-size: clamp(34px,3.35vw,52px);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -2.3px;
+}
+.model-shell .model-stage .model-intro > span:last-child {
+  color: var(--model-muted);
+  font-size: 12px;
+  line-height: 1.75;
+}
+.model-shell .model-stage .model-stage-footer {
+  position: absolute;
+  right: 26px;
+  bottom: 23px;
+  left: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--model-muted);
+  font-size: 10px;
+  pointer-events: none;
+}
+.model-shell .model-inspector h2 {
+  margin: 25px 0 16px;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.13;
+  letter-spacing: -1px;
+}
+.model-shell .model-inspector > p,
+.model-shell .model-inspector > section > p {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.model-shell .model-part-actions {
+  display: flex;
+  gap: 8px;
+  margin: 21px 0 25px;
+}
+.model-shell .model-part-actions button {
+  min-width: 0;
+  flex: 1;
+  padding: 10px 8px;
+  font-size: 11px;
+}
+.model-shell .model-part-list button {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 12px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--model-line);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+}
+.model-shell .model-part-list button > span {
+  min-width: 0;
+  flex: 1;
+  font-size: 11px;
+}
+@media (min-width:761px) {
+  .model-shell .model-stage .model-explode-card {
+    position: absolute;
+    z-index: 3;
+    bottom: 85px;
+    left: 25px;
+    width: 220px;
+    padding: 15px;
+    transform: none;
+    backdrop-filter: blur(10px);
+  }
+  .model-shell .model-stage .model-explode-card > div:first-child {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0;
+    font-size: 11px;
+  }
+  .model-shell .model-stage .model-explode-card > div:first-child output {
+    color: var(--model-control);
+    font-size: 25px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+  }
+  .model-shell .model-stage .model-explode-card > p {
+    margin: 9px 0 0;
+    color: var(--model-muted);
+    font-size: 9px;
+    line-height: 1.5;
+  }
+  .model-shell .model-stage .model-explode-card > input[type="range"] {
+    margin: 15px 0 10px;
+  }
+  .model-shell .model-stage .hydro-explode-actions,
+  .model-shell .model-stage #wind-explode-panel > div:last-child,
+  .model-shell .model-stage #thermal-explode-panel > div:last-child,
+  .model-shell .model-stage #wireless-explode-panel > div:last-child,
+  .model-shell .model-stage #engine-explode-panel > div:last-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .model-shell .model-stage .hydro-explode-actions > button:first-child,
+  .model-shell .model-stage #wind-explode-panel > div:last-child > button:first-child,
+  .model-shell .model-stage #thermal-explode-panel > div:last-child > button:first-child,
+  .model-shell .model-stage #wireless-explode-panel > div:last-child > button:first-child,
+  .model-shell .model-stage #engine-explode-panel > div:last-child > button:first-child {
+    width: 100%;
+    flex-basis: 100%;
+  }
+}
+@media (max-width:760px) {
+  .model-shell .model-stage .model-intro { top: 24px; left: 21px; }
+  .model-shell .model-stage .model-intro > p:first-child { font-size: 8px; letter-spacing: 1.2px; }
+  .model-shell .model-stage .model-intro h1 { margin: 17px 0 10px; font-size: 31px; letter-spacing: -1.4px; }
+  .model-shell .model-stage .model-intro > span:last-child { font-size: 10px; line-height: 1.6; }
+  .model-shell .model-stage .model-stage-footer { right: 20px; bottom: 16px; left: 20px; font-size: 9px; }
+  .model-shell .model-inspector h2 { font-size: 27px; }
+}

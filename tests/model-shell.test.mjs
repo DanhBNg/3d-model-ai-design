@@ -122,9 +122,8 @@ test('modelHeader renders the shared navigation and mode controls', () => {
   assert.match(markup, /data-hmode="explore" aria-pressed="true"/);
   assert.match(markup, /data-hmode="explode" aria-pressed="false"/);
   assert.match(markup, /data-hmode="principle" aria-pressed="false"/);
-  assert.match(markup, /<small>01<\/small>/);
-  assert.match(markup, /<small>02<\/small>/);
-  assert.match(markup, /<small>03<\/small>/);
+  assert.doesNotMatch(markup, /<small>0[123]<\/small>/);
+  assert.doesNotMatch(markup, />0[123](?:Khám phá|Tách cấu tạo|Nguyên lý)/);
   assert.match(markup, /data-exit-model/);
   assert.match(markup, /href="\/"/);
   assert.match(markup, /HYDRO/);
@@ -339,7 +338,7 @@ for (const experience of [
     const markup=captureExperienceMarkup(experience.mount);
     const source=await readFile(new URL(`../src/experiences/${experience.file}/ui.js`,import.meta.url),'utf8');
     const indexSource=await readFile(new URL(`../src/experiences/${experience.indexFile}/index.js`,import.meta.url),'utf8');
-    for(const name of ['model-shell','model-header','model-workspace','model-stage','model-inspector','model-view-tools','model-explode-card','model-flow-diagram','model-flow-legend','model-playback','model-loading','model-bottom-bar']) assert.match(markup,new RegExp(`class="[^"]*\\b${name}\\b`));
+    for(const name of ['model-shell','model-header','model-workspace','model-stage','model-intro','model-stage-footer','model-inspector','model-part-actions','model-part-list','model-view-tools','model-explode-card','model-flow-diagram','model-flow-legend','model-playback','model-loading','model-bottom-bar']) assert.match(markup,new RegExp(`class="[^"]*\\b${name}\\b`));
     assert.match(source,/import\s*\{[^}]*flowDiagram[^}]*flowLegend[^}]*modelHeader[^}]*\}\s*from\s*['"]\.\.\/\.\.\/ui\/model-shell\/markup\.js['"]/s);
     assert.doesNotMatch(source,/modelHeader\([^;]+\)\.replace/s);
     if(experience.viewGroup) assert.match(markup,/class="[^"]*\bmodel-view-tools\b[^"]*" role="group"/);

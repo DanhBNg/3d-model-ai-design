@@ -14,6 +14,24 @@ Thủy điện đã bổ sung chi tiết kiến trúc/thiết bị và hướng 
 
 Bản theo ảnh mặt cắt có cửa nhận thấp, lưới chắn rác, ống hút cong mở rộng dưới turbine và **nước 3D**. Nút **▤ Mặt cắt đường nước** mở công trình và chuyển góc nhìn. Mũi tên line mảnh chỉ dòng nước/điện, chuyển động theo lưu lượng; tạm dừng và tua chậm áp dụng cả nước. Thủy điện và tua-bin dùng nét line thay cho hạt tròn để phần nguyên lý gọn hơn. Hiệu ứng được dựng bằng Three.js, không dùng video hay dịch vụ bên ngoài.
 
+## Giao diện thống nhất
+
+Toàn bộ thân của mỗi thẻ tại trang bộ sưu tập là liên kết đến model; vẫn hỗ trợ mở tab mới và đường dẫn sạch `/models/<id>`. Sáu trang chi tiết dùng chung giao diện nền xám than lấy AERO Q4 làm chuẩn: header ba chế độ, vùng model, inspector, công cụ góc nhìn, thẻ tách cấu tạo, sơ đồ luồng, playback và thanh trạng thái. Các primitive nằm tại `src/ui/model-shell/`; controller, metadata, geometry/material và runtime của từng model vẫn tách riêng.
+
+Các tuyến nguyên lý dùng renderer line chung trong `src/viewer/flowLines.js`: nét tuyến 2,2 px, viền tối thêm 1 px và đầu mũi tên dạng thân mảnh + nón nhỏ như drone. Màu vẫn mang nghĩa riêng theo hệ thống (nước, điện, nhiệt, cơ năng, từ trường, khí nạp/xả). Breakpoint compact là 760 px; ba tab chế độ dùng lưới ba cột trên mobile và reduced motion tắt transition trang trí.
+
+Kiểm tra giao diện toàn bộ collection:
+
+```sh
+npm run build
+npm run preview -- --port 4173
+# ở terminal khác
+npm run test:interface
+```
+
+Báo cáo và 13 ảnh desktop/mobile nằm tại `output/unified-interface/`. Lần kiểm tra ngày 2026-10-07 đạt sáu route ở 1440×900 và 390×844, không tràn ngang, không page/console error; 80 unit tests đạt. Thumbnail và geometry 3D không được thiết kế lại trong đợt chuẩn hóa này. DESIGN:OS được dùng như phương pháp thiết kế/phân rã hệ thống, không phải dependency runtime.
+
+Bản HTML độc lập trong `output/share/` chưa được xuất lại sau đợt chuẩn hóa này theo yêu cầu tạm bỏ qua HTML. Hãy chạy export và offline check ở một đợt riêng trước khi gửi file HTML mới.
 ## Danh sách và đường dẫn
 
 - `/` — danh sách sáu mô hình.

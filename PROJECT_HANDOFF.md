@@ -1,5 +1,15 @@
 # Model collection — Session handoff
 
+## Chuẩn hóa collection và giao diện model — 2026-10-07
+
+Đã hoàn thành đợt chuẩn hóa theo `docs/superpowers/plans/2026-10-07-unified-model-interface.md`. Toàn bộ card catalog mở model khi nhấn ở bất kỳ vị trí nào, dùng route sạch và giữ hành vi mở tab mới. Sáu viewer AERO/HYDRO/VENTO/THERMO/FLUX/IGNIS dùng chung shell nền tối lấy drone làm chuẩn qua `src/ui/model-shell/{tokens,shell}.css`, `markup.js` và `icons.js`; hook/controller riêng của từng model được giữ nguyên.
+
+Nguyên lý của cả sáu model dùng `src/viewer/flowLines.js` với `FLOW_STYLE`: track 2,2 px, backing outline thêm 1 px và đầu mũi tên ArrowHelper thân mảnh + nón nhỏ theo drone. Các line có viền tối nên đọc được trên máy màu sáng; hiệu ứng không định hướng như mặt nước, từ trường, combustion glow và spark vẫn giữ đúng vai trò. Mobile breakpoint 760 px, tab chế độ là lưới ba cột, không tràn ngang ở 390×844.
+
+Kiểm chứng mới: `npm test` đạt 82/82; `npm run build` đạt. `npm run test:interface` tải sáu clean routes ở desktop 1440×900 và mobile 390×844, vào chế độ nguyên lý sau khi model vận hành, quay lại catalog sáu card, xác nhận reduced motion, không overflow, không page error và không console error. Báo cáo `output/unified-interface/report.json`; 12 ảnh nguyên lý và một ảnh catalog ở cùng thư mục đã được xem trực tiếp.
+
+Phạm vi chưa làm trong đợt này: thumbnail và geometry/GLB không được thiết kế lại; kiểm tra là Chrome desktop và mobile emulation, chưa phải máy thật/Safari. DESIGN:OS chỉ là phương pháp phát triển, không thêm dependency runtime. Theo yêu cầu người dùng, không tái xuất hoặc xác minh `output/share/Model-Collection.html`; file HTML hiện có thuộc trạng thái trước chuẩn hóa và cần `npm run export:html` + `node scripts/check-offline-html.mjs` trước lần gửi tiếp theo. Không push/deploy.
+
 ## IGNIS 06 — động cơ 4 xi-lanh, 2026-10-06
 
 Đã thêm `/models/inline-four-engine` vào catalog sáu model. DOHC 8 van, 37 cụm; khám phá/chọn/isolate, tách cấu tạo, mặt cắt, xem riêng xi-lanh 1–4 không reset pha. Chu kỳ 720°, cam quay nửa tốc độ, thứ tự nổ 1–3–4–2; scrub, bốn kỳ, RPM, pause/slow/reset, góc truyền cam. Dừng cơ cấu trong explode và khi lắp lại. Camera mặc định đã sửa sang phía mặt cắt sau kiểm tra ảnh browser.

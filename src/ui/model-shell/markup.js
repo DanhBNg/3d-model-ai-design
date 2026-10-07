@@ -52,9 +52,8 @@ export function modelHeader({
     ['explode', 'Tách cấu tạo'],
     [thirdMode, principleLabel],
   ];
-  const buttons = modes.map(([mode, label], index) => `
-      <button type="button" data-${attribute}="${mode}" aria-pressed="${mode === 'explore'}">
-        <small>0${index + 1}</small><span>${escapeHtml(label)}</span>
+  const buttons = modes.map(([mode, label]) => `
+      <button type="button" data-${attribute}="${mode}" aria-pressed="${mode === 'explore'}"><span>${escapeHtml(label)}</span>
       </button>`).join('');
 
   return `<header class="model-header">

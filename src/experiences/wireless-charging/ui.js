@@ -1,4 +1,4 @@
-﻿import {PARTS,PART_BY_ID} from '../../models/wireless-charging/metadata.js';
+import {PARTS,PART_BY_ID} from '../../models/wireless-charging/metadata.js';
 import {LESSONS} from '../../models/wireless-charging/lesson.js';
 import {flowDiagram,flowLegend,modelHeader} from '../../ui/model-shell/markup.js';
 
@@ -8,14 +8,14 @@ export function mountWirelessUI(host){
  ${header}
  <main class="wireless-workspace model-workspace">
  <section class="wireless-stage model-stage"><div id="wireless-viewport"></div>
- <div class="wireless-heading"><p>NĂNG LƯỢNG QUA KHOẢNG KHÔNG</p><h1>Không dây.<br>Vẫn kết nối<span>.</span></h1><span id="wireless-subtitle">Hai cuộn dây. Một trường từ biến thiên.</span></div>
+ <div class="wireless-heading model-intro"><p>NĂNG LƯỢNG QUA KHOẢNG KHÔNG</p><h1>Không dây.<br>Vẫn kết nối<span>.</span></h1><span id="wireless-subtitle">Hai cuộn dây. Một trường từ biến thiên.</span></div>
  <div class="wireless-views model-view-tools" role="group" aria-label="Góc nhìn">${[['hero','Tổng thể'],['coils','Cuộn dây'],['phone','Điện thoại'],['pad','Đế sạc']].map(([id,t])=>`<button data-wview="${id}">${t}</button>`).join('')}</div>
  <div id="wireless-loading" class="model-loading" role="status">Đang tải điện thoại và đế sạc…</div><div id="wireless-label" hidden></div>
  <div id="wireless-field-note" hidden><span>↕ TRƯỜNG TỪ ĐỔI CHIỀU</span><p>Vòng từ trường khép kín · không có electron vượt khe hở</p><small id="wireless-gap-note"></small></div>
- <div class="wireless-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="wireless-stats"></span></div>
- <div id="wireless-explode-panel" class="wireless-floating model-explode-card" hidden><div><strong>Tách từng lớp</strong><output id="wireless-explode-value">0%</output></div><p>Khám phá hai cuộn dây và các lớp bảo vệ bên trong.</p><input id="wireless-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="0"><div><button id="wireless-auto">▷ Tự tách / lắp</button><button id="wireless-assemble">Lắp lại</button><button id="wireless-explode-reset">Đặt lại</button></div></div>
+ <div class="wireless-stage-footer model-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="wireless-stats"></span></div>
+ <div id="wireless-explode-panel" class="wireless-floating floating-controls model-explode-card" hidden><div><strong>Tách từng lớp</strong><output id="wireless-explode-value">0%</output></div><p>Khám phá hai cuộn dây và các lớp bảo vệ bên trong.</p><input id="wireless-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="0"><div><button id="wireless-auto">▷ Tự tách / lắp</button><button id="wireless-assemble">Lắp lại</button><button id="wireless-explode-reset">Đặt lại</button></div></div>
  </section>
- <aside class="wireless-panel model-inspector"><div class="wireless-panel-top"><p>KHÁM PHÁ CẤU TẠO <span>${PARTS.length} CỤM</span></p><h2 id="wireless-part-name">Năng lượng vô hình.</h2><p id="wireless-part-description">Mở vỏ, chọn từng lớp và khám phá cách chiếc điện thoại nhận năng lượng từ đế sạc.</p><div class="wireless-actions"><button id="wireless-cutaway">Mở vỏ</button><button id="wireless-isolate" disabled>Xem riêng</button><button id="wireless-focus" disabled>Xem gần</button></div></div>
+ <aside class="wireless-panel model-inspector"><div class="wireless-panel-top"><p>KHÁM PHÁ CẤU TẠO <span>${PARTS.length} CỤM</span></p><h2 id="wireless-part-name">Năng lượng vô hình.</h2><p id="wireless-part-description">Mở vỏ, chọn từng lớp và khám phá cách chiếc điện thoại nhận năng lượng từ đế sạc.</p><div class="wireless-actions model-part-actions"><button id="wireless-cutaway">Mở vỏ</button><button id="wireless-isolate" disabled>Xem riêng</button><button id="wireless-focus" disabled>Xem gần</button></div></div>
  <div id="wireless-docking" class="wireless-playback model-playback"><button id="wireless-dock">↑ Nhấc điện thoại</button><span id="wireless-dock-status" role="status">Đặt trên đế để xem báo sạc.</span></div>
  <section id="wireless-principle-panel" hidden>
  <div class="wireless-flow-diagram">${flowDiagram(['Nguồn điện','Cuộn phát TX','Trường từ','Cuộn nhận RX','Pin'],'Chuỗi truyền năng lượng sạc không dây')}</div>
@@ -32,7 +32,7 @@ export function mountWirelessUI(host){
  <p class="wireless-note">* Công suất, liên kết từ và phần trăm pin chỉ minh họa. Khe nhìn giữa hai cuộn dây được mở thêm 14 mm để dễ quan sát; tính toán dùng khoảng cách vật lý trên thanh trượt. Từ trường đã làm chậm, không biểu diễn tần số thực. Các đường nối đến linh kiện dời ra ngoài là sơ đồ kết nối.</p>
  <details class="wireless-limits"><summary>Phạm vi minh họa</summary><p>Không phải mô phỏng điện từ, nhiệt, hiệu suất đo được hay thời gian sạc thực. Không thể hiện chứng nhận Qi. Bộ nguồn minh họa được ngắt khỏi điện lưới; mô hình chỉ giải thích chuỗi chuyển đổi năng lượng.</p></details>
  </section>
- <details class="wireless-parts" open><summary>Danh mục bộ phận</summary><div>${PARTS.map((p,i)=>`<button data-wpart="${p.id}"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><b>↗</b></button>`).join('')}</div></details>
+ <details class="wireless-parts model-part-list" open><summary>Danh mục bộ phận</summary><div>${PARTS.map((p,i)=>`<button data-wpart="${p.id}"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><b>↗</b></button>`).join('')}</div></details>
  <button id="wireless-reset" class="wireless-reset">↺ Đặt lại mô hình</button>
  </aside></main><footer class="wireless-footer model-bottom-bar"><span>ĐIỆN → TRƯỜNG TỪ → ĐIỆN</span><span>Mô hình giáo dục · FLUX 05</span></footer></div>`;
 }

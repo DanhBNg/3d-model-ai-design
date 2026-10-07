@@ -7,16 +7,16 @@ export function mountHydroUI(host){
  host.innerHTML=`<div class="hydro-app model-shell">
  ${header}
  <main class="hydro-layout model-workspace"><section class="hydro-stage model-stage" aria-label="Mô hình nhà máy"><div id="hydro-viewport"></div>
- <div class="hydro-intro"><p>CHUYỂN ĐỘNG CỦA NƯỚC</p><h1>Từ dòng chảy<br>đến dòng điện<span>.</span></h1><span id="hydro-context">Một nhà máy. Một hành trình năng lượng.</span></div>
+ <div class="hydro-intro model-intro"><p>CHUYỂN ĐỘNG CỦA NƯỚC</p><h1>Từ dòng chảy<br>đến dòng điện<span>.</span></h1><span id="hydro-context">Một nhà máy. Một hành trình năng lượng.</span></div>
  <div class="hydro-views model-view-tools" aria-label="Góc nhìn"><button data-hview="hero" title="Góc tổng thể" aria-label="Góc tổng thể">◈</button><button data-hview="top" title="Nhìn từ trên" aria-label="Nhìn từ trên">⊞</button><button data-hview="section" title="Mặt cắt đường nước" aria-label="Mặt cắt đường nước">▤</button><button data-hview="machine" title="Cận cảnh tổ máy" aria-label="Cận cảnh tổ máy">◎</button><button id="hydro-fit" title="Căn khung" aria-label="Căn khung">⛶</button></div>
  <div id="hydro-label" hidden></div><div id="hydro-loading" class="model-loading" role="status"><b>Đang dựng không gian thủy điện…</b><span>Tải mô hình và vật liệu</span></div>
- <div class="hydro-stage-foot"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="hydro-stats"></span></div>
+ <div class="hydro-stage-foot model-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="hydro-stats"></span></div>
  <div class="hydro-legend" id="hydro-legend" hidden>${flowLegend([{label:'Nước',kind:'control'},{label:'Điện',kind:'energy'}])}<small>Đường màu minh họa · Quay chậm 20 lần</small></div>
- <section id="hydro-explode-panel" class="hydro-explode model-explode-card" hidden><div class="hydro-field"><label for="hydro-explode">Mức tách cấu tạo</label><output id="hydro-explode-value">0%</output></div><input id="hydro-explode" type="range" min="0" max="100" value="0"><div class="hydro-range-caption"><span>Lắp hoàn chỉnh</span><span>Tách các cụm</span></div><div class="hydro-explode-actions"><button id="hydro-auto" class="hydro-primary">▷ Tự động tách / lắp</button><button id="hydro-assemble">Lắp lại</button></div><p class="hydro-small">Mái mở trước, các cụm máy tách sau. Dòng nước và điện dừng trong chế độ này.</p></section>
+ <section id="hydro-explode-panel" class="hydro-explode floating-controls model-explode-card" hidden><div class="hydro-field"><label for="hydro-explode">Mức tách cấu tạo</label><output id="hydro-explode-value">0%</output></div><input id="hydro-explode" type="range" min="0" max="100" value="0"><div class="hydro-range-caption"><span>Lắp hoàn chỉnh</span><span>Tách các cụm</span></div><div class="hydro-explode-actions"><button id="hydro-auto" class="hydro-primary">▷ Tự động tách / lắp</button><button id="hydro-assemble">Lắp lại</button></div><p class="hydro-small">Mái mở trước, các cụm máy tách sau. Dòng nước và điện dừng trong chế độ này.</p></section>
  </section><aside class="hydro-panel model-inspector">
  <div class="hydro-panel-top"><span id="hydro-panel-kicker">CÔNG TRÌNH / NGOẠI THẤT</span><b>22 CỤM</b></div>
  <h2 id="hydro-title">Năng lượng<br>từ chênh cao.</h2><p id="hydro-description">Khám phá ngoại thất trước. Mở mái và phần bao che để thấy tuyến nước cùng tổ máy bên trong.</p>
- <div class="hydro-actions"><button id="hydro-cutaway" aria-pressed="false">◐ Xem bên trong</button><button id="hydro-isolate" disabled aria-pressed="false">◎ Xem riêng</button></div>
+ <div class="hydro-actions model-part-actions"><button id="hydro-cutaway" aria-pressed="false">◐ Xem bên trong</button><button id="hydro-isolate" disabled aria-pressed="false">◎ Xem riêng</button></div>
  <section id="hydro-principle-panel" hidden>
  <div class="hydro-flow">${flowDiagram(['Hồ','Turbine','Máy phát','Lưới'])}</div>
  <div class="hydro-lesson"><div class="hydro-lesson-nav" aria-label="Các bước nguyên lý">${LESSONS.map((l,i)=>`<button data-lesson="${i}" title="${l.title}" aria-pressed="false">0${i+1}</button>`).join('')}</div><h3 id="hydro-lesson-title"></h3><p id="hydro-lesson-text"></p><div class="hydro-lesson-buttons"><button id="hydro-tour">▷ Tự chuyển bước</button><button id="hydro-lesson-focus">◎ Xem vị trí</button></div><small>Các bước giải thích cùng một hệ thống đang vận hành.</small></div>
@@ -27,7 +27,7 @@ export function mountHydroUI(host){
  <div class="hydro-playback model-playback"><button id="hydro-play" class="hydro-primary">Ⅱ Tạm dừng</button><button id="hydro-slow" aria-pressed="false">0,25×</button><button id="hydro-load" aria-pressed="true">Ngắt tải</button></div>
  <details class="hydro-notes"><summary>Giả định & nguyên lý</summary><p>${LIMITATIONS}</p><a href="https://www.energy.gov/cmei/water/how-hydropower-works" target="_blank" rel="noreferrer">Nguồn: Bộ Năng lượng Hoa Kỳ ↗</a></details>
  </section>
- <div class="hydro-list-heading"><span>DANH MỤC CẤU TẠO</span><button id="hydro-clear">Bỏ chọn</button></div><div class="hydro-part-list">${PARTS.map((p,i)=>`<button data-hpart="${p.id}" aria-pressed="false"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><i>↗</i></button>`).join('')}</div>
+ <div class="hydro-list-heading"><span>DANH MỤC CẤU TẠO</span><button id="hydro-clear">Bỏ chọn</button></div><div class="hydro-part-list model-part-list">${PARTS.map((p,i)=>`<button data-hpart="${p.id}" aria-pressed="false"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><i>↗</i></button>`).join('')}</div>
  <button id="hydro-reset" class="hydro-reset">↺ Đặt lại mô hình</button>
  </aside></main><footer class="hydro-footer model-bottom-bar"><span>HỒ CHỨA → CƠ NĂNG → ĐIỆN NĂNG</span><span>Mô hình giáo dục · Thiết kế nguyên bản</span></footer></div>`;
 }

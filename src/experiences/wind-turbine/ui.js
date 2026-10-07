@@ -6,14 +6,14 @@ export function mountWindUI(host){
  host.innerHTML=`<div class="wind-app model-shell">
  ${header}
  <main class="wind-workspace model-workspace"><section class="wind-stage model-stage"><div id="wind-viewport"></div>
- <div class="wind-heading"><p>NĂNG LƯỢNG TỪ CHUYỂN ĐỘNG</p><h1>Đón gió.<br>Tạo năng lượng<span>.</span></h1><span id="wind-subtitle">Tua-bin ba cánh · hệ truyền động có hộp số</span></div>
+ <div class="wind-heading model-intro"><p>NĂNG LƯỢNG TỪ CHUYỂN ĐỘNG</p><h1>Đón gió.<br>Tạo năng lượng<span>.</span></h1><span id="wind-subtitle">Tua-bin ba cánh · hệ truyền động có hộp số</span></div>
  <div class="wind-views model-view-tools" aria-label="Góc nhìn"><button data-wview="hero">Rotor</button><button data-wview="whole">Toàn bộ</button><button data-wview="machine">Khoang máy</button><button data-wview="rear">Mặt sau</button></div>
  <div id="wind-loading" class="model-loading" role="status">Đang tải tua-bin…</div><div id="wind-label" hidden></div>
- <div class="wind-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="wind-stats"></span></div>
- <div id="wind-explode-panel" class="wind-floating model-explode-card" hidden><div><strong>Tách cấu tạo</strong><output id="wind-explode-value">0%</output></div><p>Mở vỏ trước, tách các cụm theo trục lắp.</p><input id="wind-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="70"><div><button id="wind-auto">▷ Tự tách / lắp</button><button id="wind-assemble">Lắp lại</button></div></div>
+ <div class="wind-stage-footer model-stage-footer"><span>Kéo để xoay · Cuộn / chụm để zoom</span><span id="wind-stats"></span></div>
+ <div id="wind-explode-panel" class="wind-floating floating-controls model-explode-card" hidden><div><strong>Tách cấu tạo</strong><output id="wind-explode-value">0%</output></div><p>Mở vỏ trước, tách các cụm theo trục lắp.</p><input id="wind-explode" aria-label="Mức tách cấu tạo" type="range" min="0" max="100" value="70"><div><button id="wind-auto">▷ Tự tách / lắp</button><button id="wind-assemble">Lắp lại</button></div></div>
  <div id="wind-flow-legend" class="wind-flow-legend" hidden>${flowLegend([{label:'Gió & cơ năng',kind:'control'},{label:'Điện năng',kind:'energy'}])}</div>
  </section>
- <aside class="wind-panel model-inspector"><div class="wind-panel-top"><p>KHÁM PHÁ HỆ THỐNG <span>${PARTS.length} CỤM</span></p><h2 id="wind-part-name">Từ gió đến điện.</h2><p id="wind-part-description">Chọn trực tiếp trên mô hình hoặc trong danh sách để xem vai trò của từng bộ phận.</p><div class="wind-actions"><button id="wind-cutaway" aria-pressed="false">Mở vỏ</button><button id="wind-isolate" disabled aria-pressed="false">Xem riêng</button><button id="wind-focus" disabled>Xem gần</button></div></div>
+ <aside class="wind-panel model-inspector"><div class="wind-panel-top"><p>KHÁM PHÁ HỆ THỐNG <span>${PARTS.length} CỤM</span></p><h2 id="wind-part-name">Từ gió đến điện.</h2><p id="wind-part-description">Chọn trực tiếp trên mô hình hoặc trong danh sách để xem vai trò của từng bộ phận.</p><div class="wind-actions model-part-actions"><button id="wind-cutaway" aria-pressed="false">Mở vỏ</button><button id="wind-isolate" disabled aria-pressed="false">Xem riêng</button><button id="wind-focus" disabled>Xem gần</button></div></div>
  <section id="wind-principle-panel" hidden>
  <div class="wind-flow">${flowDiagram(['Gió','Rotor','Hộp số','Máy phát'])}</div>
  <div class="wind-metrics"><div><output id="wind-rpm">0</output><small>RPM ROTOR</small></div><div><output id="wind-generator">0</output><small>RPM MÁY PHÁT</small></div><div><output id="wind-power">0</output><small>kW MINH HỌA</small></div></div>
@@ -25,7 +25,7 @@ export function mountWindUI(host){
  <div class="wind-lesson"><p>THEO DÒNG NĂNG LƯỢNG</p><div class="wind-steps">${LESSONS.map((l,i)=>`<button data-lesson="${i}" title="${l.title}" aria-pressed="false">0${i+1}</button>`).join('')}</div><h3 id="wind-lesson-title"></h3><p id="wind-lesson-text"></p><div><button id="wind-lesson-focus">Xem vị trí ↗</button><button id="wind-lesson-auto" aria-pressed="false">Tự chuyển bước</button></div></div>
  <p class="wind-note">Mô hình giáo dục · chuyển động hiển thị chậm 0,32×. Hộp số minh họa 6:1; luồng gió và công suất được giản lược, không phải CFD.</p>
  </section>
- <details class="wind-parts" open><summary>Danh mục bộ phận</summary><div>${PARTS.map((p,i)=>`<button data-wpart="${p.id}" aria-pressed="false"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><b>↗</b></button>`).join('')}</div></details>
+ <details class="wind-parts model-part-list" open><summary>Danh mục bộ phận</summary><div>${PARTS.map((p,i)=>`<button data-wpart="${p.id}" aria-pressed="false"><small>${String(i+1).padStart(2,'0')}</small><span>${p.name}</span><b>↗</b></button>`).join('')}</div></details>
  <button id="wind-reset" class="wind-reset">↺ Đặt lại mô hình</button>
  </aside></main><footer class="wind-footer model-bottom-bar"><span>GIÓ → CƠ NĂNG → ĐIỆN NĂNG</span><span>Mô hình giáo dục · VENTO 03</span></footer></div>`;
 }
