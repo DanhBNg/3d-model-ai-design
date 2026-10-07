@@ -6,9 +6,9 @@ export function resolveCatalogAsset(path, baseUrl = '/') {
 
 function cardMarkup(model, baseUrl) {
   const action = model.available
-    ? `<button class="catalog-card__action" type="button" data-open-model="${model.id}">Mở mô hình <span aria-hidden="true">↗</span></button>`
+    ? '<span class="catalog-card__action">Mở mô hình <span aria-hidden="true">↗</span></span>'
     : '<span class="catalog-card__action catalog-card__action--disabled" aria-disabled="true">Đang phát triển</span>';
-  return `<article class="catalog-card${model.available ? '' : ' catalog-card--pending'}">
+  const content = `
     <div class="catalog-card__visual">
       <img src="${resolveCatalogAsset(model.image, baseUrl)}" alt="${model.imageAlt}">
       <span class="catalog-card__index">${model.index}</span>
@@ -18,8 +18,20 @@ function cardMarkup(model, baseUrl) {
       <p>${model.category}</p>
       <h2>${model.title}</h2>
       <div class="catalog-card__footer"><span>${model.description}</span>${action}</div>
-    </div>
+    </div>`;
+  if (model.available) {
+    const href = `${baseUrl.replace(/\/?$/, '/')}models/${model.id}`;
+    return `<a class="catalog-card" href="${href}" data-open-model="${model.id}">${content}
+  </a>`;
+  }
+  return `<article class="catalog-card catalog-card--pending">${content}
   </article>`;
+}
+
+export function shouldInterceptCatalogNavigation(event, link, protocol = globalThis.location?.protocol) {
+  if (event.defaultPrevented || event.button !== 0 || link.target?.toLowerCase() === '_blank') return false;
+  if (protocol === 'file:') return true;
+  return !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
 }
 
 export function renderCatalogMarkup(baseUrl = '/') {
@@ -49,8 +61,10 @@ export function mountCatalog({ root = document.querySelector('#app'), baseUrl = 
   delete document.body.dataset.ready;
   const abort = new AbortController();
   root.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-open-model]');
-    if (button) onOpen?.(button.dataset.openModel);
+    const link = event.target.closest?.('[data-open-model]');
+    if (!link || !onOpen || !shouldInterceptCatalogNavigation(event, link)) return;
+    event.preventDefault();
+    onOpen(link.dataset.openModel);
   }, { signal: abort.signal });
   return () => {
     abort.abort();

@@ -32,14 +32,58 @@ test('router accepts a deployment base path without leaking it into model ids', 
   assert.equal(pathForModel('drone', '/collection/'), '/collection/models/drone');
 });
 
-test('catalog markup exposes both working model entries', async () => {
+test('catalog markup makes every available model card a clean-route link', async () => {
   const { renderCatalogMarkup } = await import('../src/catalog/catalogView.js');
   const markup = renderCatalogMarkup();
-  assert.match(markup, /data-open-model="drone"/);
-  assert.match(markup, /Mở mô hình/);
-  assert.match(markup, /Nhà máy thủy điện/);
-  assert.match(markup, /data-open-model="hydroelectric"/);
-  assert.doesNotMatch(markup, /Đang chuẩn bị/);
+  const cards = [...markup.matchAll(/<a class="catalog-card" href="([^"]+)" data-open-model="([^"]+)">/g)];
+  assert.deepEqual(cards.map((match) => match[2]), [
+    'drone',
+    'hydroelectric',
+    'wind-turbine',
+    'thermal-power',
+    'wireless-charging',
+    'inline-four-engine',
+  ]);
+  assert.deepEqual(cards.map((match) => match[1]), [
+    '/models/drone',
+    '/models/hydroelectric',
+    '/models/wind-turbine',
+    '/models/thermal-power',
+    '/models/wireless-charging',
+    '/models/inline-four-engine',
+  ]);
+  assert.equal((markup.match(/<span class="catalog-card__action">/g) ?? []).length, 6);
+  assert.doesNotMatch(markup, /<button/);
+});
+
+test('catalog model links preserve a deployment base path', async () => {
+  const { renderCatalogMarkup } = await import('../src/catalog/catalogView.js');
+  const markup = renderCatalogMarkup('/collection/');
+  assert.match(markup, /href="\/collection\/models\/drone" data-open-model="drone"/);
+});
+
+test('catalog interception preserves native hosted link gestures and supports file exports', async () => {
+  const { shouldInterceptCatalogNavigation } = await import('../src/catalog/catalogView.js');
+  const link = { target: '' };
+  const event = (overrides = {}) => ({
+    button: 0,
+    defaultPrevented: false,
+    metaKey: false,
+    ctrlKey: false,
+    shiftKey: false,
+    altKey: false,
+    ...overrides,
+  });
+
+  assert.equal(shouldInterceptCatalogNavigation(event(), link, 'https:'), true);
+  assert.equal(shouldInterceptCatalogNavigation(event({ ctrlKey: true }), link, 'https:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event({ metaKey: true }), link, 'https:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event({ shiftKey: true }), link, 'https:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event({ altKey: true }), link, 'https:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event({ button: 1 }), link, 'https:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event({ defaultPrevented: true }), link, 'https:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event(), { target: '_blank' }, 'https:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event({ ctrlKey: true }), link, 'file:'), true);
 });
 
 test('catalog asset URLs support both hosted paths and embedded offline data', async () => {
@@ -56,4 +100,14 @@ test('application keeps routing outside the drone experience and exposes collect
   assert.match(main, /mountDroneExperience/);
   assert.match(main, /popstate/);
   assert.match(viewerUi, /data-exit-model/);
+});
+
+test('catalog styles apply responsive card-link interactions without nested-button selectors', async () => {
+  const css = await readFile(new URL('../src/catalog/catalog.css', import.meta.url), 'utf8');
+  assert.match(css, /\.catalog-card\{[^}]*color:inherit[^}]*text-decoration:none/);
+  assert.match(css, /a\.catalog-card:hover,a\.catalog-card:focus-visible/);
+  assert.doesNotMatch(css, /\.catalog-card--pending:hover/);
+  assert.match(css, /@media\(min-width:1280px\)\{\.catalog-grid\{grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.doesNotMatch(css, /:has\(/);
+  assert.match(css, /\.catalog-card__action\{[^}]*min-height:40px/);
 });
