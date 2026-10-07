@@ -1,10 +1,11 @@
 import { MODEL_CATALOG } from './models.js';
+import { pathForModel } from '../app/router.js';
 
 export function resolveCatalogAsset(path, baseUrl = '/') {
   return path.startsWith('data:') ? path : `${baseUrl}${path}`;
 }
 
-function cardMarkup(model, baseUrl) {
+function cardMarkup(model, baseUrl, fileMode) {
   const action = model.available
     ? '<span class="catalog-card__action">Mở mô hình <span aria-hidden="true">↗</span></span>'
     : '<span class="catalog-card__action catalog-card__action--disabled" aria-disabled="true">Đang phát triển</span>';
@@ -20,7 +21,7 @@ function cardMarkup(model, baseUrl) {
       <div class="catalog-card__footer"><span>${model.description}</span>${action}</div>
     </div>`;
   if (model.available) {
-    const href = `${baseUrl.replace(/\/?$/, '/')}models/${model.id}`;
+    const href = fileMode ? `?model=${encodeURIComponent(model.id)}` : pathForModel(model.id, baseUrl);
     return `<a class="catalog-card" href="${href}" data-open-model="${model.id}">${content}
   </a>`;
   }
@@ -28,22 +29,21 @@ function cardMarkup(model, baseUrl) {
   </article>`;
 }
 
-export function shouldInterceptCatalogNavigation(event, link, protocol = globalThis.location?.protocol) {
+export function shouldInterceptCatalogNavigation(event, link) {
   if (event.defaultPrevented || event.button !== 0 || link.target?.toLowerCase() === '_blank') return false;
-  if (protocol === 'file:') return true;
   return !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
 }
 
-export function createCatalogClickHandler({ onOpen, protocol = globalThis.location?.protocol } = {}) {
+export function createCatalogClickHandler({ onOpen } = {}) {
   return (event) => {
     const link = event.target.closest?.('[data-open-model]');
-    if (!link || !onOpen || !shouldInterceptCatalogNavigation(event, link, protocol)) return;
+    if (!link || !onOpen || !shouldInterceptCatalogNavigation(event, link)) return;
     event.preventDefault();
     onOpen(link.dataset.openModel);
   };
 }
 
-export function renderCatalogMarkup(baseUrl = '/') {
+export function renderCatalogMarkup(baseUrl = '/', { fileMode = false } = {}) {
   return `<main class="catalog-shell">
     <header class="catalog-header">
       <a class="catalog-brand" href="/" data-catalog-home aria-label="Bộ sưu tập mô hình 3D, trang chính">
@@ -57,14 +57,19 @@ export function renderCatalogMarkup(baseUrl = '/') {
       <p>Quan sát cấu tạo, tách từng cụm và tìm hiểu nguyên lý hoạt động qua các mô hình tương tác.</p>
     </section>
     <section class="catalog-grid" aria-label="Danh sách mô hình">
-      ${MODEL_CATALOG.map((model) => cardMarkup(model, baseUrl)).join('')}
+      ${MODEL_CATALOG.map((model) => cardMarkup(model, baseUrl, fileMode)).join('')}
     </section>
     <footer class="catalog-footer"><span>${String(MODEL_CATALOG.length).padStart(2,'0')} MÔ HÌNH</span><span>THIẾT KẾ NGUYÊN BẢN <i>·</i> WEBGL</span></footer>
   </main>`;
 }
 
-export function mountCatalog({ root = document.querySelector('#app'), baseUrl = '/', onOpen }) {
-  root.innerHTML = renderCatalogMarkup(baseUrl);
+export function mountCatalog({
+  root = document.querySelector('#app'),
+  baseUrl = '/',
+  fileMode = globalThis.location?.protocol === 'file:',
+  onOpen,
+}) {
+  root.innerHTML = renderCatalogMarkup(baseUrl, { fileMode });
   document.body.dataset.screen = 'catalog';
   delete document.body.dataset.mode;
   delete document.body.dataset.ready;

@@ -30,6 +30,16 @@ test('router accepts a deployment base path without leaking it into model ids', 
   assert.deepEqual(resolveRoute('/collection/models/drone', '/collection/'), { name: 'model', modelId: 'drone' });
   assert.deepEqual(resolveRoute('/collection/', '/collection/'), { name: 'catalog' });
   assert.equal(pathForModel('drone', '/collection/'), '/collection/models/drone');
+  assert.equal(pathForModel('drone', '/collection//'), '/collection/models/drone');
+  assert.equal(pathForModel('model with/slash', '/collection//'), '/collection/models/model%20with%2Fslash');
+});
+
+test('file routes resolve available model queries and reject missing or unknown ids', async () => {
+  const { resolveFileRoute } = await import('../src/app/router.js');
+  assert.deepEqual(resolveFileRoute('?model=drone'), { name: 'model', modelId: 'drone' });
+  assert.deepEqual(resolveFileRoute('?model=wind-turbine'), { name: 'model', modelId: 'wind-turbine' });
+  assert.deepEqual(resolveFileRoute('?model=missing'), { name: 'catalog' });
+  assert.deepEqual(resolveFileRoute(''), { name: 'catalog' });
 });
 
 test('catalog markup makes every available model card a clean-route link', async () => {
@@ -58,8 +68,15 @@ test('catalog markup makes every available model card a clean-route link', async
 
 test('catalog model links preserve a deployment base path', async () => {
   const { renderCatalogMarkup } = await import('../src/catalog/catalogView.js');
-  const markup = renderCatalogMarkup('/collection/');
+  const markup = renderCatalogMarkup('/collection//');
   assert.match(markup, /href="\/collection\/models\/drone" data-open-model="drone"/);
+});
+
+test('catalog model links expose native standalone file routes', async () => {
+  const { renderCatalogMarkup } = await import('../src/catalog/catalogView.js');
+  const markup = renderCatalogMarkup('./', { fileMode: true });
+  assert.match(markup, /href="\?model=drone" data-open-model="drone"/);
+  assert.match(markup, /href="\?model=inline-four-engine" data-open-model="inline-four-engine"/);
 });
 
 test('catalog interception preserves native hosted link gestures and supports file exports', async () => {
@@ -83,7 +100,9 @@ test('catalog interception preserves native hosted link gestures and supports fi
   assert.equal(shouldInterceptCatalogNavigation(event({ button: 1 }), link, 'https:'), false);
   assert.equal(shouldInterceptCatalogNavigation(event({ defaultPrevented: true }), link, 'https:'), false);
   assert.equal(shouldInterceptCatalogNavigation(event(), { target: '_blank' }, 'https:'), false);
-  assert.equal(shouldInterceptCatalogNavigation(event({ ctrlKey: true }), link, 'file:'), true);
+  assert.equal(shouldInterceptCatalogNavigation(event(), link, 'file:'), true);
+  assert.equal(shouldInterceptCatalogNavigation(event({ ctrlKey: true }), link, 'file:'), false);
+  assert.equal(shouldInterceptCatalogNavigation(event({ metaKey: true }), link, 'file:'), false);
 });
 
 test('delegated catalog click handler opens only intercepted card-link gestures', async () => {
@@ -125,7 +144,9 @@ test('delegated catalog click handler opens only intercepted card-link gestures'
     assert.deepEqual(invoke(gesture), { opened: [], prevented: 0 });
   }
   assert.deepEqual(invoke({ protocol: 'file:' }), { opened: ['drone'], prevented: 1 });
-  assert.deepEqual(invoke({ protocol: 'file:', ctrlKey: true }), { opened: ['drone'], prevented: 1 });
+  assert.deepEqual(invoke({ protocol: 'file:', ctrlKey: true }), { opened: [], prevented: 0 });
+  assert.deepEqual(invoke({ protocol: 'file:', metaKey: true }), { opened: [], prevented: 0 });
+  assert.deepEqual(invoke({ protocol: 'file:', button: 1 }), { opened: [], prevented: 0 });
 });
 
 test('catalog asset URLs support both hosted paths and embedded offline data', async () => {
@@ -141,6 +162,7 @@ test('application keeps routing outside the drone experience and exposes collect
   ]);
   assert.match(main, /mountDroneExperience/);
   assert.match(main, /popstate/);
+  assert.match(main, /resolveFileRoute\(location\.search\)/);
   assert.match(viewerUi, /data-exit-model/);
 });
 

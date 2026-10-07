@@ -19,6 +19,11 @@ export function resolveRoute(pathname, base = '/') {
   return model?.available ? { name: 'model', modelId: model.id } : { name: 'catalog' };
 }
 
+export function resolveFileRoute(search = '') {
+  const model = getModelById(new URLSearchParams(search).get('model'));
+  return model?.available ? { name: 'model', modelId: model.id } : { name: 'catalog' };
+}
+
 export function pathForModel(modelId, base = '/') {
   const normalizedBase = normalizeBase(base);
   return `${normalizedBase === '/' ? '' : normalizedBase.slice(0, -1)}/models/${encodeURIComponent(modelId)}`;

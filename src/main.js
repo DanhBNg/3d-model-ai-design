@@ -1,5 +1,5 @@
 import { mountCatalog } from './catalog/catalogView.js';
-import { catalogPath, pathForModel, resolveRoute } from './app/router.js';
+import { catalogPath, pathForModel, resolveFileRoute, resolveRoute } from './app/router.js';
 import { mountDroneExperience } from './experiences/drone/index.js';
 import { mountHydroExperience } from './experiences/hydroelectric/index.js';
 import { mountWindExperience } from './experiences/wind-turbine/index.js';
@@ -76,7 +76,15 @@ function showRoute(route) {
 }
 
 function navigate(route, { replace = false } = {}) {
-  if (!isFile) {
+  if (isFile) {
+    const url = new URL(location.href);
+    url.search = route.name === 'model' ? `?model=${encodeURIComponent(route.modelId)}` : '';
+    try {
+      history[route.name === 'catalog' || replace ? 'replaceState' : 'pushState']({}, '', url.href);
+    } catch {
+      // Some browsers restrict history mutation for local files; rendering still works.
+    }
+  } else {
     const path = route.name === 'model' ? pathForModel(route.modelId, base) : catalogPath(base);
     history[replace ? 'replaceState' : 'pushState']({}, '', path);
   }
@@ -84,7 +92,7 @@ function navigate(route, { replace = false } = {}) {
 }
 
 function routeFromLocation() {
-  return isFile ? { name: 'catalog' } : resolveRoute(location.pathname, base);
+  return isFile ? resolveFileRoute(location.search) : resolveRoute(location.pathname, base);
 }
 
 window.addEventListener('popstate', () => showRoute(routeFromLocation()));
