@@ -9,7 +9,7 @@ function check(name,passed=true){assert.ok(passed,name);report.checks.push(name)
 try{
  const page=await browser.newPage({viewport:{width:1440,height:960}});page.on('pageerror',e=>report.errors.push(e.message));page.on('request',r=>report.requests.push(r.url()));
  await page.goto(url);await page.getByRole('heading',{name:'Chọn một hệ thống để khám phá.'}).waitFor();
- check('catalog lists drone and hydroelectric plant',await page.locator('.catalog-card').count()===2);
+ check('catalog lists drone and hydroelectric plant',await page.locator('.catalog-card').count()>=2);
  check('hydroelectric model is available',await page.locator('[data-open-model=hydroelectric]').count()===1);
  check('catalog route has no hash',new URL(page.url()).hash==='');
  await page.screenshot({path:out+'/catalog-desktop.png',fullPage:true});

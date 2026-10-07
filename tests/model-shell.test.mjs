@@ -8,6 +8,25 @@ import {
   modelHeader,
 } from '../src/ui/model-shell/markup.js';
 import { expand, pause, play, reset } from '../src/ui/model-shell/icons.js';
+import { mountUI } from '../src/viewer/ui.js';
+
+function captureDroneMarkup() {
+  const host = { innerHTML: '' };
+  const originalDocument = globalThis.document;
+  globalThis.document = {
+    querySelector(selector) {
+      assert.equal(selector, '#app');
+      return host;
+    },
+  };
+  try {
+    mountUI();
+  } finally {
+    if (originalDocument === undefined) delete globalThis.document;
+    else globalThis.document = originalDocument;
+  }
+  return host.innerHTML;
+}
 
 test('model shell styles define the shared theme and responsive behavior', async () => {
   const [tokens, shell, style] = await Promise.all([
@@ -155,4 +174,55 @@ test('icons exports all shared SVG controls', () => {
     assert.match(icon, /<\/svg>$/);
   }
   assert.equal(new Set([play, pause, reset, expand]).size, 4);
+});
+
+test('drone viewer adopts the shared model shell markup contract', async () => {
+  const markup = captureDroneMarkup();
+  const source = await readFile(new URL('../src/viewer/ui.js', import.meta.url), 'utf8');
+  const requiredClasses = [
+    'model-shell',
+    'model-header',
+    'model-workspace',
+    'model-stage',
+    'model-inspector',
+    'model-explode-card',
+    'model-flow-diagram',
+    'model-flow-legend',
+    'model-playback',
+    'model-bottom-bar',
+  ];
+
+  for (const className of requiredClasses) {
+    assert.match(markup, new RegExp(`class="[^"]*\\b${className}\\b`), `${className} should be present`);
+  }
+  assert.equal(markup.match(/class="[^"]*\bmodel-shell\b/g)?.length, 1);
+  assert.match(source, /import\s*\{[^}]*\bmodelHeader\b[^}]*\}\s*from\s*['"]\.\.\/ui\/model-shell\/markup\.js['"]/s);
+  assert.match(markup, /AERO/);
+  assert.match(markup, /\/ Q4/);
+  assert.match(markup, /V\.02/);
+  assert.ok(markup.includes('Nguy\u00ean l\u00fd bay'));
+  assert.match(markup, /<ol class="model-flow-diagram"/);
+  assert.match(markup, /<ul class="model-flow-legend"/);
+  assert.match(source, /\$\('flow-diagram'\)\.innerHTML\s*=\s*flowDiagram\(/);
+});
+
+test('drone shared shell preserves controller and navigation hooks', () => {
+  const markup = captureDroneMarkup();
+  const ids = [
+    'viewport', 'intro-copy', 'stage-status', 'fit', 'part-tag', 'motor-labels',
+    'loading', 'transition', 'explode-controls', 'explode-value', 'explode-slider',
+    'auto', 'explode-reset', 'flight-legend', 'explore-panel', 'part-name',
+    'part-index', 'part-description', 'material-row', 'part-material', 'covers',
+    'isolate', 'gimbal-control', 'gimbal-tilt', 'gimbal-value', 'flight-panel',
+    'flow-diagram', 'flow-copy', 'flight-phase', 'scenario-subtitle',
+    'scenario-description', 'play', 'slow', 'flight-reset', 'flight-clock',
+    'asset-stat', 'render-stat',
+  ];
+
+  for (const id of ids) assert.match(markup, new RegExp(`id="${id}"`), `${id} should be preserved`);
+  for (const mode of ['explore', 'explode', 'flight']) {
+    assert.match(markup, new RegExp(`data-mode="${mode}"`), `data-mode=${mode} should be preserved`);
+  }
+  assert.ok((markup.match(/data-part="/g)?.length ?? 0) > 0);
+  assert.match(markup, /data-exit-model/);
 });

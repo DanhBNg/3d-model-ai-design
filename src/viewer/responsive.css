@@ -1,5 +1,72 @@
-@media(min-width:1600px){.workspace{grid-template-columns:minmax(0,1fr) 380px!important}.inspector>section{padding:28px!important}.part-list{max-height:400px!important}.inspector p{font-size:12px!important}}
-@media(max-width:1100px){.topbar{padding:0 22px!important}.edition{display:none!important}.workspace{grid-template-columns:minmax(0,1fr) 310px!important}.intro{left:25px!important;top:27px!important}.stage-badge{top:auto!important;bottom:62px!important;right:20px!important}.intro h1{font-size:36px!important}.inspector{margin-right:15px!important}.inspector>section{padding:20px 18px!important}.stage-bottom{left:25px!important}.scale-mark{display:none!important}.mode-tabs button{padding:11px 14px!important}}
-@media(max-width:760px){.topbar{height:117px!important;flex-wrap:wrap;justify-content:center!important;gap:0!important;padding:13px 16px 9px!important}.brand{width:100%;justify-content:space-between;gap:8px!important}.brand strong{font-size:23px!important}.brand>svg{width:22px!important;height:22px!important}.mode-tabs{width:100%;margin-top:10px;padding:3px!important;justify-content:space-between}.mode-tabs button{flex:1;padding:10px 4px!important;font-size:10px!important}.mode-tabs button span{font-size:8px!important;margin-right:5px!important}.workspace{display:flex!important;flex-direction:column;height:auto!important;min-height:0!important}.stage{height:520px;flex:none}.intro{top:24px!important;left:21px!important}.eyebrow{font-size:8px!important;letter-spacing:1.2px!important}.intro h1{font-size:31px!important;letter-spacing:-1.4px!important;margin:17px 0 10px!important}.intro p{font-size:10px!important;line-height:1.6!important}.stage-bottom{bottom:16px!important;left:20px!important;right:20px!important}.orbit-hint{font-size:9px!important}.view-tools{right:12px!important;top:43%!important}.view-tools button{width:30px!important;height:32px!important}.stage-badge{bottom:51px!important;right:14px!important;font-size:7px!important;padding:6px 8px!important}.inspector{margin:0 14px 18px!important;overflow:visible!important}.inspector>section{padding:22px!important}.inspector h2{font-size:27px!important}.inspector p{font-size:12px!important}.part-list{max-height:245px!important}.part-list button{padding:13px 6px!important}.part-row-name{font-size:12px!important}.part-row-name small{font-size:9px!important}.panel-tip{margin-top:19px!important}.bottom-bar{height:auto!important;min-height:36px;justify-content:center!important;padding:11px 18px!important}.bottom-bar>span:first-child{display:none}.floating-controls{width:calc(100% - 42px)!important;bottom:51px!important;padding:13px 15px!important}.control-top small{display:none}.control-top output{font-size:24px!important}.floating-controls input{margin:15px 0 10px!important}.control-actions button{font-size:10px!important;padding:8px 11px!important}.range-ends{font-size:8px!important;margin-bottom:11px!important}.control-top b{font-size:11px!important}body[data-mode=explode] .stage{height:680px}body[data-mode=explode] .stage-badge{display:none}body[data-mode=explode] .intro p,body[data-mode=flight] .intro p{display:none}body[data-mode=explode] .intro h1,body[data-mode=flight] .intro h1{font-size:28px!important}.flight-legend{bottom:55px!important;left:20px!important;padding:8px 10px!important;gap:10px!important;font-size:9px!important}.flight-legend small{font-size:7px!important}body[data-mode=flight] .stage-badge{bottom:auto!important;top:24px!important}.scenarios button{padding:12px!important;font-size:11px!important}.flow-tabs button{font-size:11px!important}.motor-readout{padding:10px 0!important}.motor-location{font-size:12px!important}.rpm{font-size:15px!important}.flight-controls button{font-size:12px!important;padding:13px!important}.inspector .scenario-info p,.inspector .flow-copy{font-size:12px!important}.education-note summary{font-size:12px!important}.transition{font-size:10px!important;max-width:90%;white-space:normal!important;text-align:center}.part-tag{max-width:220px;white-space:normal;font-size:9px!important}}
-@media(max-width:380px){.stage{height:470px}.mode-tabs button{font-size:9px!important}.mode-tabs button span{display:none}.intro h1{font-size:29px!important}.motor-tag{font-size:8px!important}.motor-tag b{font-size:9px!important}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.spinner{animation-duration:2s!important}}
+@media (min-width: 1600px) {
+  .model-shell .inspector > section { padding: 28px; }
+  .model-shell .part-list { max-height: 400px; }
+  .model-shell .inspector p { font-size: 12px; }
+}
+
+@media (max-width: 1100px) {
+  .model-shell .intro { top: 27px; left: 25px; }
+  .model-shell .stage-badge { top: auto; right: 20px; bottom: 62px; }
+  .model-shell .intro h1 { font-size: 36px; }
+  .model-shell .inspector > section { padding: 20px 18px; }
+  .model-shell .stage-bottom { left: 25px; }
+  .model-shell .scale-mark { display: none; }
+}
+
+@media (max-width: 720px) {
+  .model-shell .model-stage { min-height: 520px; }
+  .model-shell .intro { top: 24px; left: 21px; }
+  .model-shell .eyebrow { font-size: 8px; letter-spacing: 1.2px; }
+  .model-shell .intro h1 { margin: 17px 0 10px; font-size: 31px; letter-spacing: -1.4px; }
+  .model-shell .intro p { font-size: 10px; line-height: 1.6; }
+  .model-shell .stage-bottom { right: 20px; bottom: 16px; left: 20px; }
+  .model-shell .orbit-hint { font-size: 9px; }
+  .model-shell .model-view-tools { top: 43%; right: 12px; transform: translateY(-50%); }
+  .model-shell .view-tools button { width: 30px; height: 32px; }
+  .model-shell .stage-badge { right: 14px; bottom: 51px; padding: 6px 8px; font-size: 7px; }
+  .model-shell .model-inspector { overflow: visible; }
+  .model-shell .inspector > section { padding: 22px; }
+  .model-shell .inspector h2 { font-size: 27px; }
+  .model-shell .inspector p { font-size: 12px; }
+  .model-shell .part-list { max-height: 245px; }
+  .model-shell .part-list button { padding: 13px 6px; }
+  .model-shell .part-row-name { font-size: 12px; }
+  .model-shell .part-row-name small { font-size: 9px; }
+  .model-shell .panel-tip { margin-top: 19px; }
+  .model-shell .model-bottom-bar { min-height: 36px; justify-content: center; padding: 11px 18px; }
+  .model-shell .model-bottom-bar > span:first-child { display: none; }
+  .model-shell .model-explode-card { bottom: 51px; width: calc(100% - 42px); padding: 13px 15px; }
+  .model-shell .control-top small { display: none; }
+  .model-shell .control-top output { font-size: 24px; }
+  .model-shell .floating-controls input { margin: 15px 0 10px; }
+  .model-shell .control-actions button { padding: 8px 11px; font-size: 10px; }
+  .model-shell .range-ends { margin-bottom: 11px; font-size: 8px; }
+  .model-shell .control-top b { font-size: 11px; }
+  body[data-mode=explode] .model-stage { min-height: 680px; }
+  body[data-mode=explode] .stage-badge { display: none; }
+  body[data-mode=explode] .intro p,
+  body[data-mode=flight] .intro p { display: none; }
+  body[data-mode=explode] .intro h1,
+  body[data-mode=flight] .intro h1 { font-size: 28px; }
+  .model-shell .flight-legend { bottom: 55px; left: 20px; gap: 10px; padding: 8px 10px; font-size: 9px; }
+  .model-shell .flight-legend small { font-size: 7px; }
+  body[data-mode=flight] .stage-badge { top: 24px; bottom: auto; }
+  .model-shell .scenarios button { padding: 12px; font-size: 11px; }
+  .model-shell .flow-tabs button { font-size: 11px; }
+  .model-shell .motor-readout { padding: 10px 0; }
+  .model-shell .motor-location { font-size: 12px; }
+  .model-shell .rpm { font-size: 15px; }
+  .model-shell .flight-controls button { padding: 13px; font-size: 12px; }
+  .model-shell .inspector .scenario-info p,
+  .model-shell .inspector .flow-copy { font-size: 12px; }
+  .model-shell .education-note summary { font-size: 12px; }
+  .model-shell .transition { max-width: 90%; font-size: 10px; white-space: normal; text-align: center; }
+  .model-shell .part-tag { max-width: 220px; font-size: 9px; white-space: normal; }
+}
+
+@media (max-width: 380px) {
+  .model-shell .model-stage { min-height: 470px; }
+  .model-shell .intro h1 { font-size: 29px; }
+  .model-shell .motor-tag { font-size: 8px; }
+  .model-shell .motor-tag b { font-size: 9px; }
+}
