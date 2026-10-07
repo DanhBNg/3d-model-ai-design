@@ -7,7 +7,7 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:960}});
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.goto('http://127.0.0.1:4173/models/wind-turbine');await page.waitForFunction(()=>!!window.__wind);
- await page.waitForTimeout(1000);await page.screenshot({path:out+'/exterior.png'});
+ await page.waitForTimeout(1000);assert.equal(await page.locator('.model-shell .model-header, .model-shell .model-stage, .model-shell .model-inspector, .model-shell .model-bottom-bar').count(),4);checks.push('shared wind shell structure');assert.deepEqual(await page.locator('[data-wmode] span').allTextContents(),['Khám phá','Tách cấu tạo','Nguyên lý']);checks.push('three exact wind modes');await page.screenshot({path:out+'/exterior.png'});
  assert.equal(await page.evaluate(()=>window.__wind.runtime.meshes.nacelle_shell.every(m=>m.visible)),true);checks.push('closed exterior and direct clean route');
  await page.locator('#wind-cutaway').click();await page.waitForFunction(()=>window.__wind.controller.state.cover===1);await page.waitForTimeout(1000);await page.screenshot({path:out+'/cutaway.png'});
  assert.equal(await page.evaluate(()=>window.__wind.runtime.meshes.nacelle_shell.some(m=>m.visible)),false);checks.push('cutaway opens actual interior');

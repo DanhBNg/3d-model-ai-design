@@ -9,6 +9,8 @@ import {
 } from '../src/ui/model-shell/markup.js';
 import { expand, pause, play, reset } from '../src/ui/model-shell/icons.js';
 import { mountUI } from '../src/viewer/ui.js';
+import { mountHydroUI } from '../src/experiences/hydroelectric/ui.js';
+import { mountWindUI } from '../src/experiences/wind-turbine/ui.js';
 
 function captureDroneMarkup() {
   const host = { innerHTML: '' };
@@ -256,3 +258,27 @@ test('drone shared shell preserves controller and navigation hooks', () => {
   assert.ok((markup.match(/data-part="/g)?.length ?? 0) > 0);
   assert.match(markup, /data-exit-model/);
 });
+
+
+function captureExperienceMarkup(mount) {
+  const host = { innerHTML: '' };
+  mount(host);
+  return host.innerHTML;
+}
+
+for (const experience of [
+  { name:'hydroelectric', mount:mountHydroUI, file:'hydroelectric', mode:'hmode', part:'hpart', brand:'HYDRO', code:'01', ids:['hydro-viewport','hydro-fit','hydro-loading','hydro-explode-panel','hydro-principle-panel','hydro-play','hydro-reset'] },
+  { name:'wind turbine', mount:mountWindUI, file:'wind-turbine', mode:'wmode', part:'wpart', brand:'VENTO', code:'03', ids:['wind-viewport','wind-loading','wind-explode-panel','wind-principle-panel','wind-play','wind-reset'] },
+]) {
+  test(`${experience.name} adopts the shared shell and preserves hooks`, async () => {
+    const markup=captureExperienceMarkup(experience.mount);
+    const source=await readFile(new URL(`../src/experiences/${experience.file}/ui.js`,import.meta.url),'utf8');
+    for(const name of ['model-shell','model-header','model-workspace','model-stage','model-inspector','model-view-tools','model-explode-card','model-flow-diagram','model-flow-legend','model-playback','model-loading','model-bottom-bar']) assert.match(markup,new RegExp(`class="[^"]*\\b${name}\\b`));
+    assert.match(source,/import\s*\{[^}]*flowDiagram[^}]*flowLegend[^}]*modelHeader[^}]*\}\s*from\s*['"]\.\.\/\.\.\/ui\/model-shell\/markup\.js['"]/s);
+    assert.match(source,new RegExp(`modelHeader\\(\\{modeAttribute:['"]${experience.mode}['"],brand:['"]${experience.brand}['"],code:['"]${experience.code}['"],principleLabel:['"]Nguy\\u00ean l\\u00fd['"],version:['"]V\\.02['"]\\}\\)`));
+    for(const label of ['Khám phá','Tách cấu tạo','Nguyên lý']) assert.ok(markup.includes(label));
+    for(const id of experience.ids) assert.match(markup,new RegExp(`id="${id}"`));
+    for(const mode of ['explore','explode','principle']) assert.match(markup,new RegExp(`data-${experience.mode}="${mode}"`));
+    assert.ok(markup.includes(`data-${experience.part}="`));
+  });
+}
