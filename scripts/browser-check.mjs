@@ -1,4 +1,5 @@
 import { chromium } from '@playwright/test';
+import { MODEL_CATALOG } from '../src/catalog/models.js';
 import assert from 'node:assert/strict';
 import { mkdirSync,writeFileSync,readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -9,7 +10,9 @@ function check(name,passed=true){assert.ok(passed,name);report.checks.push(name)
 try{
  const page=await browser.newPage({viewport:{width:1440,height:960}});page.on('pageerror',e=>report.errors.push(e.message));page.on('request',r=>report.requests.push(r.url()));
  await page.goto(url);await page.getByRole('heading',{name:'Chọn một hệ thống để khám phá.'}).waitFor();
- check('catalog lists drone and hydroelectric plant',await page.locator('.catalog-card').count()>=2);
+ const listedModelIds=await page.locator('[data-open-model]').evaluateAll(elements=>elements.map(element=>element.dataset.openModel).sort());
+ const expectedModelIds=MODEL_CATALOG.map(model=>model.id).sort();
+ check('catalog matches six available model ids',JSON.stringify(listedModelIds)===JSON.stringify(expectedModelIds));
  check('hydroelectric model is available',await page.locator('[data-open-model=hydroelectric]').count()===1);
  check('catalog route has no hash',new URL(page.url()).hash==='');
  await page.screenshot({path:out+'/catalog-desktop.png',fullPage:true});
@@ -33,7 +36,8 @@ try{
   await page.locator(`[data-scenario=${scenario}]`).click();await page.waitForFunction(()=>window.__demo.controller.state.time>2.5);check('scenario '+scenario,await page.evaluate(id=>window.__demo.controller.state.scenario===id&&window.__demo.controller.state.speeds.every(Number.isFinite),scenario));
   if(['forward','left','yaw_right'].includes(scenario)){await page.locator('#play').click();await page.screenshot({path:`${out}/flight-${scenario}.png`});}
  }
- await page.locator('[data-flow=control]').click();check('control flow explanation visible',(await page.locator('#flow-copy').textContent()).includes('IMU'));await page.locator('[data-flow=both]').click();
+ await page.locator('[data-flow=control]').click();check('control flow explanation and pressed state',await page.evaluate(()=>document.querySelector('[data-flow=control]').getAttribute('aria-pressed')==='true'&&document.querySelector('[data-flow=energy]').getAttribute('aria-pressed')==='false'&&document.querySelector('.model-flow-diagram').getAttribute('aria-label')==='Chu\u1ed7i t\u00edn hi\u1ec7u \u0111i\u1ec1u khi\u1ec3n'&&document.querySelector('#flow-copy').textContent.includes('IMU')));
+ await page.locator('[data-flow=both]').click();check('combined flow label and pressed state',await page.evaluate(()=>document.querySelector('[data-flow=both]').getAttribute('aria-pressed')==='true'&&document.querySelector('[data-flow=control]').getAttribute('aria-pressed')==='false'&&document.querySelector('.model-flow-diagram').getAttribute('aria-label')==='Chu\u1ed7i n\u0103ng l\u01b0\u1ee3ng v\u00e0 t\u00edn hi\u1ec7u \u0111i\u1ec1u khi\u1ec3n'));
  await page.locator('#flight-reset').click();await page.waitForFunction(()=>window.__demo.controller.state.time===0);check('reset restores ground pose and stops',await page.evaluate(()=>window.__demo.runtime.nodes.flightRoot.position.length()===0&&!window.__demo.controller.state.playing));
  const metrics=await page.evaluate(()=>{const d=window.__demo,ms=[...d.frameTimes].sort((a,b)=>a-b);return {model:d.runtime.stats,drawCalls:d.studio.renderer.info.render.calls,loadMs:d.loadMs,frameMedianMs:ms[Math.floor(ms.length/2)],frameP95Ms:ms[Math.floor(ms.length*.95)],viewport:[innerWidth,innerHeight],gpu:d.studio.renderer.getContext().getParameter(d.studio.renderer.getContext().RENDERER)}});report.viewports.push(metrics);
  for(const [width,height]of [[390,844],[320,740],[844,390]]){

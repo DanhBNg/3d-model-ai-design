@@ -122,6 +122,20 @@ test('modelHeader supplies the default principle label and edition version', () 
   assert.match(markup, /V\.02/);
 });
 
+test('modelHeader supports an explicit third mode value', () => {
+  const markup = modelHeader({
+    modeAttribute: 'mode',
+    brand: 'AERO',
+    code: 'Q4',
+    principleLabel: 'Flight principle',
+    thirdModeValue: 'flight',
+  });
+
+  assert.match(markup, /data-mode="flight" aria-pressed="false"/);
+  assert.doesNotMatch(markup, /data-mode="principle"/);
+});
+
+
 test('flowDiagram renders escaped stages in order with arrow separators', () => {
   const markup = flowDiagram(['Pin & cell', '<ESC>', 'Motor']);
 
@@ -134,6 +148,13 @@ test('flowDiagram renders escaped stages in order with arrow separators', () => 
   assert.match(markup, /&lt;ESC&gt;/);
   assert.ok(markup.indexOf('Pin &amp; cell') < markup.indexOf('&lt;ESC&gt;'));
   assert.ok(markup.indexOf('&lt;ESC&gt;') < markup.indexOf('Motor'));
+});
+
+
+test('flowDiagram renders an escaped accessible label override', () => {
+  const markup = flowDiagram(['Controller', 'ESC'], 'Control & <command> chain');
+
+  assert.match(markup, /aria-label="Control &amp; &lt;command&gt; chain"/);
 });
 
 test('flowLegend renders escaped labels and semantic kind classes', () => {
@@ -203,7 +224,16 @@ test('drone viewer adopts the shared model shell markup contract', async () => {
   assert.ok(markup.includes('Nguy\u00ean l\u00fd bay'));
   assert.match(markup, /<ol class="model-flow-diagram"/);
   assert.match(markup, /<ul class="model-flow-legend"/);
+  assert.match(markup, /data-flow="energy" class="active" aria-pressed="true"/);
+  assert.match(markup, /data-flow="control" aria-pressed="false"/);
+  assert.match(markup, /data-flow="both" aria-pressed="false"/);
+  assert.ok(markup.includes('aria-label="Chu\u1ed7i chuy\u1ec3n \u0111\u1ed5i n\u0103ng l\u01b0\u1ee3ng"'));
+  assert.match(source, /thirdModeValue\s*:\s*['"]flight['"]/);
+  assert.doesNotMatch(source, /\.replace\(['"]data-mode=/);
+  assert.match(source, /import\s*\{[^}]*\bicons\b[^}]*\}\s*from\s*['"]\.\.\/ui\/model-shell\/icons\.js['"]/s);
+  assert.doesNotMatch(source, /const\s+icons\s*=/);
   assert.match(source, /\$\('flow-diagram'\)\.innerHTML\s*=\s*flowDiagram\(/);
+  assert.match(source, /btn\.setAttribute\(['"]aria-pressed['"],\s*active\)/);
 });
 
 test('drone shared shell preserves controller and navigation hooks', () => {

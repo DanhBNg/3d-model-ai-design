@@ -19,12 +19,14 @@ export function modelHeader({
   code,
   principleLabel = 'Nguyên lý',
   version = 'V.02',
+  thirdModeValue = 'principle',
 }) {
   const attribute = safeToken(modeAttribute, 'modeAttribute');
+  const thirdMode = safeToken(thirdModeValue, 'thirdModeValue');
   const modes = [
     ['explore', 'Khám phá'],
     ['explode', 'Tách cấu tạo'],
-    ['principle', principleLabel],
+    [thirdMode, principleLabel],
   ];
   const buttons = modes.map(([mode, label], index) => `
       <button type="button" data-${attribute}="${mode}" aria-pressed="${mode === 'explore'}">
@@ -40,8 +42,8 @@ export function modelHeader({
   </header>`;
 }
 
-export function flowDiagram(stages) {
-  return `<ol class="model-flow-diagram" aria-label="Chuỗi chuyển đổi năng lượng">${stages
+export function flowDiagram(stages, accessibleLabel = 'Chu\u1ed7i chuy\u1ec3n \u0111\u1ed5i n\u0103ng l\u01b0\u1ee3ng') {
+  return `<ol class="model-flow-diagram" aria-label="${escapeHtml(accessibleLabel)}">${stages
     .map((stage, index) => `<li>${index ? '<i aria-hidden="true">→</i>' : ''}<span>${escapeHtml(stage)}</span></li>`)
     .join('')}</ol>`;
 }
