@@ -1,6 +1,10 @@
 # Bộ sưu tập mô hình 3D — Drone và Năng lượng
 
-Ứng dụng Three.js độc lập, giao diện tiếng Việt, gồm bốn mô hình: Drone AERO Q4, Thủy điện HYDRO 01, Tua-bin gió VENTO 03 và Nhiệt điện THERMO 04. Có khám phá, tách cấu tạo và nguyên lý vận hành; source Blender, GLB, factory/runtime, controller và viewer tách riêng.
+Ứng dụng Three.js độc lập, giao diện tiếng Việt, gồm sáu mô hình: Drone AERO Q4, Thủy điện HYDRO 01, Tua-bin gió VENTO 03, Nhiệt điện THERMO 04, Sạc không dây FLUX 05 và Động cơ đốt trong IGNIS 06. Có khám phá, tách cấu tạo và nguyên lý vận hành; source Blender, GLB, factory/runtime, controller và viewer tách riêng.
+
+**IGNIS 06** là động cơ xăng 4 xi-lanh thẳng hàng, DOHC 8 van, 37 cụm. Có xem riêng từng xi-lanh, mặt cắt, tách cấu tạo và khảo sát chu kỳ 720° với bốn kỳ nạp/nén/sinh công/xả. Asset **67.816 tam giác, 192 mesh, 1.619.284 byte**; còn 112.184 tam giác và 6.380.716 byte so với ngân sách 180k/8MB. [Hướng dẫn và giản lược](docs/inline-four-engine.md). Lệnh: `npm run engine:build`, `npm run engine:verify`, `npm run engine:render`, `npm run test:engine` (preview tại 4173).
+
+**FLUX 05** có điện thoại, đế sạc, 14 cụm và hai coil xoắn đồng. Chế độ Nguyên lý mở các lớp che để xem từ trường đổi chiều giữa hai coil; chỉnh độ lệch tâm/khoảng cách, xem công suất và pin minh họa, chạy/dừng và tua chậm. [Hướng dẫn và giới hạn](docs/wireless-charging.md). Asset **43.676 tam giác, 39 mesh, 955.528 byte**. Lệnh: `npm run wireless:build`, `npm run wireless:verify`, `npm run wireless:render`, `npm run test:wireless` (preview tại4173).
 
 Nhiệt điện có ngoại thất kín, 26 cụm, turbine cao áp/hạ áp nhiều tầng, máy phát, lò, bình ngưng và tháp giải nhiệt. Mở vỏ hoặc chọn góc **Tổ máy** để xem nội thất. **Nguyên lý** có sáu bài học, tuyến hơi/tái nhiệt, nước cấp, làm mát và điện riêng; chỉnh tải, dừng/chạy, tua chậm. Hướng dẫn và các giản lược: [docs/thermal-power.md](docs/thermal-power.md).
 
@@ -12,7 +16,9 @@ Bản theo ảnh mặt cắt có cửa nhận thấp, lưới chắn rác, ống
 
 ## Danh sách và đường dẫn
 
-- `/` — danh sách bốn mô hình.
+- `/` — danh sách sáu mô hình.
+- `/models/inline-four-engine` — IGNIS 06, động cơ 4 xi-lanh và chế độ xem một xi-lanh.
+- `/models/wireless-charging` — FLUX 05, điện thoại và đế sạc cảm ứng.
 - `/models/thermal-power` — THERMO 04, tổ máy nhiệt điện than với chu trình hơi tái nhiệt.
 - `/models/wind-turbine` — VENTO 03, tua-bin gió ba cánh có hộp số.
 - `/models/drone` — viewer drone hoàn chỉnh; dùng nút **← Bộ sưu tập** để quay lại.
@@ -37,7 +43,7 @@ npm run preview -- --port 4173
 
 ## HTML gửi riêng
 
-`npm run export:html` tạo `output/share/Model-Collection.html`, nhúng catalog, ảnh đại diện, Three.js, CSS và cả bốn GLB. Người nhận mở bằng Chrome/Edge có WebGL2, không cần server hoặc mạng. Liên kết tài liệu tham khảo vẫn cần internet. Kiểm tra bằng `node scripts/check-offline-html.mjs`. Source editable vẫn ở dự án.
+`npm run export:html` tạo `output/share/Model-Collection.html`, nhúng catalog, ảnh đại diện, Three.js, CSS và cả sáu GLB. Người nhận mở bằng Chrome/Edge có WebGL2, không cần server hoặc mạng. Liên kết tài liệu tham khảo vẫn cần internet. Kiểm tra bằng `node scripts/check-offline-html.mjs`. Source editable vẫn ở dự án.
 
 ## Nhà máy nhiệt điện
 

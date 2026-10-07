@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "checks": [
+    "closed phone and pad at clean route",
+    "lift stops charging and landing wakes display",
+    "cutaway select and isolate",
+    "exploded layers",
+    "slider zero restores all parts",
+    "assembles before transmission",
+    "misalignment reduces received energy",
+    "distance reduces coupling",
+    "pause freezes field clock and battery",
+    "slow toggle",
+    "field filter isolates closed field lines",
+    "lesson autoplay",
+    "reset returns exterior",
+    "mobile layout and charging",
+    "dispose and return to five model catalog",
+    "no JavaScript or shader errors"
+  ],
+  "stats": {
+    "triangles": 49032,
+    "drawCalls": 62,
+    "geometries": 58,
+    "asset": {
+      "triangles": 43676,
+      "drawCalls": 39,
+      "assetBytes": 955528,
+      "textures": 0
+    }
+  },
+  "errors": []
+}

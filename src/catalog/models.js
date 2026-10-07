@@ -33,6 +33,18 @@ export const MODEL_CATALOG = Object.freeze([
     status: 'Có thể khám phá', available: true, image: 'images/catalog/thermal-power.png',
     imageAlt: 'Nhà máy nhiệt điện gồm lò hơi, tổ máy, ống khói và tháp giải nhiệt',
   }),
+  Object.freeze({
+    id: 'wireless-charging', index: '05', title: 'Sạc không dây', category: 'Truyền năng lượng',
+    description: 'Tách điện thoại và đế sạc để thấy hai cuộn dây. Khám phá cảm ứng điện từ, độ lệch và khoảng cách sạc.',
+    status: 'Có thể khám phá', available: true, image: 'images/catalog/wireless-charging.png',
+    imageAlt: 'Điện thoại và đế sạc tròn với hai cuộn dây đồng cảm ứng đối diện',
+  }),
+  Object.freeze({
+    id: 'inline-four-engine', index: '06', title: 'Động cơ đốt trong', category: 'Cơ khí & năng lượng',
+    description: 'Bốn xi-lanh, một trục khuỷu. Theo dõi chu trình 720°, bộ cam và xem riêng từng xi-lanh.',
+    status: 'Có thể khám phá', available: true, image: 'images/catalog/inline-four-engine.png',
+    imageAlt: 'Động cơ xăng bốn xi-lanh với trục khuỷu, bộ phối khí và bánh đà',
+  }),
 ]);
 
 export function getModelById(id) {

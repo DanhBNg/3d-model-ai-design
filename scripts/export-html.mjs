@@ -9,6 +9,10 @@ const hydroAsset = readFileSync('public/models/hydroelectric.glb');
 const windAsset = readFileSync('public/models/wind-turbine.glb');
 const thermalAsset = readFileSync('public/models/thermal-power.glb');
 const thermalImage = readFileSync('public/images/catalog/thermal-power.png');
+const wirelessAsset = readFileSync('public/models/wireless-charging.glb');
+const wirelessImage = readFileSync('public/images/catalog/wireless-charging.png');
+const engineAsset = readFileSync('public/models/inline-four-engine.glb');
+const engineImage = readFileSync('public/images/catalog/inline-four-engine.png');
 const windImage = readFileSync('public/images/catalog/wind-turbine.png');
 const dataUrl = (mime, data) => `data:${mime};base64,${data.toString('base64')}`;
 const embedded = {
@@ -19,6 +23,10 @@ const embedded = {
   windModel: dataUrl('model/gltf-binary', windAsset),
   thermalModel: dataUrl('model/gltf-binary', thermalAsset),
   thermalImage: dataUrl('image/png', thermalImage),
+  wirelessModel: dataUrl('model/gltf-binary', wirelessAsset),
+  wirelessImage: dataUrl('image/png', wirelessImage),
+  engineModel: dataUrl('model/gltf-binary', engineAsset),
+  engineImage: dataUrl('image/png', engineImage),
   windImage: dataUrl('image/png', windImage),
 };
 
@@ -43,7 +51,13 @@ const result = await build({
         code = code.replace(windSource, `modelUrl: ${JSON.stringify(embedded.windModel)}`);
         const thermalSource = "modelUrl: `${import.meta.env.BASE_URL}models/thermal-power.glb`";
         if (!code.includes(thermalSource)) throw new Error('Thermal URL changed; update offline exporter.');
-        return code.replace(thermalSource, `modelUrl: ${JSON.stringify(embedded.thermalModel)}`);
+        code = code.replace(thermalSource, `modelUrl: ${JSON.stringify(embedded.thermalModel)}`);
+        const wirelessSource = "modelUrl: `${import.meta.env.BASE_URL}models/wireless-charging.glb`";
+        if (!code.includes(wirelessSource)) throw new Error('Wireless URL changed; update offline exporter.');
+        code = code.replace(wirelessSource, `modelUrl: ${JSON.stringify(embedded.wirelessModel)}`);
+        const engineSource = "modelUrl: `${import.meta.env.BASE_URL}models/inline-four-engine.glb`";
+        if (!code.includes(engineSource)) throw new Error('Engine URL changed; update offline exporter.');
+        return code.replace(engineSource, `modelUrl: ${JSON.stringify(embedded.engineModel)}`);
       }
       if (path.endsWith('/src/catalog/models.js')) {
         for (const [source, replacement] of [
@@ -51,6 +65,8 @@ const result = await build({
           ["images/catalog/hydroelectric.png", embedded.hydroImage],
           ["images/catalog/wind-turbine.png", embedded.windImage],
           ["images/catalog/thermal-power.png", embedded.thermalImage],
+          ["images/catalog/wireless-charging.png", embedded.wirelessImage],
+          ["images/catalog/inline-four-engine.png", embedded.engineImage],
         ]) {
           if (!code.includes(source)) throw new Error(`Catalog asset changed: ${source}`);
           code = code.replace(source, replacement);
@@ -88,5 +104,7 @@ writeFileSync('output/share/export-report.json', JSON.stringify({
   hydroAssetSha256: createHash('sha256').update(hydroAsset).digest('hex'),
   windAssetSha256: createHash('sha256').update(windAsset).digest('hex'),
   thermalAssetSha256: createHash('sha256').update(thermalAsset).digest('hex'),
+  wirelessAssetSha256: createHash('sha256').update(wirelessAsset).digest('hex'),
+  engineAssetSha256: createHash('sha256').update(engineAsset).digest('hex'),
 }, null, 2));
 console.log(`Created output/share/${file} (${(Buffer.byteLength(html) / 1e6).toFixed(2)} MB)`);

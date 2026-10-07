@@ -1,0 +1,8 @@
+{
+  "sha256": "8cf5668c2a47e28d0d7c3846aab5e5de0df746621baa0cc84140a72a6380d686",
+  "shots": [
+    "cutaway"
+  ],
+  "engine": "Cycles",
+  "samples": 16
+}

@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checks": [
+    "clean route loads exterior",
+    "720 degree scrub and four strokes",
+    "single cylinder hides peers without phase reset",
+    "exploded view hides operational overlays",
+    "operation reassembles first",
+    "play and pause",
+    "mobile layout",
+    "reset disposal and six model catalog"
+  ],
+  "stats": {
+    "triangles": 67816,
+    "drawCalls": 192,
+    "assetBytes": 1619284,
+    "textures": 0
+  },
+  "errors": []
+}

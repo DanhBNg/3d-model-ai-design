@@ -4,6 +4,8 @@ import { mountDroneExperience } from './experiences/drone/index.js';
 import { mountHydroExperience } from './experiences/hydroelectric/index.js';
 import { mountWindExperience } from './experiences/wind-turbine/index.js';
 import { mountThermalExperience } from './experiences/thermal-power/index.js';
+import { mountWirelessExperience } from './experiences/wireless-charging/index.js';
+import { mountEngineExperience } from './experiences/inline-four-engine/index.js';
 import './style.css';
 import './catalog/catalog.css';
 import './viewer/theme.css';
@@ -17,6 +19,22 @@ function showRoute(route) {
   disposeScreen();
   app.replaceChildren();
   delete document.body.dataset.ready;
+  if (route.name === 'model' && route.modelId === 'inline-four-engine') {
+    document.title = 'IGNIS 06 — Động cơ bốn xi-lanh';
+    disposeScreen = mountEngineExperience({
+      modelUrl: `${import.meta.env.BASE_URL}models/inline-four-engine.glb`,
+      onExit: () => navigate({ name: 'catalog' }),
+    });
+    return;
+  }
+  if (route.name === 'model' && route.modelId === 'wireless-charging') {
+    document.title = 'FLUX 05 — Sạc không dây';
+    disposeScreen = mountWirelessExperience({
+      modelUrl: `${import.meta.env.BASE_URL}models/wireless-charging.glb`,
+      onExit: () => navigate({ name: 'catalog' }),
+    });
+    return;
+  }
   if (route.name === 'model' && route.modelId === 'thermal-power') {
     document.title = 'THERMO 04 — Nhà máy nhiệt điện';
     disposeScreen = mountThermalExperience({

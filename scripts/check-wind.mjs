@@ -29,7 +29,7 @@ try{
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.locator('[data-wmode=principle]').click();await page.waitForFunction(()=>window.__wind.controller.state.rpm>5);await page.screenshot({path:out+'/mobile-principle.png',fullPage:true});checks.push('mobile view fits and operates');
  const stats=await page.evaluate(()=>{const r=window.__wind.studio.renderer;return {triangles:r.info.render.triangles,drawCalls:r.info.render.calls,geometries:r.info.memory.geometries};});
- await page.locator('#wind-back').click();assert.equal(await page.locator('[data-open-model]').count(),3);assert.equal(await page.evaluate(()=>!!window.__wind),false);checks.push('return disposes viewer and shows three models');
+ await page.locator('#wind-back').click();assert.equal(await page.locator('[data-open-model]').count(),6);assert.equal(await page.evaluate(()=>!!window.__wind),false);checks.push('return disposes viewer and shows six models');
  assert.deepEqual(errors,[]);checks.push('no JavaScript or shader errors');
  writeFileSync(out+'/report.json',JSON.stringify({passed:true,checks,errors,stats},null,2));console.log({checks,stats});
 }finally{await browser.close();}

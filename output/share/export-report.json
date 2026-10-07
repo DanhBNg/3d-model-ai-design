@@ -1,9 +1,11 @@
 {
   "file": "Model-Collection.html",
-  "bytes": 12992262,
-  "sha256": "90bb6f6b46b44d120f5b324666bb0f4de01fb66a5cd38c7fb63426d568f36683",
+  "bytes": 18601503,
+  "sha256": "b43c0da53e1b8ff6b07dfd797c14a046f51b1efe4c1ef3534165b34d3065443e",
   "assetSha256": "106e1ba567b29a506fd287287081b4acaed9b4b645ea263414e49fd1752c8dda",
   "hydroAssetSha256": "bfb8ef5e448f0a7aeee40f21c183443b61b7e0780f1232df280f7e660109bd79",
   "windAssetSha256": "5b3833abac65e3105b7c94ddd8cc1bc59c7937ca738789de2db58ba9a0742df1",
-  "thermalAssetSha256": "57ed01a74dbedbd7c8c845faffc4a122bbf2c749a548a96fdfa7e74937590c33"
+  "thermalAssetSha256": "57ed01a74dbedbd7c8c845faffc4a122bbf2c749a548a96fdfa7e74937590c33",
+  "wirelessAssetSha256": "730227ad33ca19c287f500398a3a370c077b1c1f510b6aaefae6a2bc4c7c5a38",
+  "engineAssetSha256": "b5fa2bf1c22ea82ab3e387ce0f7c4339232e7223dfb71a2332255bce4c54a4dc"
 }

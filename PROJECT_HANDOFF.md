@@ -1,5 +1,43 @@
 # Model collection — Session handoff
 
+## IGNIS 06 — động cơ 4 xi-lanh, 2026-10-06
+
+Đã thêm `/models/inline-four-engine` vào catalog sáu model. DOHC 8 van, 37 cụm; khám phá/chọn/isolate, tách cấu tạo, mặt cắt, xem riêng xi-lanh 1–4 không reset pha. Chu kỳ 720°, cam quay nửa tốc độ, thứ tự nổ 1–3–4–2; scrub, bốn kỳ, RPM, pause/slow/reset, góc truyền cam. Dừng cơ cấu trong explode và khi lắp lại. Camera mặc định đã sửa sang phía mặt cắt sau kiểm tra ảnh browser.
+
+Source: `blender/inline-four-engine/` (Python + editable blend + export blend), `src/models/inline-four-engine/` (factory/runtime/metadata/materials/simulation/controller), `src/experiences/inline-four-engine/` (viewer/UI/effects). Plan `docs/superpowers/plans/2026-10-06-inline-four-engine.md`; nguyên lý/giới hạn `docs/inline-four-engine.md`. Lệnh engine:build/verify/render và test:engine trong package.json.
+
+GLB 67.816 triangles, 192 mesh, 1.619.284 byte. SHA256 `b5fa2bf1c22ea82ab3e387ce0f7c4339232e7223dfb71a2332255bce4c54a4dc`. Budget 180k/8MB, còn 112.184 triangles/6.380.716 byte. Reimport Blender verify: 37 identity roots, 28 pivots, 96 belt markers. Bốn ảnh Cycles và receipt trong `output/inline-four-engine/renders/`; đã xem cả bốn. Browser desktop/mobile/cycle/single-cylinder/timing/explode và report trong `output/inline-four-engine/browser/`.
+
+Kiểm chứng: 53 unit tests đạt; production build đạt; browser 8 nhóm kiểm tra đạt, không JS/shader error. HTML sáu model trong `output/share/Model-Collection.html`, khoảng 18,60MB; export/report/offline-check ở cùng thư mục. Không push/deploy.
+
+Giới hạn: kích thước suy dựng, timing van lý tưởng không overlap/đánh lửa sớm; biên dạng cam và cò mổ giản lược, không giải tiếp xúc động lực học. Không CFD, nhiệt, áp suất, mô-men, ECU. Chưa kiểm va chạm liên tục mọi chi tiết nhỏ trong exploded view; mobile được kiểm bằng viewport Chrome, chưa đo FPS trên điện thoại thật. Trong xem riêng vẫn giữ trục khuỷu/cam/đai chung để giải thích liên hệ cơ khí. Các số và trạng thái bên dưới thuộc lịch sử các model trước.
+
+## Màn hình điện thoại / đặt sạc / giảm bóng — 2026-10-06
+
+Theo phản hồi người dùng, FLUX05 đã giảm metallic/tăng roughness của vỏ, khung, PCB, pin và coil trong source Blender; viewer envMapIntensity xuống.22. Geometry không đổi. GLB mới **955.528byte,43.676triangles,39mesh**, SHA256 `730227ad33ca19c287f500398a3a370c077b1c1f510b6aaefae6a2bc4c7c5a38`; blend/GLB/4renders/thumbnail/reports cập nhật cùng hash. Những số asset ở các mục cũ bên dưới là lịch sử.
+
+Màn hình runtime `src/experiences/wireless-charging/display.js` dùng CanvasTexture512×1024: wallpaper, đồng hồ/ngày mẫu, status icons, camera/earpiece giữ vị trí, vòng pin xanh và chữ báo sạc. Texture tạo tại máy, không tải ảnh/font ngoài; gắn vào assembly màn hình, hỗ trợ hide/isolate/dispose. Blender/GLB giữ biểu tượng màn hình tĩnh; màn hình động là source Three.js, không nằm trong ảnh render Blender. Đồng hồ và phần trăm pin là dữ liệu minh họa.
+
+Khám phá có nút **Nhấc điện thoại / Đặt lên đế sạc**. Controller owns docked/dockProgress/screenTime: tất cả lớp điện thoại nâng/hạ cùng nhau; nhấc ngắt nhận sạc ngay, đặt hoàn tất mới báo sạc; pause/slow giữ nhất quán. Explode không phát năng lượng. Màn hình dựa trên trạng thái controller, có hiệu ứng sáng lúc nhận sạc; không dựa trên timer riêng ngoài controller.
+
+Kiểm chứng:47unit tests đạt; production build, Blender build/verify/render đạt;16browser checks đạt, có ảnh `output/wireless-charging/browser/phone-lifted.png` và `phone-charging.png` đã xem thực tế. Mobile và các mode cũ kiểm lại đạt, không JS/shadererrors. Frame nguyên lý49.032triangles/62calls/58geometries; màn hình thêm một canvas texture runtime và2triangles khi hiện, asset không có texture ảnh. HTML offline đã export lại; kiểm tra kết quả ở `output/share/offline-check.json`. Chưa push/deploy thay đổi.
+
+## Hiện tại — FLUX 05 / sạc không dây, 2026-10-06
+
+Đã thêm model thứ năm `/models/wireless-charging`: điện thoại nguyên bản và đế tròn,14 cụm, coil đồng12 vòng, ferrite, PCB có linh kiện, pin, khung rỗng, màn hình và adapter/cáp. Ba mode khám phá/tách lớp/nguyên lý; chọn/highlight/isolate/focus;5 bước bài học; điều chỉnh lệch tâm±35mm và khoảng cách tâm coil6–18mm, pause/0,25×/reset. Năng lượng AC/DC→nghịch lưu→TX→từ trường→RX→chỉnh lưu/quản lý sạc→pin.
+
+Source riêng `blender/wireless-charging/`, `src/models/wireless-charging/`, `src/experiences/wireless-charging/`; giữ Python, `wireless-charging.blend`, GLB, runtime/controller/viewer. Design OS/Blender dùng phiên bản đã khóa. Plan `docs/superpowers/plans/2026-10-06-wireless-charging.md`, chi tiết `docs/wireless-charging.md`. README/catalog/router/offline exporter và kiểm tra số card đã cập nhật5model.
+
+Asset cuối **43.676 tam giác,39 mesh,955.568 byte**, SHA256 `75e2cf313350b73f74b019800ffcd0ea1434d923274107b10fcee347d30ad2ff`; budget100k/5MB, còn56.324 tam giác/4.044.432byte.14identityroots,2sockets TX[0,.007,0]/RX[0,.013,0],Y-up mét. Bounds[-.131,0,-.077]→[.055,.0255,.077225]. Build/GLB reimport verify đạt,4render closed/exploded/coils/rear kèm receipt đúng hash trong `output/wireless-charging/renders/`. Đã xem ảnh blockout, render cuối và Chrome desktop/mobile; nguồn asset không texture ngoài.
+
+Kiểm chứng cuối: **46 unit tests pass**, production build pass, Blender verify pass; **15 browser checks pass** (`output/wireless-charging/browser/report.json`), gồm closed/cutaway/isolate/explode/zero/reassembly/alignment/gap/pause/slow/filter/lesson/reset/mobile/dispose và không JS/shader error. Frame nguyên lý mobile49.032triangles/62drawcalls/57geometries, không phải FPS benchmark. Browser tích hợp lỗi sandboxPolicy; dùng Chrome Playwright hiện có. Chưa thử điện thoại thật/Safari.
+
+Review độc lập phát hiện jump14mm khi chuyển mode và các vòng từ trường giao nhau trên trục. Đã sửa separation bằng giá trị nội suy riêng, thêm regression test không đổi pose tức thì khi thoát mode. Field dùng nhánh trong xuyên vùng lỗ coil và nhánh trở về ngoài bán kính dây, phân bố quanh trục; đảo thứ tự đường khi đổi cực và giảm sáng qua zero. FerriteRX/pin/PCB đưa ra ngoài trong giảng giải để không che hai coil. Camera mobile đã nới để không cắt adapter/pin. Mũi tên theo sockets; đường nối linh kiện tách ra là sơ đồ năng lượng.
+
+Khoảng cách6–18mm là tham số vật lý bài học; chỉ nguyên lý cộng14mm hiển thị có chú thích, ordinarycutaway giữ khoảng cách thật. Min6mm tránh vỏ xuyên đế. Coupling/công suất là đường cong giáo dục, pin là đồng hồ minh họa; không Maxwell/FEM/Qi/CC-CV/thermal hoặc thời gian sạc thật. Ferrite dịch ra để thấy coil không đại diện cấu hình vận hành thật. Chưa xác minh va chạm liên tục mọi chi tiết trong quá trình tách; các giới hạn rõ trong docs/UI.
+
+Bản HTML `output/share/Model-Collection.html` **15.301.002byte (~15,30MB)** nhúng đủ5model, kiểm file:// offline qua từng model đạt, không remote request/page exception. Preview tại `http://127.0.0.1:4173/models/wireless-charging`; nếu đã dừng chạy `npm run preview -- --port 4173`. Lệnh `wireless:build`, `wireless:verify`, `wireless:render`, `test:wireless` trong package.json. Chưa push thay đổi FLUX05 lên GitHub hoặc deploy; commit GitHub gần nhất vẫn là lần người dùng yêu cầu push trước đó.
+
 ## GitHub — ủy quyền mới
 
 Người dùng yêu cầu đưa toàn bộ dự án lên `https://github.com/DanhBNg/3d-model-ai-design`. Đã khởi tạo Git với nhánh `main`, remote `origin` trỏ repository này (trống khi kiểm tra ban đầu). Yêu cầu này thay thế giới hạn không push của các phiên triển khai trước. `.gitignore` loại dependency, dist, cấu hình máy, Python cache, log và file môi trường; giữ source, `.blend`, GLB, tài liệu và bằng chứng kiểm tra. Không triển khai website.

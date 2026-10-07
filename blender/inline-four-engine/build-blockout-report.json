@@ -1,0 +1,10 @@
+{
+  "blender": "5.2.2 LTS",
+  "triangles": 48188,
+  "meshes": 76,
+  "roots": 37,
+  "bytes": 1068244,
+  "sha256": "8cf5668c2a47e28d0d7c3846aab5e5de0df746621baa0cc84140a72a6380d686",
+  "purpose": "educational web render only",
+  "blockout": true
+}

@@ -2,9 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-test('catalog exposes four ready models', async () => {
+test('catalog exposes six ready models', async () => {
   const { MODEL_CATALOG, getModelById } = await import('../src/catalog/models.js');
-  assert.deepEqual(MODEL_CATALOG.map((model) => model.id), ['drone', 'hydroelectric', 'wind-turbine', 'thermal-power']);
+  assert.deepEqual(MODEL_CATALOG.map((model) => model.id), ['drone', 'hydroelectric', 'wind-turbine', 'thermal-power', 'wireless-charging', 'inline-four-engine']);
+  assert.equal(getModelById('inline-four-engine').available, true);
+  assert.equal(getModelById('wireless-charging').available, true);
   assert.equal(getModelById('thermal-power').available, true);
   assert.equal(getModelById('wind-turbine').available, true);
   assert.equal(getModelById('drone').available, true);

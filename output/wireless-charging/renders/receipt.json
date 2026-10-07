@@ -1,0 +1,11 @@
+{
+  "sha256": "730227ad33ca19c287f500398a3a370c077b1c1f510b6aaefae6a2bc4c7c5a38",
+  "shots": [
+    "closed",
+    "exploded",
+    "coils",
+    "rear"
+  ],
+  "engine": "Cycles",
+  "samples": 20
+}

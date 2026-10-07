@@ -1,0 +1,31 @@
+{
+  "sha256": "b5fa2bf1c22ea82ab3e387ce0f7c4339232e7223dfb71a2332255bce4c54a4dc",
+  "assemblies": 37,
+  "pivots": 28,
+  "triangles": 67816,
+  "meshes": 192,
+  "bytes": 1619284,
+  "bounds": {
+    "min": [
+      -0.25200000405311584,
+      0.017977461218833923,
+      -0.14377309381961823
+    ],
+    "max": [
+      0.2720000147819519,
+      0.4129999876022339,
+      0.14377309381961823
+    ]
+  },
+  "upAxis": "Y",
+  "manufacturing": "NOT_REQUESTED",
+  "checks": [
+    "exact 37 identity roots",
+    "28 pivot positions and parents",
+    "finite geometry",
+    "materials",
+    "budget",
+    "96 animated belt marker nodes",
+    "negative pivot displacement control"
+  ]
+}

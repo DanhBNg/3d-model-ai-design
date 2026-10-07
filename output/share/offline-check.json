@@ -3,7 +3,7 @@
   "offline": true,
   "openedVia": "file://",
   "checks": [
-    "catalog with four entries",
+    "catalog with six entries",
     "load embedded GLB",
     "explode 100%",
     "assemble then fly",
@@ -13,6 +13,8 @@
     "hydro power generation",
     "wind generation",
     "thermal generation",
+    "wireless charging",
+    "engine cycle",
     "return to catalog",
     "no remote requests",
     "no page exceptions"

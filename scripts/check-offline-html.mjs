@@ -32,8 +32,14 @@ try{
  await page.locator('#wind-back').click();await page.locator('[data-open-model="wind-turbine"]').waitFor();
  await page.locator('[data-open-model="thermal-power"]').click();await page.waitForFunction(()=>!!window.__thermal);
  await page.locator('[data-tmode="principle"]').click();await page.waitForFunction(()=>window.__thermal.controller.state.powerMW>30);
- await page.locator('#thermal-back').click();assert.equal(await page.locator('[data-open-model]').count(),4);
+ await page.locator('#thermal-back').click();
+ await page.locator('[data-open-model="wireless-charging"]').click();await page.waitForFunction(()=>!!window.__wireless);
+ await page.evaluate(()=>window.__wireless.controller.setMode('principle'));await page.waitForFunction(()=>window.__wireless.controller.state.receivedW>1);
+ await page.locator('#wireless-back').click();
+ await page.locator('[data-open-model="inline-four-engine"]').click();await page.waitForFunction(()=>!!window.__engine);
+ await page.evaluate(()=>window.__engine.controller.setMode('principle'));await page.waitForFunction(()=>window.__engine.controller.state.time>1);
+ await page.locator('#engine-back').click();assert.equal(await page.locator('[data-open-model]').count(),6);
  assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
- writeFileSync('output/share/offline-check.json',JSON.stringify({passed:true,offline:true,openedVia:'file://',checks:['catalog with four entries','load embedded GLB','explode 100%','assemble then fly','pause','hydro exterior','hydro cutaway','hydro power generation','wind generation','thermal generation','return to catalog','no remote requests','no page exceptions'],errors,network},null,2));
+ writeFileSync('output/share/offline-check.json',JSON.stringify({passed:true,offline:true,openedVia:'file://',checks:['catalog with six entries','load embedded GLB','explode 100%','assemble then fly','pause','hydro exterior','hydro cutaway','hydro power generation','wind generation','thermal generation','wireless charging','engine cycle','return to catalog','no remote requests','no page exceptions'],errors,network},null,2));
  console.log('PASS: standalone collection opens via file:// offline; catalog/drone/return and existing interactions work; zero remote requests.');
 }finally{await browser.close()}

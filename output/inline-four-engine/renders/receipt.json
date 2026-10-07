@@ -1,0 +1,11 @@
+{
+  "sha256": "b5fa2bf1c22ea82ab3e387ce0f7c4339232e7223dfb71a2332255bce4c54a4dc",
+  "shots": [
+    "cutaway",
+    "closed",
+    "timing",
+    "rear"
+  ],
+  "engine": "Cycles",
+  "samples": 16
+}
