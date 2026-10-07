@@ -34,6 +34,15 @@ export function shouldInterceptCatalogNavigation(event, link, protocol = globalT
   return !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
 }
 
+export function createCatalogClickHandler({ onOpen, protocol = globalThis.location?.protocol } = {}) {
+  return (event) => {
+    const link = event.target.closest?.('[data-open-model]');
+    if (!link || !onOpen || !shouldInterceptCatalogNavigation(event, link, protocol)) return;
+    event.preventDefault();
+    onOpen(link.dataset.openModel);
+  };
+}
+
 export function renderCatalogMarkup(baseUrl = '/') {
   return `<main class="catalog-shell">
     <header class="catalog-header">
@@ -60,12 +69,7 @@ export function mountCatalog({ root = document.querySelector('#app'), baseUrl = 
   delete document.body.dataset.mode;
   delete document.body.dataset.ready;
   const abort = new AbortController();
-  root.addEventListener('click', (event) => {
-    const link = event.target.closest?.('[data-open-model]');
-    if (!link || !onOpen || !shouldInterceptCatalogNavigation(event, link)) return;
-    event.preventDefault();
-    onOpen(link.dataset.openModel);
-  }, { signal: abort.signal });
+  root.addEventListener('click', createCatalogClickHandler({ onOpen }), { signal: abort.signal });
   return () => {
     abort.abort();
     root.replaceChildren();

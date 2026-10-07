@@ -86,6 +86,48 @@ test('catalog interception preserves native hosted link gestures and supports fi
   assert.equal(shouldInterceptCatalogNavigation(event({ ctrlKey: true }), link, 'file:'), true);
 });
 
+test('delegated catalog click handler opens only intercepted card-link gestures', async () => {
+  const { createCatalogClickHandler } = await import('../src/catalog/catalogView.js');
+  const invoke = ({ protocol = 'https:', target = '', ...overrides } = {}) => {
+    const opened = [];
+    let prevented = 0;
+    const link = { target, dataset: { openModel: 'drone' } };
+    const event = {
+      button: 0,
+      defaultPrevented: false,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false,
+      target: {
+        closest(selector) {
+          assert.equal(selector, '[data-open-model]');
+          return link;
+        },
+      },
+      preventDefault() { prevented += 1; },
+      ...overrides,
+    };
+    createCatalogClickHandler({ onOpen: (id) => opened.push(id), protocol })(event);
+    return { opened, prevented };
+  };
+
+  assert.deepEqual(invoke(), { opened: ['drone'], prevented: 1 });
+  for (const gesture of [
+    { ctrlKey: true },
+    { metaKey: true },
+    { shiftKey: true },
+    { altKey: true },
+    { button: 1 },
+    { target: '_blank' },
+    { defaultPrevented: true },
+  ]) {
+    assert.deepEqual(invoke(gesture), { opened: [], prevented: 0 });
+  }
+  assert.deepEqual(invoke({ protocol: 'file:' }), { opened: ['drone'], prevented: 1 });
+  assert.deepEqual(invoke({ protocol: 'file:', ctrlKey: true }), { opened: ['drone'], prevented: 1 });
+});
+
 test('catalog asset URLs support both hosted paths and embedded offline data', async () => {
   const { resolveCatalogAsset } = await import('../src/catalog/catalogView.js');
   assert.equal(resolveCatalogAsset('images/catalog/drone.png', '/demo/'), '/demo/images/catalog/drone.png');
