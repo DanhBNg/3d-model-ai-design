@@ -32,7 +32,8 @@
     "hydro:verify": "node scripts/build-hydro.mjs --verify",
     "hydro:render": "node scripts/build-hydro.mjs --render",
     "test:hydro": "node scripts/check-hydro.mjs",
-    "test:browser": "node scripts/browser-check.mjs"
+    "test:browser": "node scripts/browser-check.mjs",
+    "test:interface": "node scripts/check-unified-interface.mjs"
   },
   "dependencies": {
     "three": "0.180.0"

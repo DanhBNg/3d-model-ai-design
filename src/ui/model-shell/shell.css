@@ -350,12 +350,16 @@
   .model-shell .model-header__modes {
     order: 3;
     width: 100%;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: hidden;
   }
 
   .model-shell .model-mode-tabs button,
   .model-shell .model-header__modes button {
-    flex: 1 0 auto;
+    min-width: 0;
+    padding-inline: 6px;
+    font-size: clamp(0.7rem, 3.6vw, 0.9rem);
   }
 
   .model-shell .model-stage {
