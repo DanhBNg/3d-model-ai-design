@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 
 import {
   flowDiagram,
@@ -7,6 +8,36 @@ import {
   modelHeader,
 } from '../src/ui/model-shell/markup.js';
 import { expand, pause, play, reset } from '../src/ui/model-shell/icons.js';
+
+test('model shell styles define the shared theme and responsive behavior', async () => {
+  const [tokens, shell] = await Promise.all([
+    readFile(new URL('../src/ui/model-shell/tokens.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/ui/model-shell/shell.css', import.meta.url), 'utf8'),
+  ]);
+
+  const expectedTokens = {
+    '--model-bg': '#252930',
+    '--model-header': '#1b1f25',
+    '--model-panel': '#20252c',
+    '--model-surface': '#292f37',
+    '--model-ink': '#edf0f3',
+    '--model-muted': '#aeb9c4',
+    '--model-line': '#424b56',
+    '--model-accent': '#f1a164',
+    '--model-active': '#49624f',
+    '--model-control': '#5ad1bd',
+    '--model-radius': '10px',
+    '--model-header-height': '72px',
+    '--model-panel-width': '338px',
+  };
+
+  for (const [name, value] of Object.entries(expectedTokens)) {
+    assert.match(tokens, new RegExp(`${name}\\s*:\\s*${value.replace('#', '\\#')}\\s*;`));
+  }
+
+  assert.match(shell, /@media\s*\(max-width:\s*720px\)/);
+  assert.match(shell, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+});
 
 test('modelHeader renders the shared navigation and mode controls', () => {
   const markup = modelHeader({

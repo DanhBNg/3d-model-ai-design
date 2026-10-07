@@ -1,0 +1,380 @@
+.model-shell {
+  min-width: 0;
+  min-height: 100dvh;
+  color: var(--model-ink);
+  background: var(--model-bg);
+  display: grid;
+  grid-template:
+    "header header" var(--model-header-height)
+    "stage inspector" minmax(0, 1fr)
+    "bottom bottom" auto
+    / minmax(0, 1fr) var(--model-panel-width);
+  overflow: hidden;
+}
+
+.model-shell .model-header {
+  grid-area: header;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--model-line);
+  background: var(--model-header);
+}
+
+.model-shell .model-brand,
+.model-shell .model-header__brand {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--model-ink);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+
+.model-shell .model-brand small,
+.model-shell .model-header__brand em {
+  color: var(--model-muted);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+
+.model-shell .model-header__home {
+  color: var(--model-muted);
+  text-decoration: none;
+}
+
+.model-shell .model-mode-tabs,
+.model-shell .model-header__modes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--model-line);
+  border-radius: var(--model-radius);
+  background: var(--model-surface);
+}
+
+.model-shell .model-mode-tabs button,
+.model-shell .model-header__modes button {
+  border-color: transparent;
+  background: transparent;
+}
+
+.model-shell .model-mode-tabs button[aria-pressed="true"],
+.model-shell .model-header__modes button[aria-pressed="true"] {
+  color: var(--model-ink);
+  border-color: var(--model-active);
+  background: var(--model-active);
+}
+
+.model-shell .model-header__edition {
+  color: var(--model-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.model-shell .model-stage {
+  grid-area: stage;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.model-shell .model-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.model-shell .model-inspector {
+  grid-area: inspector;
+  min-width: 0;
+  min-height: 0;
+  padding: 22px;
+  overflow: auto;
+  border-left: 1px solid var(--model-line);
+  background: var(--model-panel);
+  scrollbar-color: var(--model-line) transparent;
+}
+
+.model-shell .model-inspector > :first-child {
+  margin-top: 0;
+}
+
+.model-shell .model-inspector > :last-child {
+  margin-bottom: 0;
+}
+
+.model-shell .model-view-tools {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 20px;
+  display: grid;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--model-line);
+  border-radius: var(--model-radius);
+  background: color-mix(in srgb, var(--model-surface) 90%, transparent);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 24%);
+  transform: translateY(-50%);
+  backdrop-filter: blur(10px);
+}
+
+.model-shell .model-explode-card,
+.model-shell .model-playback {
+  border: 1px solid var(--model-line);
+  border-radius: var(--model-radius);
+  background: var(--model-surface);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 18%);
+}
+
+.model-shell .model-explode-card {
+  padding: 18px;
+}
+
+.model-shell .model-flow-diagram,
+.model-shell .model-flow-legend {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.model-shell .model-flow-diagram {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--model-accent);
+}
+
+.model-shell .model-flow-diagram li {
+  min-width: 0;
+  flex: 1;
+  padding: 9px;
+  border: 1px solid var(--model-line);
+  border-radius: calc(var(--model-radius) - 3px);
+  background: var(--model-bg);
+  text-align: center;
+}
+
+.model-shell .model-flow-diagram i {
+  flex: 0 0 auto;
+  color: var(--model-muted);
+  font-style: normal;
+}
+
+.model-shell .model-flow-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  color: var(--model-muted);
+}
+
+.model-shell .model-flow-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.model-shell .model-flow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.model-shell .model-flow-dot--energy {
+  color: var(--model-accent);
+}
+
+.model-shell .model-flow-dot--control {
+  color: var(--model-control);
+}
+
+.model-shell .model-playback {
+  position: absolute;
+  z-index: 2;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+}
+
+.model-shell .model-bottom-bar {
+  grid-area: bottom;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 28px;
+  border-top: 1px solid var(--model-line);
+  color: var(--model-muted);
+  background: var(--model-header);
+  font-size: 0.75rem;
+}
+
+.model-shell button,
+.model-shell input,
+.model-shell a {
+  font: inherit;
+}
+
+.model-shell button {
+  min-height: 36px;
+  padding: 8px 12px;
+  color: var(--model-ink);
+  border: 1px solid var(--model-line);
+  border-radius: calc(var(--model-radius) - 3px);
+  background: var(--model-surface);
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.model-shell button:hover:not(:disabled) {
+  border-color: var(--model-control);
+  background: color-mix(in srgb, var(--model-surface) 80%, var(--model-control));
+}
+
+.model-shell button:disabled,
+.model-shell input:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.model-shell button:focus-visible,
+.model-shell a:focus-visible,
+.model-shell input:focus-visible,
+.model-shell [tabindex]:focus-visible {
+  outline: 3px solid var(--model-control);
+  outline-offset: 3px;
+}
+
+.model-shell input[type="range"] {
+  width: 100%;
+  accent-color: var(--model-control);
+  cursor: pointer;
+}
+
+.model-shell .model-loading {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  color: var(--model-muted);
+  background: color-mix(in srgb, var(--model-bg) 92%, transparent);
+  text-align: center;
+}
+
+.model-shell .model-loading::before {
+  width: 28px;
+  height: 28px;
+  margin-inline: auto;
+  border: 2px solid var(--model-line);
+  border-top-color: var(--model-control);
+  border-radius: 50%;
+  content: "";
+  animation: model-shell-spin 900ms linear infinite;
+}
+
+@keyframes model-shell-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (max-width: 720px) {
+  .model-shell {
+    min-height: 100dvh;
+    grid-template:
+      "header" auto
+      "stage" minmax(55dvh, 1fr)
+      "inspector" auto
+      "bottom" auto
+      / minmax(0, 1fr);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .model-shell .model-header {
+    min-height: var(--model-header-height);
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    padding: 12px 16px;
+  }
+
+  .model-shell .model-mode-tabs,
+  .model-shell .model-header__modes {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .model-shell .model-mode-tabs button,
+  .model-shell .model-header__modes button {
+    flex: 1 0 auto;
+  }
+
+  .model-shell .model-stage {
+    width: 100%;
+    min-height: 55dvh;
+  }
+
+  .model-shell .model-inspector {
+    width: 100%;
+    max-height: none;
+    border-top: 1px solid var(--model-line);
+    border-left: 0;
+  }
+
+  .model-shell .model-view-tools {
+    top: 16px;
+    right: 16px;
+    transform: none;
+  }
+
+  .model-shell .model-playback {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+  }
+
+  .model-shell .model-flow-diagram {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .model-shell .model-flow-diagram i {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+
+  .model-shell .model-bottom-bar {
+    flex-wrap: wrap;
+    padding-inline: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .model-shell *,
+  .model-shell *::before,
+  .model-shell *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

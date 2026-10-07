@@ -1,0 +1,15 @@
+:root {
+  --model-bg: #252930;
+  --model-header: #1b1f25;
+  --model-panel: #20252c;
+  --model-surface: #292f37;
+  --model-ink: #edf0f3;
+  --model-muted: #aeb9c4;
+  --model-line: #424b56;
+  --model-accent: #f1a164;
+  --model-active: #49624f;
+  --model-control: #5ad1bd;
+  --model-radius: 10px;
+  --model-header-height: 72px;
+  --model-panel-width: 338px;
+}
