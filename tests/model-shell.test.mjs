@@ -117,6 +117,14 @@ test('modelHeader renders the shared navigation and mode controls', () => {
   assert.match(markup, /INTERACTIVE LAB/);
 });
 
+test('modelHeader renders validated navigation hook IDs without string adaptation', () => {
+  const markup = modelHeader({ modeAttribute: 'hmode', brand: 'HYDRO', code: '01', homeId: 'hydro-back', brandId: 'hydro-home', brandHref: '/' });
+  assert.match(markup, /class="model-header__home" href="\/" id="hydro-back"/);
+  assert.match(markup, /class="model-header__brand" href="\/" id="hydro-home"/);
+  assert.throws(() => modelHeader({ modeAttribute: 'mode', brand: 'X', code: '01', homeId: '<bad' }), /homeId/);
+  assert.throws(() => modelHeader({ modeAttribute: 'mode', brand: 'X', code: '01', brandHref: 'javascript:bad' }), /brandHref/);
+});
+
 test('modelHeader supplies the default principle label and edition version', () => {
   const markup = modelHeader({ modeAttribute: 'mode', brand: 'MODEL', code: '02' });
 
@@ -267,15 +275,18 @@ function captureExperienceMarkup(mount) {
 }
 
 for (const experience of [
-  { name:'hydroelectric', mount:mountHydroUI, file:'hydroelectric', mode:'hmode', part:'hpart', brand:'HYDRO', code:'01', ids:['hydro-viewport','hydro-fit','hydro-loading','hydro-explode-panel','hydro-assemble','hydro-principle-panel','hydro-play','hydro-reset'] },
-  { name:'wind turbine', mount:mountWindUI, file:'wind-turbine', mode:'wmode', part:'wpart', brand:'VENTO', code:'03', ids:['wind-viewport','wind-loading','wind-explode-panel','wind-principle-panel','wind-play','wind-reset'] },
+  { name:'hydroelectric', mount:mountHydroUI, file:'hydroelectric', indexFile:'hydroelectric', mode:'hmode', part:'hpart', brand:'HYDRO', code:'01', ids:['hydro-back','hydro-home','hydro-viewport','hydro-fit','hydro-loading','hydro-cutaway','hydro-explode-panel','hydro-assemble','hydro-principle-panel','hydro-tour','hydro-lesson-focus','hydro-play','hydro-reset'] },
+  { name:'wind turbine', mount:mountWindUI, file:'wind-turbine', indexFile:'wind-turbine', mode:'wmode', part:'wpart', brand:'VENTO', code:'03', ids:['wind-back','wind-viewport','wind-loading','wind-cutaway','wind-isolate','wind-explode-panel','wind-assemble','wind-principle-panel','wind-speed','wind-direction','wind-play','wind-reset'] },
 ]) {
   test(`${experience.name} adopts the shared shell and preserves hooks`, async () => {
     const markup=captureExperienceMarkup(experience.mount);
     const source=await readFile(new URL(`../src/experiences/${experience.file}/ui.js`,import.meta.url),'utf8');
+    const indexSource=await readFile(new URL(`../src/experiences/${experience.indexFile}/index.js`,import.meta.url),'utf8');
     for(const name of ['model-shell','model-header','model-workspace','model-stage','model-inspector','model-view-tools','model-explode-card','model-flow-diagram','model-flow-legend','model-playback','model-loading','model-bottom-bar']) assert.match(markup,new RegExp(`class="[^"]*\\b${name}\\b`));
     assert.match(source,/import\s*\{[^}]*flowDiagram[^}]*flowLegend[^}]*modelHeader[^}]*\}\s*from\s*['"]\.\.\/\.\.\/ui\/model-shell\/markup\.js['"]/s);
-    assert.match(source,new RegExp(`modelHeader\\(\\{modeAttribute:['"]${experience.mode}['"],brand:['"]${experience.brand}['"],code:['"]${experience.code}['"],principleLabel:['"]Nguy\\u00ean l\\u00fd['"],version:['"]V\\.02['"]\\}\\)`));
+    assert.doesNotMatch(source,/modelHeader\([^;]+\)\.replace/s);
+    assert.match(indexSource,/addEventListener\('click',event=>\{event\.preventDefault\(\);if\(!ui\)/);
+    assert.match(source,new RegExp(`modelHeader\\(\\{modeAttribute:['"]${experience.mode}['"],brand:['"]${experience.brand}['"],code:['"]${experience.code}['"],principleLabel:['"]Nguy\\u00ean l\\u00fd['"],version:['"]V\\.02['"][^}]*\\}\\)`));
     for(const label of ['Khám phá','Tách cấu tạo','Nguyên lý']) assert.ok(markup.includes(label));
     for(const id of experience.ids) assert.match(markup,new RegExp(`id="${id}"`));
     for(const mode of ['explore','explode','principle']) assert.match(markup,new RegExp(`data-${experience.mode}="${mode}"`));

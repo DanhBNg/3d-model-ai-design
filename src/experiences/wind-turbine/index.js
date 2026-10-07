@@ -9,7 +9,7 @@ import './style.css';
 export function mountWindExperience({modelUrl,onExit}){
  const host=document.querySelector('#app');mountWindUI(host);document.body.dataset.screen='wind';delete document.body.dataset.mode;
  const abort=new AbortController();let dead=false,root,studio,c,effects,ui,raf=0;
- host.querySelector('#wind-back').addEventListener('click',()=>{if(!ui)onExit();},{signal:abort.signal});
+ host.querySelector('#wind-back').addEventListener('click',event=>{event.preventDefault();if(!ui)onExit();},{signal:abort.signal});
  function dispose(){if(dead)return;dead=true;abort.abort();cancelAnimationFrame(raf);ui?.dispose();effects?.dispose();c?.dispose();root?.userData.sculptRuntime.dispose();studio?.dispose();if(window.__wind?.dispose===dispose)delete window.__wind;}
  async function start(){try{
   const viewport=host.querySelector('#wind-viewport');studio=createWindStudio(viewport);root=await loadWindModel({url:modelUrl,signal:abort.signal});if(dead){root.userData.sculptRuntime.dispose();return;}

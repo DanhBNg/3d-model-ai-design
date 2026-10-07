@@ -2,7 +2,7 @@ import {PARTS,PART_BY_ID,LESSONS} from '../../models/wind-turbine/metadata.js';
 import { flowDiagram, flowLegend, modelHeader } from '../../ui/model-shell/markup.js';
 
 export function mountWindUI(host){
- const header=modelHeader({modeAttribute:'wmode',brand:'VENTO',code:'03',principleLabel:'Nguyên lý',version:'V.02'}).replace('data-exit-model','data-exit-model id="wind-back"');
+ const header=modelHeader({modeAttribute:'wmode',brand:'VENTO',code:'03',principleLabel:'Nguyên lý',version:'V.02',homeId:'wind-back'});
  host.innerHTML=`<div class="wind-app model-shell">
  ${header}
  <main class="wind-workspace model-workspace"><section class="wind-stage model-stage"><div id="wind-viewport"></div>

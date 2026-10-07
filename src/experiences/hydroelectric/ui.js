@@ -3,7 +3,7 @@ import { PARTS,PART_BY_ID,LIMITATIONS } from '../../models/hydroelectric/metadat
 import { flowDiagram, flowLegend, modelHeader } from '../../ui/model-shell/markup.js';
 
 export function mountHydroUI(host){
- const header=modelHeader({modeAttribute:'hmode',brand:'HYDRO',code:'01',principleLabel:'Nguyên lý',version:'V.02'}).replace('data-exit-model','data-exit-model id="hydro-back"').replace('<strong class="model-header__brand">','<a class="model-header__brand" href="/" id="hydro-home">').replace('</strong>','</a>');
+ const header=modelHeader({modeAttribute:'hmode',brand:'HYDRO',code:'01',principleLabel:'Nguyên lý',version:'V.02',homeId:'hydro-back',brandId:'hydro-home',brandHref:'/'});
  host.innerHTML=`<div class="hydro-app model-shell">
  ${header}
  <main class="hydro-layout model-workspace"><section class="hydro-stage model-stage" aria-label="Mô hình nhà máy"><div id="hydro-viewport"></div>

@@ -30,6 +30,7 @@ try{
  await page.locator('[data-wmode=principle]').click();await page.waitForFunction(()=>window.__wind.controller.state.rpm>5);await page.screenshot({path:out+'/mobile-principle.png',fullPage:true});checks.push('mobile view fits and operates');
  const stats=await page.evaluate(()=>{const r=window.__wind.studio.renderer;return {triangles:r.info.render.triangles,drawCalls:r.info.render.calls,geometries:r.info.memory.geometries};});
  await page.locator('#wind-back').click();assert.equal(await page.locator('[data-open-model]').count(),6);assert.equal(await page.evaluate(()=>!!window.__wind),false);checks.push('return disposes viewer and shows six models');
+ const broken=await browser.newPage();await broken.route('**/models/wind-turbine.glb',route=>route.fulfill({status:404,body:'Missing'}));await broken.goto('http://127.0.0.1:4173/models/wind-turbine');await broken.getByText('Không mở được tua-bin:').waitFor();await broken.evaluate(()=>{window.__sameDocumentMarker='wind';});await broken.locator('#wind-back').click();await broken.waitForFunction(()=>document.querySelectorAll('[data-open-model]').length===6);assert.equal(await broken.evaluate(()=>window.__sameDocumentMarker==='wind'&&location.pathname==='/'),true);checks.push('load failure returns in the same document to the base catalog');await broken.close();
  assert.deepEqual(errors,[]);checks.push('no JavaScript or shader errors');
  writeFileSync(out+'/report.json',JSON.stringify({passed:true,checks,errors,stats},null,2));console.log({checks,stats});
 }finally{await browser.close();}

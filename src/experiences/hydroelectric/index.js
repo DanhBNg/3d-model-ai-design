@@ -10,7 +10,7 @@ import './style.css';
 export function mountHydroExperience({modelUrl,onExit}){
  const host=document.querySelector('#app');mountHydroUI(host);document.body.dataset.screen='hydro';delete document.body.dataset.mode;
  const abort=new AbortController();let dead=false,root,studio,controller,effects,ui,raf=0;
- const exit=()=>onExit();host.querySelector('#hydro-back').addEventListener('click',()=>{if(!ui)exit();},{signal:abort.signal});
+ const exit=()=>onExit();host.querySelector('#hydro-back').addEventListener('click',event=>{event.preventDefault();if(!ui)exit();},{signal:abort.signal});
  function dispose(){if(dead)return;dead=true;abort.abort();cancelAnimationFrame(raf);ui?.dispose();effects?.dispose();controller?.dispose();root?.userData.sculptRuntime.dispose();studio?.dispose();if(window.__hydro?.dispose===dispose)delete window.__hydro;}
  async function start(){try{
   const viewport=host.querySelector('#hydro-viewport');studio=createHydroStudio(viewport);root=await loadHydroelectricModel({url:modelUrl,signal:abort.signal});if(dead){root.userData.sculptRuntime.dispose();return;}

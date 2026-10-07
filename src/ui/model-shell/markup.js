@@ -13,6 +13,18 @@ function safeToken(value, name) {
   return value;
 }
 
+function optionalId(value, name) {
+  if (value === undefined) return '';
+  if (!/^[A-Za-z][A-Za-z0-9_.:-]*$/.test(value)) throw new TypeError(`${name} must be a valid HTML id`);
+  return ` id=\"${escapeHtml(value)}\"`;
+}
+
+function optionalPath(value, name) {
+  if (value === undefined) return null;
+  if (!/^\/(?!\/)/.test(value)) throw new TypeError(`${name} must be a root-relative path`);
+  return escapeHtml(value);
+}
+
 export function modelHeader({
   modeAttribute,
   brand,
@@ -20,9 +32,15 @@ export function modelHeader({
   principleLabel = 'Nguyên lý',
   version = 'V.02',
   thirdModeValue = 'principle',
+  homeId,
+  brandId,
+  brandHref,
 }) {
   const attribute = safeToken(modeAttribute, 'modeAttribute');
   const thirdMode = safeToken(thirdModeValue, 'thirdModeValue');
+  const homeIdAttribute = optionalId(homeId, 'homeId');
+  const brandIdAttribute = optionalId(brandId, 'brandId');
+  const brandPath = optionalPath(brandHref, 'brandHref');
   const modes = [
     ['explore', 'Khám phá'],
     ['explode', 'Tách cấu tạo'],
@@ -34,8 +52,8 @@ export function modelHeader({
       </button>`).join('');
 
   return `<header class="model-header">
-    <a class="model-header__home" href="/" data-exit-model aria-label="Về bộ sưu tập">← <span>Bộ sưu tập</span></a>
-    <strong class="model-header__brand">${escapeHtml(brand)} <em>/ ${escapeHtml(code)}</em></strong>
+    <a class="model-header__home" href="/"${homeIdAttribute} data-exit-model aria-label="Về bộ sưu tập">← <span>Bộ sưu tập</span></a>
+    ${brandPath ? `<a class=\"model-header__brand\" href=\"${brandPath}\"${brandIdAttribute}>${escapeHtml(brand)} <em>/ ${escapeHtml(code)}</em></a>` : `<strong class=\"model-header__brand\"${brandIdAttribute}>${escapeHtml(brand)} <em>/ ${escapeHtml(code)}</em></strong>`}
     <nav class="model-header__modes" aria-label="Chế độ mô hình">${buttons}
     </nav>
     <span class="model-header__edition">INTERACTIVE LAB <b>${escapeHtml(version)}</b></span>
