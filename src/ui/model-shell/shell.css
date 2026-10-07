@@ -1,6 +1,7 @@
 .model-shell {
   min-width: 0;
-  min-height: 100dvh;
+  height: 100dvh;
+  min-height: 0;
   color: var(--model-ink);
   background: var(--model-bg);
   display: grid;
@@ -10,6 +11,11 @@
     "bottom bottom" auto
     / minmax(0, 1fr) var(--model-panel-width);
   overflow: hidden;
+}
+
+/* Remove local legacy layout declarations when a model adopts this shell. */
+.model-shell .model-workspace {
+  display: contents;
 }
 
 .model-shell .model-header {
@@ -47,6 +53,13 @@
 .model-shell .model-header__home {
   color: var(--model-muted);
   text-decoration: none;
+}
+
+.model-shell .model-brand,
+.model-shell .model-header__home {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .model-shell .model-mode-tabs,
@@ -153,13 +166,17 @@
 .model-shell .model-flow-diagram {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 20px;
   color: var(--model-accent);
 }
 
 .model-shell .model-flow-diagram li {
+  position: relative;
   min-width: 0;
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 9px;
   border: 1px solid var(--model-line);
   border-radius: calc(var(--model-radius) - 3px);
@@ -167,10 +184,15 @@
   text-align: center;
 }
 
-.model-shell .model-flow-diagram i {
-  flex: 0 0 auto;
+.model-shell .model-flow-diagram li:not(:first-child) i {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 10px);
+  width: 14px;
   color: var(--model-muted);
   font-style: normal;
+  line-height: 1;
+  transform: translate(50%, -50%);
 }
 
 .model-shell .model-flow-legend {
@@ -233,7 +255,7 @@
 }
 
 .model-shell button {
-  min-height: 36px;
+  min-height: 40px;
   padding: 8px 12px;
   color: var(--model-ink);
   border: 1px solid var(--model-line);
@@ -299,6 +321,7 @@
 
 @media (max-width: 720px) {
   .model-shell {
+    height: auto;
     min-height: 100dvh;
     grid-template:
       "header" auto
@@ -358,9 +381,12 @@
     flex-direction: column;
   }
 
-  .model-shell .model-flow-diagram i {
-    align-self: center;
-    transform: rotate(90deg);
+  .model-shell .model-flow-diagram li:not(:first-child) i {
+    top: auto;
+    right: auto;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(90deg);
   }
 
   .model-shell .model-bottom-bar {

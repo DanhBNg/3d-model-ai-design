@@ -10,9 +10,10 @@ import {
 import { expand, pause, play, reset } from '../src/ui/model-shell/icons.js';
 
 test('model shell styles define the shared theme and responsive behavior', async () => {
-  const [tokens, shell] = await Promise.all([
+  const [tokens, shell, style] = await Promise.all([
     readFile(new URL('../src/ui/model-shell/tokens.css', import.meta.url), 'utf8'),
     readFile(new URL('../src/ui/model-shell/shell.css', import.meta.url), 'utf8'),
+    readFile(new URL('../src/style.css', import.meta.url), 'utf8'),
   ]);
 
   const expectedTokens = {
@@ -37,6 +38,33 @@ test('model shell styles define the shared theme and responsive behavior', async
 
   assert.match(shell, /@media\s*\(max-width:\s*720px\)/);
   assert.match(shell, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+
+  for (const path of ['./ui/model-shell/tokens.css', './ui/model-shell/shell.css']) {
+    const imports = style.match(new RegExp(`@import\\s+url\\(['"]${path.replaceAll('/', '\\/')}['"]\\);`, 'g'));
+    assert.equal(imports?.length, 1, `${path} should be imported exactly once`);
+  }
+
+  const compactStart = shell.indexOf('@media (max-width: 720px)');
+  const reducedMotionStart = shell.indexOf('@media (prefers-reduced-motion: reduce)');
+  const desktop = shell.slice(0, compactStart);
+  const compact = shell.slice(compactStart, reducedMotionStart);
+
+  assert.match(desktop, /\.model-shell\s*\{[^}]*\bheight:\s*100dvh;[^}]*\bmin-height:\s*0;/s);
+  assert.match(compact, /\.model-shell\s*\{[^}]*\bheight:\s*auto;[^}]*\bmin-height:\s*100dvh;/s);
+  assert.match(shell, /\.model-shell\s+\.model-workspace\s*\{[^}]*display:\s*contents;/s);
+  assert.match(desktop, /\.model-shell button\s*\{[^}]*min-height:\s*4\dpx;/s);
+  assert.match(
+    desktop,
+    /\.model-shell \.model-brand,\s*\.model-shell \.model-header__home\s*\{[^}]*min-height:\s*4\dpx;[^}]*display:\s*inline-flex;/s,
+  );
+  assert.match(shell, /\.model-shell \.model-flow-diagram li:not\(:first-child\) i\s*\{/);
+
+  const headerMarkup = modelHeader({ modeAttribute: 'mode', brand: 'MODEL', code: '01' });
+  const headerClasses = [...headerMarkup.matchAll(/class="([^"]+)"/g)]
+    .flatMap(([, names]) => names.split(/\s+/));
+  for (const className of headerClasses) {
+    assert.match(shell, new RegExp(`\\.model-shell \\.${className}(?:[\\s,{.:]|$)`));
+  }
 });
 
 test('modelHeader renders the shared navigation and mode controls', () => {
@@ -82,6 +110,7 @@ test('flowDiagram renders escaped stages in order with arrow separators', () => 
   assert.match(markup, /<\/ol>$/);
   assert.equal(markup.match(/<li\b/g)?.length, 3);
   assert.equal(markup.match(/<i\b/g)?.length, 2);
+  assert.equal(markup.match(/<i aria-hidden="true">/g)?.length, 2);
   assert.match(markup, /Pin &amp; cell/);
   assert.match(markup, /&lt;ESC&gt;/);
   assert.ok(markup.indexOf('Pin &amp; cell') < markup.indexOf('&lt;ESC&gt;'));
